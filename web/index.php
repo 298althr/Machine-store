@@ -22,76 +22,66 @@ if (php_sapi_name() === 'cli-server') {
 }
 
 try {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
     require_once __DIR__ . '/bootstrap.php';
+    
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+    $requestPath = parse_url($requestUri, PHP_URL_PATH);
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $path = $requestPath; // alias for compatibility
+    
+    // Telegram webhook endpoint
+    if ($path === '/telegram-webhook') {
+        $content = file_get_contents('php://input');
+        $update = json_decode($content, true);
+        if ($update) {
+            $telegramService->handleWebhook($update);
+        }
+        http_response_code(200);
+        exit('OK');
+    }
+    
+    // Serve uploaded product images
+    if (preg_match('#^/uploads/products/(.+)$#', $path, $m)) {
+        $filename = $m[1];
+        $filePath = __DIR__ . '/uploads/products/' . $filename;
+        if (file_exists($filePath)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $filePath);
+            finfo_close($finfo);
+            header('Content-Type: ' . $mimeType);
+            header('Content-Length: ' . (string)filesize($filePath));
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            readfile($filePath);
+            exit;
+        }
+        http_response_code(404);
+        echo 'File not found';
+        exit;
+    }
+    
+    // Route inclusions
+    require __DIR__ . '/includes/routes_api.php';
+    require __DIR__ . '/includes/routes_public.php';
+    require __DIR__ . '/includes/routes_admin.php';
+    require __DIR__ . '/includes/routes_software.php';
+    
+    // Fallback 404
+    http_response_code(404);
+    render_template('404.php', [
+        'title' => 'Page Not Found',
+        'path' => $path
+    ]);
+    
 } catch (\Throwable $e) {
+    echo "<h1>Debug Error</h1>";
+    echo "<p><strong>Message:</strong> " . $e->getMessage() . "</p>";
+    echo "<p><strong>File:</strong> " . $e->getFile() . "</p>";
+    echo "<p><strong>Line:</strong> " . $e->getLine() . "</p>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
     file_put_contents('php://stderr', "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\n");
     http_response_code(500);
-    exit("Internal Server Error");
-}
-
-$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
-$requestPath = parse_url($requestUri, PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$path = $requestPath; // alias for compatibility
-
-// Telegram webhook endpoint
-if ($path === '/telegram-webhook') {
-    $content = file_get_contents('php://input');
-    $update = json_decode($content, true);
-    if ($update) {
-        $telegramService->handleWebhook($update);
-    }
-    http_response_code(200);
-    exit('OK');
-}
-
-// Serve uploaded product images
-if (preg_match('#^/uploads/products/(.+)$#', $path, $m)) {
-    $filename = $m[1];
-    $filePath = __DIR__ . '/uploads/products/' . $filename;
-    if (file_exists($filePath)) {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $filePath);
-        finfo_close($finfo);
-        header('Content-Type: ' . $mimeType);
-        header('Content-Length: ' . (string)filesize($filePath));
-        header('Content-Disposition: inline; filename="' . $filename . '"');
-        readfile($filePath);
-        exit;
-    }
-    http_response_code(404);
-    echo 'File not found';
     exit;
 }
-
-// Serve uploaded payment receipts
-if (preg_match('#^/uploads/payments/(.+)$#', $path, $m)) {
-    $filepath = $m[1];
-    $filePath = __DIR__ . '/uploads/payments/' . $filepath;
-    if (file_exists($filePath)) {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $filePath);
-        finfo_close($finfo);
-        header('Content-Type: ' . $mimeType);
-        header('Content-Length: ' . (string)filesize($filePath));
-        header('Content-Disposition: inline; filename="' . basename($filepath) . '"');
-        readfile($filePath);
-        exit;
-    }
-    http_response_code(404);
-    echo 'File not found';
-    exit;
-}
-
-// Route inclusions
-require __DIR__ . '/includes/routes_api.php';
-require __DIR__ . '/includes/routes_public.php';
-require __DIR__ . '/includes/routes_admin.php';
-require __DIR__ . '/includes/routes_software.php';
-
-// Fallback 404
-http_response_code(404);
-render_template('404.php', [
-    'title' => 'Page Not Found',
-    'path' => $path
-]);
