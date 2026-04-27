@@ -150,16 +150,19 @@ class CsvDb
     {
         $filePath = "{$this->basePath}/{$table}.csv";
         if (!file_exists($filePath)) {
+            file_put_contents('php://stderr', "DEBUG: CsvDb Table not found: {$filePath} (CWD: " . getcwd() . ")\n");
             return [];
         }
 
         $handle = fopen($filePath, 'r');
         if (!$handle) {
+            file_put_contents('php://stderr', "DEBUG: CsvDb Could not open handle for: {$filePath}\n");
             return [];
         }
 
         $headers = fgetcsv($handle, 0, $this->separator);
         if (!$headers) {
+            file_put_contents('php://stderr', "DEBUG: CsvDb No headers in: {$filePath}\n");
             fclose($handle);
             return [];
         }
@@ -171,6 +174,7 @@ class CsvDb
             }
         }
 
+        file_put_contents('php://stderr', "DEBUG: CsvDb Loaded " . count($records) . " records from {$table} (Headers: " . implode(',', $headers) . ")\n");
         fclose($handle);
         return $records;
     }

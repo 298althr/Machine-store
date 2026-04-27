@@ -84,13 +84,13 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
-      <a href="/" class="mobile-logo" style="display: block; flex: 1; text-align: center;">
-        <img src="/assets/logo.png" alt="Streicher" style="height: 28px; width: auto; filter: brightness(0) invert(1);">
+      <a href="/" class="mobile-logo-container">
+        <img src="/assets/logo.png" alt="Streicher" class="mobile-logo-img">
       </a>
-      <a href="/cart" style="color: white; text-decoration: none; position: relative; width: 40px; text-align: right;">
+      <a href="/cart" class="mobile-cart-icon">
         <span style="font-size: 1.2rem;">🛒</span>
         <?php if ($cartCount > 0): ?>
-          <span style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 0.65rem; padding: 1px 4px; border-radius: 50%; font-weight: 900;"><?= $cartCount ?></span>
+          <span class="cart-badge"><?= $cartCount ?></span>
         <?php endif; ?>
       </a>
     </div>

@@ -102,9 +102,52 @@ body {
   height: var(--header-height-mobile);
   padding: 0 20px;
   background: var(--primary); /* Premium Dark Header */
-  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-logo-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-logo-img {
+  height: 32px;
+  width: auto;
+  /* No filter here to avoid double-whitening */
+}
+
+.mobile-cart-icon {
   color: white;
+  text-decoration: none;
+  position: relative;
+  width: 40px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-weight: 800;
+  min-width: 18px;
+  text-align: center;
+  border: 2px solid var(--primary);
 }
 
 @media (max-width: 1024px) {
