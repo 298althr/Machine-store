@@ -37,7 +37,9 @@ date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Chicago');
 $dbType = $_ENV['DB_TYPE'] ?? 'csv';
 
 if ($dbType === 'csv') {
-    $csvDb = new CsvDb();
+    // Ensure absolute path for reliability across different server environments
+    $basePath = dirname(__DIR__) . '/data/db';
+    $csvDb = new CsvDb($basePath);
     $pdo = new CsvPdo($csvDb);
 } else {
     $dbHost = $_ENV['DB_HOST'] ?? '127.0.0.1';

@@ -80,12 +80,17 @@ function get_exchange_rate(): float {
         // Use default rate
     }
     
-    // Cache the rate
-    $stmt = $pdo->prepare("UPDATE settings SET setting_value = ?, updated_at = NOW() WHERE setting_key = ?");
-    $stmt->execute([$rate, 'eur_usd_rate']);
-    if ($stmt->rowCount() === 0) {
-        $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
-        $stmt->execute(['eur_usd_rate', $rate]);
+    // Cache the rate (silently fail if database is not writable)
+    try {
+        $stmt = $pdo->prepare("UPDATE settings SET setting_value = ?, updated_at = NOW() WHERE setting_key = ?");
+        $stmt->execute([$rate, 'eur_usd_rate']);
+        if ($stmt->rowCount() === 0) {
+            $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
+            $stmt->execute(['eur_usd_rate', $rate]);
+        }
+    } catch (\Throwable $e) {
+        // Log to stderr but don't crash
+        file_put_contents('php://stderr', "Warning: Could not cache exchange rate: " . $e->getMessage() . "\n");
     }
     
     return $rate;

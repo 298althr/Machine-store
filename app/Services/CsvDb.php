@@ -15,9 +15,9 @@ class CsvDb
     private string $basePath;
     private string $separator;
 
-    public function __construct()
+    public function __construct(?string $basePath = null)
     {
-        $this->basePath = rtrim($_ENV['DB_CSV_PATH'] ?? 'data/db', '/');
+        $this->basePath = $basePath ? rtrim($basePath, '/') : rtrim($_ENV['DB_CSV_PATH'] ?? 'data/db', '/');
         $this->separator = $_ENV['DB_CSV_SEPARATOR'] ?? ',';
         
         // Ensure directory exists

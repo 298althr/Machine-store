@@ -15,7 +15,7 @@ if ($path === '/' && $method === 'GET') {
 }
 
 // GET /catalog - Product catalog
-if ($path === '/catalog' && $method === 'GET') {
+if (($path === '/catalog' || $path === '/catalog/') && $method === 'GET') {
     $categorySlug = $_GET['category'] ?? null;
     $search = $_GET['search'] ?? null;
     
