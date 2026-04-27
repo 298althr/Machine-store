@@ -170,6 +170,9 @@ class CsvStatement
         if (empty($whereStr)) return [];
         $where = [];
         
+        // Remove LIMIT clause from where string if present
+        $whereStr = preg_replace('/\s+LIMIT\s+\d+\s*$/i', '', $whereStr);
+        
         // Very basic AND parser
         $parts = preg_split('/\s+AND\s+/i', $whereStr);
         foreach ($parts as $part) {

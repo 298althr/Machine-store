@@ -103,14 +103,21 @@ class ProductRepository
         if ($query) {
             $query = strtolower($query);
             $products = array_filter($products, function($p) use ($query) {
-                return strpos(strtolower($p['name']), $query) !== false || 
-                       strpos(strtolower($p['sku']), $query) !== false || 
-                       strpos(strtolower($p['description']), $query) !== false;
+                $name = strtolower($p['name'] ?? '');
+                $sku = strtolower($p['sku'] ?? '');
+                $desc = strtolower($p['description'] ?? '');
+                return strpos($name, $query) !== false || 
+                       strpos($sku, $query) !== false || 
+                       strpos($desc, $query) !== false;
             });
         }
 
         usort($products, function($a, $b) {
-            return ($b['is_featured'] <=> $a['is_featured']) ?: ($b['created_at'] <=> $a['created_at']);
+            $featB = (int)($b['is_featured'] ?? 0);
+            $featA = (int)($a['is_featured'] ?? 0);
+            $dateB = $b['created_at'] ?? '';
+            $dateA = $a['created_at'] ?? '';
+            return ($featB <=> $featA) ?: ($dateB <=> $dateA);
         });
 
         return array_values($products);

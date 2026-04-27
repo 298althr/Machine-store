@@ -18,11 +18,11 @@
         : 'Streicher GmbH delivers world-class hydraulic systems, drilling equipment, and pipeline components trusted by industry leaders worldwide since 1972.' ?>
     </p>
     
-    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <div class="hero-actions grid-2" style="max-width: 500px; margin-top: 40px; gap: 15px !important;">
       <a href="/catalog" class="btn-modern btn-accent">
         <?= $lang === 'de' ? 'Katalog durchsuchen' : 'Browse Catalog' ?>
       </a>
-      <a href="/quote" class="btn-modern btn-white">
+      <a href="/contact" class="btn-modern btn-white">
         <?= $lang === 'de' ? 'Angebot anfordern' : 'Request Quote' ?>
       </a>
     </div>

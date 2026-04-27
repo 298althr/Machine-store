@@ -27,108 +27,91 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
 </head>
 <body class="modern-theme">
 
-<div class="mobile-nav-overlay"></div>
-
-<header class="site-header">
-  <!-- Desktop Header Top -->
-  <div class="header-top desktop-only">
-    <div class="header-top-inner">
-      <div class="header-contact-info">
-        <span style="font-weight: 800; color: var(--accent);">STREICHER</span>
-        <span class="separator"></span>
-        <span>🇩🇪 <?= __('made_in_germany') ?></span>
-        <span class="separator"></span>
-        <span class="email-link">✉️ store@streichergmbh.com</span>
-      </div>
-      <div class="header-utility-links">
-        <a href="/news"><?= __('news') ?></a>
-        <a href="/contact"><?= __('contact') ?></a>
-        <a href="/mediathek"><?= __('media') ?></a>
-        <?php if (!empty($_SESSION['user_id'])): ?>
-          <a href="/account" class="auth-link" style="font-weight: 700; color: var(--accent);"><?= __('my_account') ?></a>
-          <a href="/logout" class="auth-link"><?= __('logout') ?></a>
-        <?php else: ?>
-          <a href="/login" class="auth-link"><?= __('login') ?></a>
-        <?php endif; ?>
-        <div class="lang-switcher">
-          <a href="?lang=de" class="lang-btn <?= $lang === 'de' ? 'active' : '' ?>">DE</a>
-          <a href="?lang=en" class="lang-btn <?= $lang === 'en' ? 'active' : '' ?>">EN</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Desktop Header Main -->
-  <div class="header-main container-modern desktop-only">
-    <a href="/" class="logo">
-      <img src="/assets/logo.png" alt="Streicher" class="logo-img">
-    </a>
-    
-    <nav class="header-nav">
-      <a href="/profile"><?= __('profile') ?></a>
-      <a href="/catalog"><?= __('products') ?></a>
-      <a href="/reference-projects"><?= __('references') ?></a>
-      <a href="/hse-q">HSE-Q</a>
-      <a href="/software-activation" class="software-link">🔑 Software Activation</a>
-      <?php if (!empty($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-        <a href="/admin" class="admin-link">Admin</a>
-      <?php endif; ?>
-      <a href="/cart" class="cart-link">
-        <span class="cart-icon">🛒</span>
-        <span class="cart-label"><?= __('cart') ?></span>
-        <?php if ($cartCount > 0): ?>
-          <span class="cart-count"><?= $cartCount ?></span>
-        <?php endif; ?>
-      </a>
-    </nav>
-  </div>
-
-  <!-- Mobile Header Bar -->
-  <div class="mobile-header">
-    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-      <span class="hamburger-icon"></span>
-    </button>
-    <a href="/" class="mobile-logo">
-      <img src="/assets/logo.png" alt="Streicher" style="height: 32px; width: auto;">
-    </a>
-    <div class="mobile-header-actions">
-      <a href="/cart" class="mobile-cart-btn">
-        🛒<?php if ($cartCount > 0): ?><span class="cart-badge"><?= $cartCount ?></span><?php endif; ?>
-      </a>
-    </div>
-  </div>
-  
-  <!-- Mobile Navigation -->
+  <div class="mobile-nav-overlay"></div>
   <nav class="mobile-nav">
     <div class="mobile-nav-header">
-      <span style="font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 1px;">STREICHER GROUP</span>
+      <span style="font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 1px;">STREICHER</span>
       <button class="mobile-nav-close">✕</button>
     </div>
     <div class="mobile-nav-links">
+      <a href="/"><?= __('home') ?></a>
       <a href="/profile"><?= __('profile') ?></a>
       <a href="/catalog"><?= __('products') ?></a>
       <a href="/reference-projects"><?= __('references') ?></a>
-      <a href="/hse-q">HSE-Q</a>
-      <a href="/software-activation" style="color: var(--accent); font-weight: 800;">🔑 Activation</a>
+      <a href="/track"><?= __('track_order') ?></a>
+      <a href="/cart" class="btn-modern btn-accent" style="margin-top: 20px; color: white !important;">
+        🛒 <?= __('cart') ?> (<?= $cartCount ?>)
+      </a>
     </div>
-    <div class="mobile-nav-footer">
-      <div class="mobile-nav-secondary">
-        <a href="/news"><?= __('news') ?></a>
-        <a href="/contact"><?= __('contact') ?></a>
-        <?php if (!empty($_SESSION['user_id'])): ?>
-          <a href="/account"><?= __('my_account') ?></a>
-          <a href="/logout"><?= __('logout') ?></a>
-        <?php else: ?>
-          <a href="/login"><?= __('login') ?></a>
-        <?php endif; ?>
-      </div>
-      <div class="lang-switcher-mobile" style="padding: 20px; display: flex; gap: 15px;">
-        <a href="?lang=de" class="<?= $lang === 'de' ? 'active' : '' ?>" style="font-weight: 800;">DE</a>
-        <a href="?lang=en" class="<?= $lang === 'en' ? 'active' : '' ?>" style="font-weight: 800;">EN</a>
+    <div style="padding: 40px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto;">
+      <div style="display: flex; gap: 20px; font-weight: 800;">
+        <a href="?lang=de" style="color: white; text-decoration: none;">DE</a>
+        <a href="?lang=en" style="color: white; text-decoration: none;">EN</a>
       </div>
     </div>
   </nav>
-</header>
+
+  <header class="site-header">
+    <div class="header-top desktop-only">
+      <div class="header-top-inner container-modern">
+        <div class="header-contact-info">
+          <span style="font-weight: 800; color: var(--accent);">STREICHER</span>
+          <span class="separator"></span>
+          <span>🇩🇪 <?= __('made_in_germany') ?></span>
+          <span class="separator"></span>
+          <span class="email-link">✉️ store@streichergmbh.com</span>
+        </div>
+        <div class="header-utility-links">
+          <a href="/news"><?= __('news') ?></a>
+          <a href="/contact"><?= __('contact') ?></a>
+          <?php if (!empty($_SESSION['user_id'])): ?>
+            <a href="/account" style="font-weight: 700; color: var(--accent);"><?= __('my_account') ?></a>
+            <a href="/logout"><?= __('logout') ?></a>
+          <?php else: ?>
+            <a href="/login"><?= __('login') ?></a>
+          <?php endif; ?>
+          <div class="lang-switcher">
+            <a href="?lang=de" class="lang-btn <?= $lang === 'de' ? 'active' : '' ?>">DE</a>
+            <a href="?lang=en" class="lang-btn <?= $lang === 'en' ? 'active' : '' ?>">EN</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-header">
+      <button class="mobile-menu-toggle" aria-label="Menu">
+        <span class="hamburger-icon"></span>
+      </button>
+      <a href="/" class="mobile-logo" style="display: block; flex: 1; text-align: center;">
+        <img src="/assets/logo.png" alt="Streicher" style="height: 28px; width: auto; filter: brightness(0) invert(1);">
+      </a>
+      <a href="/cart" style="color: white; text-decoration: none; position: relative; width: 40px; text-align: right;">
+        <span style="font-size: 1.2rem;">🛒</span>
+        <?php if ($cartCount > 0): ?>
+          <span style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 0.65rem; padding: 1px 4px; border-radius: 50%; font-weight: 900;"><?= $cartCount ?></span>
+        <?php endif; ?>
+      </a>
+    </div>
+
+    <div class="header-main container-modern desktop-only">
+      <a href="/" class="logo">
+        <img src="/assets/logo.png" alt="Streicher" class="logo-img">
+      </a>
+      <nav class="header-nav">
+        <a href="/profile"><?= __('profile') ?></a>
+        <a href="/catalog"><?= __('products') ?></a>
+        <a href="/reference-projects"><?= __('references') ?></a>
+        <a href="/hse-q">HSE-Q</a>
+        <a href="/software-activation" class="software-link">🔑 Software Activation</a>
+        <a href="/cart" class="cart-link" style="background: var(--primary); color: white; border-radius: 8px; padding: 8px 20px;">
+          🛒 <?= __('cart') ?>
+          <?php if ($cartCount > 0): ?>
+            <span style="background: var(--accent); padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-size: 0.8rem;"><?= $cartCount ?></span>
+          <?php endif; ?>
+        </a>
+      </nav>
+    </div>
+  </header>
 
 <main id="main-content" class="<?= ($isHomePage ?? false) ? 'home-page' : 'page-content' ?>">
   <?= $content ?? '' ?>
