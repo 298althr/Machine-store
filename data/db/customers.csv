@@ -1,0 +1,3 @@
+id,name,email,company,last_quote_date,total_orders_value
+1,John Doe,john@example.com,Global Industrial,2026-04-20,5400.00
+2,Jane Smith,jane@energycorp.com,Energy Corp,2026-04-25,12500.00

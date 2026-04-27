@@ -1,0 +1,10 @@
+id,product_id,spec_name,spec_value,unit
+1,1,Pressure,5000,PSI
+2,1,Flow Rate,120,GPM
+3,1,Power,5000,HP
+4,2,Lifting Capacity,800,Tons
+5,2,Stroke Length,1500,mm
+6,3,Max Pressure,350,Bar
+7,4,Volume,500,L
+8,5,Cooling Capacity,1000,kW
+9,8,Displacement,500,cc
