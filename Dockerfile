@@ -29,13 +29,10 @@ RUN mkdir -p data/db \
     && chmod -R 777 data \
     && chmod -R 777 web/uploads
 
-# Debug: list files
-RUN ls -laR .
-
 # Use PORT environment variable for Railway
 ENV PORT=8080
 EXPOSE 8080
 
-# Start PHP built-in server with web/ as document root AND index.php as the router
-# This is critical for handling non-file routes like /health or /catalog
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t web web/index.php"]
+# Start PHP built-in server
+# When using -t web, the router script path should be relative to that directory
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t web index.php"]
