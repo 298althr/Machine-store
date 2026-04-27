@@ -13,7 +13,21 @@ if (($_SERVER['REQUEST_URI'] ?? '/') === '/health' || ($_SERVER['REQUEST_URI'] ?
  * all requests are routed through here.
  */
 
-require_once __DIR__ . '/bootstrap.php';
+// Serve static files natively when using PHP built-in server
+if (php_sapi_name() === 'cli-server') {
+    $file = __DIR__ . parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    if (is_file($file)) {
+        return false;
+    }
+}
+
+try {
+    require_once __DIR__ . '/bootstrap.php';
+} catch (\Throwable $e) {
+    file_put_contents('php://stderr', "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\n");
+    http_response_code(500);
+    exit("Internal Server Error");
+}
 
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
