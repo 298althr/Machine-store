@@ -53,7 +53,9 @@ class ProductRepository
             });
         }
         
-        return array_map([$this, 'hydrate'], array_values($products));
+        $hydrated = array_map([$this, 'hydrate'], array_values($products));
+        file_put_contents('php://stderr', "DEBUG: ProductRepository::all - Fetched " . count($products) . " active products\n");
+        return $hydrated;
     }
 
     public function featured(int $limit = 6): array

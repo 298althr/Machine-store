@@ -168,9 +168,13 @@ class CsvDb
         }
 
         $records = [];
+        $rowNum = 1;
         while (($row = fgetcsv($handle, 0, $this->separator)) !== false) {
+            $rowNum++;
             if (count($row) === count($headers)) {
                 $records[] = array_combine($headers, $row);
+            } else {
+                file_put_contents('php://stderr', "DEBUG: CsvDb Row {$rowNum} count mismatch: Expected " . count($headers) . ", got " . count($row) . " in {$table}\n");
             }
         }
 
