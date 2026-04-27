@@ -47,11 +47,12 @@ class ProductRepository
         $stmt->execute();
         $products = $stmt->fetchAll();
         
-        if ($activeOnly) {
-            $products = array_filter($products, function($p) {
-                return (string)($p['is_active'] ?? '0') === '1';
-            });
-        }
+        // Always filter by image presence for the frontend as requested
+        $products = array_filter($products, function($p) {
+            $hasImage = !empty($p['image_url']) && $p['image_url'] !== '';
+            $isActive = (string)($p['is_active'] ?? '0') === '1';
+            return $hasImage && (!$activeOnly || $isActive);
+        });
         
         $hydrated = array_map([$this, 'hydrate'], array_values($products));
         return $hydrated;
@@ -85,7 +86,14 @@ class ProductRepository
     {
         $stmt = $this->db->prepare("SELECT * FROM products WHERE category_id = ? AND is_active = 1");
         $stmt->execute([$categoryId]);
-        return $stmt->fetchAll();
+        $products = $stmt->fetchAll();
+        
+        // Filter by image presence
+        $products = array_filter($products, function($p) {
+            return !empty($p['image_url']) && $p['image_url'] !== '';
+        });
+        
+        return array_map([$this, 'hydrate'], array_values($products));
     }
 
     public function search(?string $query = null, ?string $categorySlug = null): array
