@@ -449,3 +449,127 @@ if ($path === '/track' && $method === 'GET') {
     ]);
 }
 
+// GET /support - Support page
+if ($path === '/support' && $method === 'GET') {
+    render_template('pages/support.php', ['title' => 'Technical Support - Streicher']);
+}
+
+// GET /faq - FAQ page
+if ($path === '/faq' && $method === 'GET') {
+    render_template('pages/faq.php', ['title' => 'FAQ - Streicher']);
+}
+
+// GET /about - About page
+if ($path === '/about' && $method === 'GET') {
+    render_template('pages/about.php', ['title' => 'About Us - Streicher']);
+}
+
+// GET /profile - Company Profile page
+if ($path === '/profile' && $method === 'GET') {
+    render_template('pages/profile.php', ['title' => $lang === 'de' ? 'Unternehmensprofil - Streicher' : 'Company Profile - Streicher']);
+}
+
+// GET /news - News page
+if ($path === '/news' && $method === 'GET') {
+    render_template('pages/news.php', ['title' => $lang === 'de' ? 'Neuigkeiten - Streicher' : 'News - Streicher']);
+}
+
+// GET /mediathek - Media Library page
+if ($path === '/mediathek' && $method === 'GET') {
+    render_template('pages/mediathek.php', ['title' => $lang === 'de' ? 'Mediathek - Streicher' : 'Media Library - Streicher']);
+}
+
+// GET /business-sectors - Business Sectors page
+if ($path === '/business-sectors' && $method === 'GET') {
+    render_template('pages/business-sectors.php', ['title' => $lang === 'de' ? 'Geschäftsbereiche - Streicher' : 'Business Sectors - Streicher']);
+}
+
+// GET /reference-projects - Reference Projects page
+if ($path === '/reference-projects' && $method === 'GET') {
+    render_template('pages/reference-projects.php', ['title' => $lang === 'de' ? 'Referenzprojekte - Streicher' : 'Reference Projects - Streicher']);
+}
+
+// GET /hse-q - HSE-Q page
+if ($path === '/hse-q' && $method === 'GET') {
+    render_template('pages/hse-q.php', ['title' => 'HSE-Q - Streicher']);
+}
+
+// GET /events - Events page
+if ($path === '/events' && $method === 'GET') {
+    render_template('pages/events.php', ['title' => $lang === 'de' ? 'Veranstaltungen - Streicher' : 'Events - Streicher']);
+}
+
+// GET /careers - Careers page
+if ($path === '/careers' && $method === 'GET') {
+    render_template('pages/careers.php', ['title' => 'Careers - Streicher']);
+}
+
+// GET /privacy - Privacy Policy
+if ($path === '/privacy' && $method === 'GET') {
+    render_template('pages/privacy.php', ['title' => 'Privacy Policy - Streicher']);
+}
+
+// GET /terms - Terms & Conditions
+if ($path === '/terms' && $method === 'GET') {
+    render_template('pages/terms.php', ['title' => 'Terms & Conditions - Streicher']);
+}
+
+// GET /shipping - Shipping Information
+if ($path === '/shipping' && $method === 'GET') {
+    render_template('pages/shipping.php', ['title' => 'Shipping Information - Streicher']);
+}
+
+// GET /returns - Returns Policy
+if ($path === '/returns' && $method === 'GET') {
+    render_template('pages/returns.php', ['title' => 'Returns Policy - Streicher']);
+}
+
+// GET /login - Customer Login
+if ($path === '/login' && $method === 'GET') {
+    render_template('pages/login.php', ['title' => 'Login - Streicher']);
+}
+
+// POST /login - Customer Login
+if ($path === '/login' && $method === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+    
+    if ($user && password_verify($password, $user['password_hash'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_name'] = $user['full_name'];
+        header('Location: /account');
+        exit;
+    }
+    
+    render_template('pages/login.php', [
+        'title' => 'Login - Streicher',
+        'error' => 'Invalid email or password',
+    ]);
+}
+
+// GET /register - Customer Registration
+if ($path === '/register' && $method === 'GET') {
+    render_template('pages/register.php', ['title' => 'Register - Streicher']);
+}
+
+// GET /account - Customer Account
+if ($path === '/account' && $method === 'GET') {
+    if (empty($_SESSION['user_id'])) {
+        header('Location: /login');
+        exit;
+    }
+    
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 10');
+    $stmt->execute([$_SESSION['user_id']]);
+    $orders = $stmt->fetchAll();
+    
+    render_template('pages/account.php', [
+        'title' => 'My Account - Streicher',
+        'orders' => $orders,
+    ]);
+}
