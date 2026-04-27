@@ -29,12 +29,13 @@ RUN mkdir -p data/db \
     && chmod -R 777 data \
     && chmod -R 777 web/uploads
 
-# Debug: list files to verify structure in logs
+# Debug: list files
 RUN ls -laR .
 
-# Use PORT environment variable for Railway (defaults to 8080)
+# Use PORT environment variable for Railway
 ENV PORT=8080
 EXPOSE 8080
 
-# Start PHP built-in server with web/ as the document root
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t web"]
+# Start PHP built-in server with web/ as document root AND index.php as the router
+# This is critical for handling non-file routes like /health or /catalog
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t web web/index.php"]
