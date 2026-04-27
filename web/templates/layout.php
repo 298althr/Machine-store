@@ -154,7 +154,7 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
       </div>
       
       <div class="footer-nav-col">
-        <h4 class="footer-title">Engineering</h4>
+        <h4 class="footer-title"><?= $lang === 'de' ? 'Leistungen' : 'Services' ?></h4>
         <ul class="footer-links">
           <li><a href="/catalog">Pipeline Construction</a></li>
           <li><a href="/catalog">Plant Engineering</a></li>
@@ -164,7 +164,7 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
       </div>
       
       <div class="footer-nav-col">
-        <h4 class="footer-title">Institutional</h4>
+        <h4 class="footer-title"><?= $lang === 'de' ? 'Unternehmen' : 'Company' ?></h4>
         <ul class="footer-links">
           <li><a href="/profile"><?= __('about_us') ?></a></li>
           <li><a href="/reference-projects">Global Projects</a></li>
@@ -174,11 +174,11 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
       </div>
       
       <div class="footer-nav-col">
-        <h4 class="footer-title">Procurement</h4>
+        <h4 class="footer-title"><?= $lang === 'de' ? 'Bestellungen' : 'Ordering' ?></h4>
         <ul class="footer-links">
           <li><a href="/catalog"><?= __('catalog') ?></a></li>
           <li><a href="/cart"><?= __('shopping_cart') ?></a></li>
-          <li><a href="/support">Technical Support</a></li>
+          <li><a href="/track"><?= __('track_order') ?></a></li>
           <li><a href="/shipping"><?= __('shipping_info') ?></a></li>
         </ul>
       </div>

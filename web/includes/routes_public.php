@@ -25,9 +25,16 @@ if ($path === '/catalog' && $method === 'GET') {
         setcookie('preferred_currency', $_GET['currency'], time() + (30 * 24 * 60 * 60), '/', '', false, true);
     }
     
-    $products = $productRepo->search($search, $categorySlug);
     $categories = $categoryRepo->all();
-    $currentCategory = $categorySlug ? $categoryRepo->findBySlug($categorySlug) : null;
+    $search = $_GET['search'] ?? '';
+    $categorySlug = $_GET['category'] ?? '';
+    
+    $currentCategory = null;
+    if ($categorySlug) {
+        $currentCategory = $categoryRepo->findBySlug($categorySlug);
+    }
+    
+    $products = $productRepo->search($search, $categorySlug);
     
     render_template('catalog.php', [
         'title' => ($currentCategory ? $currentCategory['name'] . ' - ' : '') . 'Product Catalog - Streicher',
@@ -40,7 +47,7 @@ if ($path === '/catalog' && $method === 'GET') {
 
 // GET /product - Product detail
 if ($path === '/product' && $method === 'GET') {
-    $sku = $_GET['sku'] ?? null;
+    $sku = $_GET['sku'] ?? '';
     if (!$sku) {
         header('Location: /catalog');
         exit;
@@ -48,16 +55,16 @@ if ($path === '/product' && $method === 'GET') {
     
     $product = $productRepo->findBySku($sku);
     if (!$product) {
-        http_response_code(404);
-        render_template('404.php', ['title' => 'Product Not Found']);
+        header('Location: /catalog');
+        exit;
     }
     
-    $relatedProducts = $productRepo->getRelated($sku, (int)$product['category_id'], 4);
+    $related = $productRepo->getRelated($sku, (int)$product['category_id']);
     
     render_template('product_detail.php', [
         'title' => $product['name'] . ' - Streicher',
         'product' => $product,
-        'relatedProducts' => $relatedProducts,
+        'related' => $related
     ]);
 }
 

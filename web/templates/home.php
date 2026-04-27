@@ -27,17 +27,17 @@
       </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 80px; max-width: 600px;">
+    <div class="grid-3" style="margin-top: 80px; max-width: 600px;">
       <div>
-        <div style="font-size: 2.5rem; font-weight: 800; color: var(--accent);">50+</div>
+        <div style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--accent);">50+</div>
         <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);"><?= $lang === 'de' ? 'Jahre Erfahrung' : 'Years Experience' ?></div>
       </div>
       <div>
-        <div style="font-size: 2.5rem; font-weight: 800; color: var(--accent);">100+</div>
+        <div style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--accent);">100+</div>
         <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);"><?= $lang === 'de' ? 'Produkte' : 'Products' ?></div>
       </div>
       <div>
-        <div style="font-size: 2.5rem; font-weight: 800; color: var(--accent);">45+</div>
+        <div style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--accent);">45+</div>
         <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);"><?= $lang === 'de' ? 'Länder' : 'Countries' ?></div>
       </div>
     </div>

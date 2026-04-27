@@ -20,7 +20,9 @@ class SupportRepository
             $sql .= " WHERE status = '{$status}'";
         }
         $sql .= " ORDER BY created_at DESC";
-        return $this->db->prepare($sql)->fetchAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function find(int $id): ?array

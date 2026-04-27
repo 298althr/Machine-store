@@ -82,10 +82,15 @@ $translations = [
     'all_rights_reserved' => ['en' => 'All rights reserved.', 'de' => 'Alle Rechte vorbehalten.'],
     
     // Catalog
-    'all_products' => ['en' => 'All Products', 'de' => 'Alle Produkte'],
-    'categories' => ['en' => 'Categories', 'de' => 'Kategorien'],
     'search' => ['en' => 'Search', 'de' => 'Suche'],
     'search_products' => ['en' => 'Search products...', 'de' => 'Produkte suchen...'],
+    'categories' => ['en' => 'Product Categories', 'de' => 'Produktkategorien'],
+    'track_order' => ['en' => 'Track Your Order', 'de' => 'Bestellung verfolgen'],
+    'track_order_text' => ['en' => 'Enter your tracking number to see the current status of your shipment.', 'de' => 'Geben Sie Ihre Tracking-Nummer ein, um den aktuellen Status Ihrer Sendung zu sehen.'],
+    'tracking_number' => ['en' => 'Tracking Number', 'de' => 'Tracking-Nummer'],
+    'track' => ['en' => 'Track Now', 'de' => 'Jetzt verfolgen'],
+    'tracking_not_found' => ['en' => 'Order not found. Please verify your tracking number.', 'de' => 'Bestellung nicht gefunden. Bitte überprüfen Sie Ihre Tracking-Nummer.'],
+    'tracking_history' => ['en' => 'Shipment History', 'de' => 'Sendungsverlauf'],
     'price_range' => ['en' => 'Price Range', 'de' => 'Preisbereich'],
     'price_range_text' => [
         'en' => 'Our industrial equipment ranges from <strong>$50,000</strong> to <strong>$400,000</strong> depending on specifications and customization.',
@@ -100,11 +105,14 @@ $translations = [
     'no_products_found' => ['en' => 'No products found', 'de' => 'Keine Produkte gefunden'],
     'try_adjusting' => ['en' => 'Try adjusting your search or browse a different category.', 'de' => 'Versuchen Sie, Ihre Suche anzupassen oder eine andere Kategorie zu durchsuchen.'],
     'view_all' => ['en' => 'View All Products', 'de' => 'Alle Produkte anzeigen'],
+    'industrial_solutions' => ['en' => 'Industrial Solutions', 'de' => 'Industrielösungen'],
     
     // Product Detail
     'home' => ['en' => 'Home', 'de' => 'Startseite'],
-    'key_features' => ['en' => 'Key Features', 'de' => 'Hauptmerkmale'],
     'technical_specs' => ['en' => 'Technical Specifications', 'de' => 'Technische Daten'],
+    'key_features' => ['en' => 'Key Features', 'de' => 'Hauptmerkmale'],
+    'order_summary' => ['en' => 'Order Summary', 'de' => 'Bestellübersicht'],
+    'continue_shopping' => ['en' => 'Continue Shopping', 'de' => 'Weiter einkaufen'],
     'add_to_cart' => ['en' => 'Add to Order', 'de' => 'Zur Bestellung hinzufügen'],
     'product_added' => ['en' => 'Equipment added to order!', 'de' => 'Ausrüstung zur Bestellung hinzugefügt!'],
     'view_cart' => ['en' => 'View Order', 'de' => 'Bestellung anzeigen'],

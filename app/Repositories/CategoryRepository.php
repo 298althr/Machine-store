@@ -15,7 +15,9 @@ class CategoryRepository
 
     public function all(): array
     {
-        $categories = $this->db->prepare("SELECT * FROM categories")->fetchAll();
+        $stmt = $this->db->prepare("SELECT * FROM categories");
+        $stmt->execute();
+        $categories = $stmt->fetchAll();
         usort($categories, function($a, $b) {
             return (int)($a['sort_order'] ?? 0) <=> (int)($b['sort_order'] ?? 0);
         });

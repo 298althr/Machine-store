@@ -15,7 +15,9 @@ class SettingRepository
 
     public function all(): array
     {
-        $rows = $this->db->prepare("SELECT * FROM settings")->fetchAll();
+        $stmt = $this->db->prepare("SELECT * FROM settings");
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
         $settings = [];
         foreach ($rows as $row) {
             $settings[$row['setting_key']] = $row['setting_value'];

@@ -65,29 +65,24 @@ $packageTypeDisplay = $packageTypes[$shipment['package_type'] ?? 'crate'] ?? '�
 <div class="container-modern section-padding" style="padding-top: 40px;">
   <!-- Search Form -->
   <?php if (!$shipment): ?>
-  <div style="max-width: 800px; margin: 0 auto;">
-    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; padding: 80px;">
-      <div style="text-align: center; margin-bottom: 64px;">
-        <div style="font-size: 0.85rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 24px;">Logistics Matrix</div>
-        <h1 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; color: var(--primary); font-weight: 900; line-height: 1; margin: 0 0 16px 0; letter-spacing: -2px;">Track Your Asset</h1>
-        <p style="color: var(--text-muted); font-size: 1.25rem; font-weight: 500; line-height: 1.6;">Initialize real-time monitoring of your interdisciplinary procurement logistics.</p>
+  <div style="max-width: 600px; margin: 0 auto;">
+    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); padding: 40px;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="margin: 0 0 16px 0;"><?= __('track_order') ?></h1>
+        <p style="color: var(--text-muted);"><?= __('track_order_text') ?></p>
       </div>
 
       <form action="/track" method="GET">
-        <div class="form-group-modern" style="margin-bottom: 40px;">
-          <label style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); display: block; margin-bottom: 16px;">Tracking Registry Number</label>
-          <input type="text" name="tracking" required placeholder="STR20241205ABCD..." value="<?= htmlspecialchars($trackingNumber ?? '') ?>" style="width: 100%; height: 72px; padding: 0 32px; border: 3px solid #f8fafc; border-radius: 8px; font-weight: 600; font-size: 1.25rem; outline: none; transition: all 0.4s; background: #f8fafc; font-family: 'Outfit', sans-serif;" onfocus="this.style.borderColor='var(--accent)'; this.style.background='white';" onblur="this.style.borderColor='#f8fafc'; this.style.background='#f8fafc';">
+        <div class="form-group-modern" style="margin-bottom: 24px;">
+          <label style="display: block; margin-bottom: 12px; font-weight: 700;"><?= __('tracking_number') ?></label>
+          <input type="text" name="tracking" required placeholder="STR..." value="<?= htmlspecialchars($trackingNumber ?? '') ?>" style="width: 100%; height: 60px; padding: 0 20px; border: 2px solid #f1f5f9; border-radius: 8px; font-weight: 600; outline: none; background: #f8fafc;">
         </div>
-        <button type="submit" class="btn-modern btn-accent" style="width: 100%; height: 84px; font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; border-radius: 8px;">Initialize Matrix Search</button>
+        <button type="submit" class="btn-modern btn-accent" style="width: 100%; height: 60px;"><?= __('track') ?></button>
       </form>
       
       <?php if ($trackingNumber && !$shipment): ?>
-      <div style="margin-top: 40px; padding: 32px; background: rgba(220, 38, 38, 0.05); border: 2px solid var(--accent); border-radius: 12px; display: flex; gap: 24px; align-items: center;">
-        <div style="font-size: 2.5rem;">⚠️</div>
-        <div>
-          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: var(--primary); margin: 0 0 4px 0; font-weight: 900;">Shipment Not Found</h4>
-          <p style="color: var(--text-muted); font-size: 1.05rem; margin: 0; font-weight: 500;">Registry #<?= htmlspecialchars($trackingNumber) ?> could not be located in our logistics intelligence matrix. Please verify the credentials.</p>
-        </div>
+      <div style="margin-top: 24px; padding: 20px; background: #fef2f2; border: 1px solid #fee2e2; border-radius: 8px; color: #991b1b;">
+        <?= __('tracking_not_found') ?>
       </div>
       <?php endif; ?>
     </div>
@@ -96,181 +91,93 @@ $packageTypeDisplay = $packageTypes[$shipment['package_type'] ?? 'crate'] ?? '�
   
   <?php if ($shipment): ?>
   <!-- Tracking Header -->
-  <div style="max-width: 1200px; margin: 0 auto 120px;">
-    <header style="margin-bottom: 80px; border-bottom: 2px solid #f1f5f9; padding-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <header style="margin-bottom: 60px; border-bottom: 2px solid #f1f5f9; padding-bottom: 40px;" class="grid-2">
       <div>
-        <div style="font-size: 0.85rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;">Logistics Matrix Intelligence</div>
-        <div style="display: flex; align-items: center; gap: 24px;">
-          <h1 style="font-size: 4rem; font-family: 'Outfit', sans-serif; color: var(--primary); margin: 0; font-weight: 900; letter-spacing: -2px; line-height: 1;">ID: <?= htmlspecialchars($shipment['tracking_number']) ?></h1>
-          <button type="button" onclick="copyToClipboard('<?= htmlspecialchars($shipment['tracking_number']) ?>', this)" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--primary)'">📋 Copy</button>
-        </div>
-        <p style="color: var(--text-muted); font-size: 1.25rem; margin-top: 24px; font-weight: 500;">
-          Deployment Carrier: <span style="font-weight: 900; color: var(--primary);"><?= htmlspecialchars($shipment['carrier'] ?? 'Streicher Logistics') ?></span>
-        </p>
+        <div style="font-size: 0.85rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Order Shipment</div>
+        <h1 style="margin: 0;"><?= htmlspecialchars($shipment['tracking_number']) ?></h1>
+        <p style="color: var(--text-muted); margin-top: 12px;">Carrier: <strong><?= htmlspecialchars($shipment['carrier'] ?? 'Streicher Logistics') ?></strong></p>
       </div>
       <div style="text-align: right;">
-        <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Deployment Status</div>
-        <span style="display: inline-block; padding: 16px 40px; background: var(--accent); color: white; border-radius: 8px; font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);">
+        <span style="display: inline-block; padding: 12px 32px; background: var(--accent); color: white; border-radius: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
           <?= $statusBannerText ?>
         </span>
       </div>
     </header>
     
-    <!-- Progress Intelligence Matrix -->
-    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 60px;">
-      <div style="padding: 80px 60px; border-bottom: 2px solid #f1f5f9;">
-        <div class="tracking-progress-modern" style="display: flex; justify-content: space-between; position: relative; max-width: 1000px; margin: 0 auto;">
-          <!-- Progress Line -->
-          <div style="position: absolute; top: 32px; left: 0; width: 100%; height: 6px; background: #f1f5f9; z-index: 0; border-radius: 3px;"></div>
-          <?php 
-          $totalSteps = 5;
-          $fillWidth = (($progressStep - 1) / ($totalSteps - 1)) * 100;
-          ?>
-          <div style="position: absolute; top: 32px; left: 0; width: <?= $fillWidth ?>%; height: 6px; background: var(--accent); z-index: 1; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px;"></div>
-          
-          <?php 
-          $steps = [['📦', 'Order Placed'], ['🏭', 'Shipped'], ['🚚', 'In Transit'], ['📍', 'Out for Delivery'], ['✅', 'Delivered']];
-          foreach ($steps as $i => $step): $idx = $i + 1; 
-          ?>
-          <div style="position: relative; z-index: 2; text-align: center; width: 140px;">
-            <div style="width: 70px; height: 70px; background: <?= $progressStep >= $idx ? 'var(--accent)' : 'white' ?>; color: <?= $progressStep >= $idx ? 'white' : 'var(--text-muted)' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 24px; border: 4px solid <?= $progressStep >= $idx ? 'var(--accent)' : '#f1f5f9' ?>; box-shadow: <?= $progressStep >= $idx ? '0 10px 20px rgba(220, 38, 38, 0.2)' : 'var(--shadow-sm)' ?>; transition: all 0.4s; transform: <?= $progressStep == $idx ? 'scale(1.15)' : 'scale(1)' ?>;">
-              <?= $step[0] ?>
-            </div>
-            <div style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: <?= $progressStep >= $idx ? 'var(--primary)' : 'var(--text-muted)' ?>;">
-              <?= $step[1] ?>
-            </div>
+    <!-- Progress Stepper -->
+    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); padding: 40px; margin-bottom: 40px;">
+      <div class="tracking-progress-modern" style="display: flex; justify-content: space-between; position: relative; flex-wrap: wrap; gap: 20px;">
+        <?php 
+        $steps = [['📦', 'Ordered'], ['🏭', 'Shipped'], ['🚚', 'Transit'], ['📍', 'Delivery'], ['✅', 'Delivered']];
+        foreach ($steps as $i => $step): $idx = $i + 1; 
+        ?>
+        <div style="text-align: center; flex: 1; min-width: 80px;">
+          <div style="width: 50px; height: 50px; background: <?= $progressStep >= $idx ? 'var(--accent)' : '#f1f5f9' ?>; color: <?= $progressStep >= $idx ? 'white' : 'var(--text-muted)' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 12px;">
+            <?= $step[0] ?>
           </div>
-          <?php endforeach; ?>
+          <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: <?= $progressStep >= $idx ? 'var(--primary)' : 'var(--text-muted)' ?>;">
+            <?= $step[1] ?>
+          </div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+    
+    <!-- Shipment Details -->
+    <div class="grid-3" style="margin-bottom: 40px;">
+      <div style="padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
+        <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Origin</div>
+        <div style="font-weight: 800; color: var(--primary); font-size: 1.25rem;">
+          <?= htmlspecialchars($shipment['origin_city'] ?? 'Regensburg') ?>, <?= htmlspecialchars($shipment['origin_country'] ?? 'DE') ?>
         </div>
       </div>
-      
-      <!-- Shipment Intelligence Details -->
-      <div style="padding: 60px;">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Origin Registry</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.5rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">
-              <?= htmlspecialchars($shipment['origin_city'] ?? 'Regensburg') ?>, <span style="color: var(--accent);"><?= htmlspecialchars($shipment['origin_country'] ?? 'DE') ?></span>
-            </div>
-          </div>
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Logistics Destination</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.5rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">
-              <?php 
-                if (!empty($shipment['destination'])) {
-                  echo htmlspecialchars($shipment['destination']);
-                } else {
-                  $destCity = $shipment['destination_city'] ?? '';
-                  $destCountry = $shipment['destination_country'] ?? '';
-                  echo htmlspecialchars($destCity) . ($destCity && $destCountry ? ', ' : '') . '<span style="color: var(--accent);">' . htmlspecialchars($destCountry) . '</span>';
-                }
-              ?>
-            </div>
-          </div>
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Estimated Arrival Matrix</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.5rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">
-              <?php if (!empty($shipment['estimated_delivery'])): ?>
-                <?= date('F j, Y', strtotime($shipment['estimated_delivery'])) ?>
-              <?php else: ?>
-                Calculating Matrix...
-              <?php endif; ?>
-            </div>
-          </div>
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Deployment Method</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; font-family: 'Outfit', sans-serif;"><?= $shippingMethodDisplay ?></div>
-          </div>
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Asset Container Specification</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; font-family: 'Outfit', sans-serif;"><?= $packageTypeDisplay ?></div>
-          </div>
-          <div style="padding: 32px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="font-size: 0.75rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Authorized Carrier</div>
-            <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; font-family: 'Outfit', sans-serif;">🚛 Streicher Logistics</div>
-          </div>
+      <div style="padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
+        <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Destination</div>
+        <div style="font-weight: 800; color: var(--primary); font-size: 1.25rem;">
+          <?= htmlspecialchars($shipment['destination'] ?? 'Order Address') ?>
+        </div>
+      </div>
+      <div style="padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;">
+        <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Estimated Delivery</div>
+        <div style="font-weight: 800; color: var(--primary); font-size: 1.25rem;">
+          <?= !empty($shipment['estimated_delivery']) ? date('M j, Y', strtotime($shipment['estimated_delivery'])) : 'Pending' ?>
         </div>
       </div>
     </div>
     
-    <!-- Customs Hold Protocol -->
-    <?php if ($isCustomsHold): ?>
-    <div style="background: white; border: 3px solid var(--accent); border-radius: var(--radius-lg); padding: 60px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
-      <div style="position: absolute; top: -50px; right: -50px; font-size: 20rem; opacity: 0.02; font-weight: 900; font-family: 'Outfit', sans-serif;">!</div>
-      <div style="display: flex; gap: 40px; align-items: center; position: relative; z-index: 1;">
-        <div style="font-size: 4rem; animation: pulse-red 2s infinite;">⚠️</div>
-        <div>
-          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; color: var(--primary); margin: 0 0 8px 0; font-weight: 900; letter-spacing: -0.5px;">Customs Clearance Required</h4>
-          <p style="color: var(--text-muted); font-size: 1.25rem; margin: 0; font-weight: 500;">Institutional documentation matrix must be verified to proceed with interdisciplinary logistics.</p>
-        </div>
-      </div>
-      <button type="button" class="btn-modern btn-accent" style="padding: 24px 48px; font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-radius: 8px; position: relative; z-index: 1;" onclick="openCommunicationModal()">View Protocol Registry</button>
-    </div>
-    <?php endif; ?>
-    
-    <!-- Tracking Events Matrix -->
+    <!-- Event History -->
     <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); overflow: hidden;">
-      <div style="padding: 40px 60px; background: #f8fafc; border-bottom: 2px solid #f1f5f9; display: flex; align-items: center; gap: 24px;">
-        <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">🕒</div>
-        <div>
-          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin: 0; font-weight: 900; letter-spacing: -0.5px;">Deployment History Matrix</h3>
-          <p style="font-size: 0.8rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin: 4px 0 0 0;">Real-Time Logistics Event Registry</p>
-        </div>
+      <div style="padding: 24px 40px; background: #f8fafc; border-bottom: 1px solid #f1f5f9;">
+        <h3 style="margin: 0;"><?= __('tracking_history') ?></h3>
       </div>
-      
-      <div style="padding: 60px;">
-        <?php if (empty($events)): ?>
-        <div style="text-align: center; padding: 100px; color: var(--text-muted);">
-          <div style="font-size: 5rem; margin-bottom: 32px; opacity: 0.2;">📭</div>
-          <p style="font-size: 1.5rem; font-weight: 900; font-family: 'Outfit', sans-serif;">Registry Empty</p>
-          <p style="font-size: 1.1rem; font-weight: 500;">No tracking events have been initialized for this asset.</p>
-        </div>
-        <?php else: ?>
-        <div style="position: relative;">
-          <!-- Vertical Line -->
-          <div style="position: absolute; left: 180px; top: 0; bottom: 0; width: 4px; background: #f1f5f9; z-index: 0; border-radius: 2px;"></div>
-          
-          <?php foreach ($events as $index => $event): 
-            $timestamp = strtotime($event['timestamp'] ?? $event['ts'] ?? 'now');
-            $isLatest = $index === 0;
-          ?>
-          <div style="display: flex; gap: 60px; margin-bottom: 60px; position: relative; z-index: 1;">
-            <div style="width: 120px; text-align: right;">
-              <div style="font-size: 1rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif;"><?= date('M j, Y', $timestamp) ?></div>
-              <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;"><?= date('g:i A', $timestamp) ?></div>
-            </div>
-            
-            <div style="width: 24px; height: 24px; background: <?= $isLatest ? 'var(--accent)' : 'white' ?>; border: 4px solid <?= $isLatest ? 'white' : '#f1f5f9' ?>; border-radius: 50%; box-shadow: <?= $isLatest ? '0 0 20px rgba(220, 38, 38, 0.4)' : 'none' ?>; margin-top: 4px;"></div>
-            
-            <div style="flex: 1; background: <?= $isLatest ? '#f8fafc' : 'white' ?>; padding: 32px; border-radius: 12px; border: 2px solid <?= $isLatest ? 'var(--accent)' : '#f1f5f9' ?>; transition: all 0.3s;" class="hover-lift">
-              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 8px; letter-spacing: -0.5px;">
-                <?= htmlspecialchars($event['description'] ?? $event['status_label'] ?? $event['status'] ?? 'Update') ?>
-              </div>
-              <div style="font-size: 1rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 12px;">
-                <span style="color: var(--accent);">📍</span> <?= htmlspecialchars($event['location'] ?? $event['location_city'] ?? '') ?>
-                <?php if (!empty($event['facility']) || !empty($event['location_facility'])): ?>
-                  <span style="opacity: 0.3;">|</span> <?= htmlspecialchars($event['facility'] ?? $event['location_facility']) ?>
-                <?php endif; ?>
-              </div>
-            </div>
+      <div style="padding: 40px;">
+        <?php foreach ($events as $index => $event): 
+          $timestamp = strtotime($event['timestamp'] ?? 'now');
+          $isLatest = $index === 0;
+        ?>
+        <div style="display: flex; gap: 32px; margin-bottom: 32px;">
+          <div style="width: 100px; text-align: right; flex-shrink: 0;">
+            <div style="font-weight: 800; color: var(--primary); font-size: 0.9rem;"><?= date('M j', $timestamp) ?></div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);"><?= date('H:i', $timestamp) ?></div>
           </div>
-          <?php endforeach; ?>
+          <div style="width: 12px; height: 12px; background: <?= $isLatest ? 'var(--accent)' : '#f1f5f9' ?>; border-radius: 50%; margin-top: 6px;"></div>
+          <div>
+            <div style="font-weight: 800; color: var(--primary); margin-bottom: 4px;"><?= htmlspecialchars($event['description'] ?? 'Status Update') ?></div>
+            <div style="font-size: 0.9rem; color: var(--text-muted);">📍 <?= htmlspecialchars($event['location'] ?? '') ?></div>
+          </div>
         </div>
-        <?php endif; ?>
+        <?php endforeach; ?>
       </div>
     </div>
-    
-    <!-- Support Matrix -->
-    <div style="margin-top: 60px; background: var(--primary); border-radius: var(--radius-lg); padding: 80px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 40px 80px -20px rgba(15, 23, 42, 0.4); position: relative; overflow: hidden;">
-      <div style="position: absolute; top: -50px; left: -50px; font-size: 20rem; opacity: 0.03; font-weight: 900; font-family: 'Outfit', sans-serif;">HLP</div>
-      <div style="position: relative; z-index: 1;">
-        <h4 style="font-family: 'Outfit', sans-serif; font-size: 2.25rem; margin: 0 0 16px 0; font-weight: 900; color: white; letter-spacing: -1px;">Technical Support Required?</h4>
-        <p style="margin: 0; opacity: 0.7; font-size: 1.35rem; font-weight: 500; letter-spacing: -0.2px;">Our interdisciplinary logistics engineering team is available 24/7.</p>
+
+    <!-- Help Section -->
+    <div style="margin-top: 40px; background: var(--primary); border-radius: var(--radius-lg); padding: 40px; color: white; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+      <div>
+        <h3 style="color: white; margin-bottom: 8px;">Need Assistance?</h3>
+        <p style="opacity: 0.8;">Contact our support team for help with your shipment.</p>
       </div>
-      <div style="display: flex; gap: 32px; position: relative; z-index: 1;">
-        <button type="button" class="btn-modern" style="padding: 24px 48px; background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.2); font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-radius: 8px;" onclick="openCommunicationModal()">Access Message Registry</button>
-        <a href="/contact" class="btn-modern btn-accent" style="padding: 24px 48px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-radius: 8px;">Global Support Matrix</a>
-      </div>
+      <a href="/contact" class="btn-modern btn-accent">Contact Support</a>
     </div>
   </div>
   <?php endif; ?>

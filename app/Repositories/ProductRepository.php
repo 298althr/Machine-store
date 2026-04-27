@@ -47,7 +47,9 @@ class ProductRepository
         if ($activeOnly) {
             $sql .= " WHERE is_active = 1";
         }
-        $products = $this->db->prepare($sql)->fetchAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $products = $stmt->fetchAll();
         return array_map([$this, 'hydrate'], $products);
     }
 
@@ -82,7 +84,7 @@ class ProductRepository
         return $stmt->fetchAll();
     }
 
-    public function search(string $query = null, string $categorySlug = null): array
+    public function search(?string $query = null, ?string $categorySlug = null): array
     {
         $products = $this->all();
         

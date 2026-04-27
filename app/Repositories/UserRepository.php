@@ -28,7 +28,9 @@ class UserRepository
 
     public function countFailedAttempts(string $ip, int $minutes = 15): int
     {
-        $attempts = $this->db->prepare("SELECT * FROM login_attempts WHERE ip_address = ? AND success = 0")->fetchAll();
+        $stmt = $this->db->prepare("SELECT * FROM login_attempts WHERE ip_address = ? AND success = 0");
+        $stmt->execute([$ip]);
+        $attempts = $stmt->fetchAll();
         $cutoff = time() - ($minutes * 60);
         $count = 0;
         foreach ($attempts as $attempt) {
