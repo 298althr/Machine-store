@@ -33,9 +33,13 @@ RUN mkdir -p data/db \
     && chmod -R 777 data \
     && chmod -R 777 web/uploads
 
+# Change WORKDIR to web for runtime
+WORKDIR /var/www/html/web
+
 # Use PORT environment variable for Railway
 ENV PORT=8080
 EXPOSE 8080
 
-# Start PHP built-in server with correct routing
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "web", "index.php"]
+# Start PHP built-in server from the web folder
+# This ensures that index.php is in the root of the server
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} index.php"]
