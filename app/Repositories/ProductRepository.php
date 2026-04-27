@@ -43,14 +43,17 @@ class ProductRepository
 
     public function all(bool $activeOnly = true): array
     {
-        $sql = "SELECT * FROM products";
-        if ($activeOnly) {
-            $sql .= " WHERE is_active = 1";
-        }
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->db->prepare("SELECT * FROM products");
         $stmt->execute();
         $products = $stmt->fetchAll();
-        return array_map([$this, 'hydrate'], $products);
+        
+        if ($activeOnly) {
+            $products = array_filter($products, function($p) {
+                return (string)($p['is_active'] ?? '0') === '1';
+            });
+        }
+        
+        return array_map([$this, 'hydrate'], array_values($products));
     }
 
     public function featured(int $limit = 6): array
