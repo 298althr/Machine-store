@@ -14,15 +14,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files
-COPY composer.json ./
-COPY composer.lock ./
-
-# Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader || true
-
-# Copy rest of application
+# Copy the entire application first
+# This ensures that all files (composer.json, composer.lock, etc.) are in the context
 COPY . .
+
+# Install dependencies using the copied files
+RUN composer install --no-interaction --no-dev --optimize-autoloader || true
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/html/data/db \
