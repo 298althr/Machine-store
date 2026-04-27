@@ -23,14 +23,6 @@ if (php_sapi_name() === 'cli-server') {
 
 try {
     require_once __DIR__ . '/bootstrap.php';
-    if (isset($_GET['debug_db'])) {
-        $filePath = dirname(__DIR__) . '/data/db/products.csv';
-        $exists = file_exists($filePath) ? 'YES' : 'NO';
-        $content = $exists === 'YES' ? substr(file_get_contents($filePath), 0, 500) : 'N/A';
-        echo "<!-- DEBUG DB: File: $filePath, Exists: $exists, Sample: $content -->";
-        $test = $productRepo->all(false);
-        echo "<!-- DEBUG DB: Found " . count($test) . " products -->";
-    }
 } catch (\Throwable $e) {
     file_put_contents('php://stderr', "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\n");
     http_response_code(500);

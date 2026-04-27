@@ -47,16 +47,13 @@ class ProductRepository
         $stmt->execute();
         $products = $stmt->fetchAll();
         
-        /*
         if ($activeOnly) {
             $products = array_filter($products, function($p) {
                 return (string)($p['is_active'] ?? '0') === '1';
             });
         }
-        */
         
         $hydrated = array_map([$this, 'hydrate'], array_values($products));
-        file_put_contents('php://stderr', "DEBUG: ProductRepository::all - Fetched " . count($products) . " active products\n");
         return $hydrated;
     }
 

@@ -41,10 +41,6 @@ if ($dbType === 'csv') {
     $basePath = dirname(__DIR__) . '/data/db';
     $csvDb = new CsvDb($basePath);
     $pdo = new CsvPdo($csvDb);
-    
-    // Diagnostic check for production
-    $testProducts = $csvDb->all('products');
-    file_put_contents('php://stderr', "DIAGNOSTIC: CsvDb found " . count($testProducts) . " products in {$basePath}/products.csv\n");
 } else {
     $dbHost = $_ENV['DB_HOST'] ?? '127.0.0.1';
     $dbPort = $_ENV['DB_PORT'] ?? '3306';

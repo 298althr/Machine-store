@@ -58,5 +58,4 @@ random.png
 # DATABASE - CRITICAL: Allow data/db CSV files
 !/data/db/*.csv
 # Ignore specific root csv files if any
-products.csv
 scrape_log.csv
