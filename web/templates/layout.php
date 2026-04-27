@@ -95,23 +95,29 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
       </a>
     </div>
 
-    <div class="header-main container-modern desktop-only">
-      <a href="/" class="logo">
-        <img src="/assets/logo.png" alt="Streicher" class="logo-img">
-      </a>
-      <nav class="header-nav">
-        <a href="/profile"><?= __('profile') ?></a>
-        <a href="/catalog"><?= __('products') ?></a>
-        <a href="/reference-projects"><?= __('references') ?></a>
-        <a href="/hse-q">HSE-Q</a>
-        <a href="/software-activation" class="software-link">🔑 Software Activation</a>
-        <a href="/cart" class="cart-link" style="background: var(--primary); color: white; border-radius: 8px; padding: 8px 20px;">
-          🛒 <?= __('cart') ?>
-          <?php if ($cartCount > 0): ?>
-            <span style="background: var(--accent); padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-size: 0.8rem;"><?= $cartCount ?></span>
-          <?php endif; ?>
-        </a>
-      </nav>
+    <div class="header-main desktop-only">
+      <div class="container-modern">
+        <div class="header-main-inner">
+          <a href="/" class="logo">
+            <img src="/assets/logo.png" alt="Streicher" class="logo-img">
+          </a>
+          <nav class="header-nav">
+            <a href="/profile"><?= __('profile') ?></a>
+            <a href="/catalog"><?= __('products') ?></a>
+            <a href="/reference-projects"><?= __('references') ?></a>
+            <a href="/hse-q">HSE-Q</a>
+            <a href="/software-activation" class="software-link">🔑 Software Activation</a>
+          </nav>
+          <div class="header-actions">
+            <a href="/cart" class="cart-link">
+              🛒 <?= __('cart') ?>
+              <?php if ($cartCount > 0): ?>
+                <span class="cart-count-badge"><?= $cartCount ?></span>
+              <?php endif; ?>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
