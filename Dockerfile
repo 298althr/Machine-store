@@ -21,11 +21,11 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Copy the entire application
 COPY . .
 
-# DEBUG STEP: List all files in the build context
-RUN echo "DEBUG: Listing files in /var/www/html" && ls -la .
+# FORCE NO-CACHE for this step to see the files in Railway logs
+RUN date && echo "FULL FILE LISTING OF BUILD CONTEXT:" && find . -maxdepth 2 -not -path '*/.*'
 
 # Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+RUN composer install --no-interaction --no-dev --optimize-autoloader || (echo "COMPOSER FAILED - CHECKING FILES AGAIN" && ls -la && exit 1)
 
 # Ensure necessary directories and permissions
 RUN mkdir -p data/db \
