@@ -15,10 +15,16 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# Environment variables for Composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Copy the entire application
 COPY . .
 
-# Install dependencies (Remove || true to see actual errors in logs)
+# DEBUG STEP: List all files in the build context
+RUN echo "DEBUG: Listing files in /var/www/html" && ls -la .
+
+# Install dependencies
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
 # Ensure necessary directories and permissions
@@ -35,5 +41,4 @@ ENV PORT=8080
 EXPOSE 8080
 
 # Start PHP built-in server
-# We run from the root, but use web/ as document root
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "web", "web/index.php"]
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "web", "index.php"]
