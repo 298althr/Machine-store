@@ -137,7 +137,7 @@ if ($path === '/admin/products' && $method === 'GET') {
 if ($path === '/admin/products/new' && $method === 'POST') {
     require_admin();
     
-    $productRepo->create([
+    $productId = $productRepo->create([
         'sku' => $_POST['sku'],
         'category_id' => $_POST['category_id'] ?: null,
         'name' => $_POST['name'],
@@ -147,6 +147,11 @@ if ($path === '/admin/products/new' && $method === 'POST') {
         'is_featured' => isset($_POST['is_featured']) ? 1 : 0,
         'is_active' => isset($_POST['is_active']) ? 1 : 0,
     ]);
+
+    // Event-driven: Correlate images immediately for the new product
+    $imagesDir = dirname(__DIR__) . '/images';
+    $correlator = new \Streicher\App\Services\AutoCorrelator($pdo, $imagesDir);
+    $correlator->run();
     
     header('Location: /admin/products');
     exit;
