@@ -46,6 +46,14 @@ if (($path === '/catalog' || $path === '/catalog/') && $method === 'GET') {
     $products = $productRepo->search($search, $categorySlug, $specFilters);
     $filterOptions = $specRepo->getFilterOptions();
     
+    // Add stock status
+    foreach ($products as &$p) {
+        $inv = $inventoryRepo->getByProductId((int)$p['id']);
+        $p['stock_level'] = $inv ? (int)$inv['stock_level'] : 0;
+        $p['in_stock'] = $p['stock_level'] > 0;
+    }
+    unset($p);
+    
     render_template('catalog.php', [
         'title' => ($currentCategory ? $currentCategory['name'] . ' - ' : '') . 'Product Catalog - Streicher',
         'products' => $products,
@@ -132,6 +140,9 @@ if ($path === '/checkout' && $method === 'POST') {
         $hasSoftware = false;
         $hasHardware = false;
         
+        $displayCurrency = get_display_currency();
+        $exchangeRate = get_exchange_rate();
+        
         foreach ($cart as $item) {
             $total += $item['price'] * $item['qty'];
             $product = $productRepo->findBySku($item['sku']);
@@ -141,6 +152,10 @@ if ($path === '/checkout' && $method === 'POST') {
                 $hasSoftware = true;
             } else {
                 $hasHardware = true;
+                // Decrement stock for hardware
+                if ($product) {
+                    $inventoryRepo->decrementStock((int)$product['id'], (int)$item['qty']);
+                }
             }
 
             $orderItems[] = [
@@ -148,8 +163,8 @@ if ($path === '/checkout' && $method === 'POST') {
                 'sku' => $item['sku'],
                 'name' => $product['name'] ?? $item['name'],
                 'quantity' => $item['qty'],
-                'unit_price' => $item['price'],
-                'total_price' => $item['price'] * $item['qty'],
+                'unit_price' => convert_price((float)$item['price'], $displayCurrency),
+                'total_price' => convert_price((float)$item['price'] * $item['qty'], $displayCurrency),
                 'serial_number' => 'SN-' . strtoupper(substr($item['sku'], 0, 6)) . '-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4))
             ];
         }
@@ -162,10 +177,13 @@ if ($path === '/checkout' && $method === 'POST') {
         }
         
         $deliveryMode = $_POST['delivery_mode'] ?? 'regular';
-        $deliveryCost = ($deliveryMode === 'emergency') ? 15000 : 5000;
+        $deliveryCostBase = ($deliveryMode === 'emergency') ? 15000 : 5000;
+        $deliveryCost = convert_price((float)$deliveryCostBase, $displayCurrency);
         
         $orderNumber = generate_order_number();
         $invoiceNumber = 'INV-' . date('Y') . '-' . str_pad(substr($orderNumber, -6), 6, '0', STR_PAD_LEFT);
+        
+        $totalConverted = convert_price((float)$total, $displayCurrency);
         
         $orderId = $orderRepo->create([
             'user_id' => $_SESSION['user_id'] ?? null,
@@ -173,11 +191,11 @@ if ($path === '/checkout' && $method === 'POST') {
             'invoice_number' => $invoiceNumber,
             'status' => 'awaiting_payment',
             'order_type' => $orderType,
-            'subtotal' => $total,
+            'subtotal' => $totalConverted,
             'delivery_mode' => $deliveryMode,
             'delivery_cost' => $deliveryCost,
-            'total_amount' => ($total + $deliveryCost) * 1.19,
-            'currency' => $_SESSION['display_currency'] ?? 'EUR',
+            'total_amount' => ($totalConverted + $deliveryCost) * 1.19,
+            'currency' => $displayCurrency,
             'billing_name' => $_POST['name'] ?? '',
             'billing_company' => $_POST['company'] ?? '',
             'billing_email' => $_POST['email'] ?? '',

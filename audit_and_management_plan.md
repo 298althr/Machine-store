@@ -43,7 +43,8 @@ The business is currently operating with several "blind spots":
 
 ### Phase 2: UX Refactoring (IN PROGRESS)
 *   [x] **Specification Sidebars**: Added technical attribute filtering to the `/catalog` page.
-*   [ ] **Dynamic Pricing**: Integrate the `exchangeRate` logic more deeply into the checkout flow.
+*   [x] **Dynamic Pricing**: Integrated real-time `EUR/USD` exchange rates across Cart and Checkout, including logistical costs and tax calculations.
+*   [ ] **Checkout Friction**: Streamlining the Quote Request process and reducing "robotic" terminology in forms.
 
 ### Phase 3: Automation (UPCOMING)
 *   [ ] **Auto-Correlator**: Automate image matching for new SKUs.

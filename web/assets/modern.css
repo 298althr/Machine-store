@@ -514,6 +514,48 @@ body {
   border-color: var(--accent);
 }
 
+/* ========== PRODUCT CARDS ========== */
+.product-image-container {
+  position: relative;
+}
+
+.stock-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+.stock-badge.in-stock {
+  background: #10b981;
+  color: white;
+}
+
+.stock-badge.out-of-stock {
+  background: #f59e0b;
+  color: white;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-quote {
+  background: #0f172a;
+  color: white;
+}
+
+.btn-quote:hover {
+  background: var(--accent);
+}
+
 /* ========== FOOTER MODERN ========== */
 .catalog-page {
   padding-top: 40px;

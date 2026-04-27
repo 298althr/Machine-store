@@ -77,6 +77,7 @@ $supportRepo = new \Streicher\App\Repositories\SupportRepository($pdo);
 $softwareRepo = new \Streicher\App\Repositories\SoftwareRepository($pdo);
 $specRepo = new \Streicher\App\Repositories\SpecificationRepository($pdo);
 $supplierRepo = new \Streicher\App\Repositories\SupplierRepository($pdo);
+$inventoryRepo = new \Streicher\App\Repositories\InventoryRepository($pdo);
 $emailService = new \Streicher\App\Services\EmailService($pdo);
 $pdfService = new \Streicher\App\Services\PdfService();
 $telegramService = new \Streicher\App\Services\TelegramService($_ENV['TELEGRAM_BOT_TOKEN'] ?? '', $pdo);

@@ -119,6 +119,11 @@ $exchangeRate = get_exchange_rate();
         <div class="product-card-modern">
           <div class="product-image-container">
             <img src="<?= get_product_image($product) ?>" alt="<?= htmlspecialchars($product['name']) ?>" loading="lazy">
+            <?php if (!$product['in_stock']): ?>
+            <div class="stock-badge out-of-stock">Request Quote</div>
+            <?php else: ?>
+            <div class="stock-badge in-stock">Ready to Ship</div>
+            <?php endif; ?>
           </div>
           <div class="product-info-modern">
             <div class="product-cat-modern"><?= htmlspecialchars($product['category_name'] ?? __('equipment')) ?></div>
@@ -134,7 +139,11 @@ $exchangeRate = get_exchange_rate();
                 ?>
                 <div class="product-price-modern"><?= format_price($displayPrice, $displayCurrency) ?></div>
               </div>
-              <a href="/product?sku=<?= htmlspecialchars($product['sku']) ?>" class="btn-modern btn-view"><?= __('view') ?></a>
+              <div class="card-actions">
+                <a href="/product?sku=<?= htmlspecialchars($product['sku']) ?>" class="btn-modern <?= $product['in_stock'] ? 'btn-view' : 'btn-quote' ?>">
+                  <?= $product['in_stock'] ? __('view') : 'Get Quote' ?>
+                </a>
+              </div>
             </div>
           </div>
         </div>
