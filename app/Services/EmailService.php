@@ -19,9 +19,9 @@ class EmailService
     private ?string $password;
     private string $fromAddress;
     private string $fromName;
-    private PDO $db;
+    private $db;
 
-    public function __construct(PDO $db)
+    public function __construct($db)
     {
         $this->db = $db;
         $this->host = $_ENV['MAIL_HOST'] ?? 'localhost';
