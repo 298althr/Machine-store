@@ -80,7 +80,9 @@ if (isset($_SESSION['cart_id']) && isset($pdo)) {
 
     <div class="mobile-header">
       <button class="mobile-menu-toggle" aria-label="Menu">
-        <span class="hamburger-icon"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
       <a href="/" class="mobile-logo" style="display: block; flex: 1; text-align: center;">
         <img src="/assets/logo.png" alt="Streicher" style="height: 28px; width: auto; filter: brightness(0) invert(1);">
