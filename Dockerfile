@@ -14,28 +14,27 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy the entire application first
-# This ensures that all files (composer.json, composer.lock, etc.) are in the context
+# Copy the entire application
 COPY . .
 
-# Install dependencies using the copied files
+# Install dependencies
 RUN composer install --no-interaction --no-dev --optimize-autoloader || true
 
-# Create necessary directories and set permissions
-RUN mkdir -p /var/www/html/data/db \
-    && mkdir -p /var/www/html/web/uploads/payments \
-    && mkdir -p /var/www/html/web/uploads/tracking \
-    && mkdir -p /var/www/html/web/uploads/agent_chat \
-    && mkdir -p /var/www/html/web/uploads/software-activation \
-    && chmod -R 777 /var/www/html/data \
-    && chmod -R 777 /var/www/html/web/uploads
+# Ensure necessary directories and permissions
+RUN mkdir -p data/db \
+    && mkdir -p web/uploads/payments \
+    && mkdir -p web/uploads/tracking \
+    && mkdir -p web/uploads/agent_chat \
+    && mkdir -p web/uploads/software-activation \
+    && chmod -R 777 data \
+    && chmod -R 777 web/uploads
 
-# Create symlink for images directory
-RUN ln -sf /var/www/html/images /var/www/html/web/images || true
+# Debug: list files to verify structure in logs
+RUN ls -laR .
 
 # Use PORT environment variable for Railway (defaults to 8080)
 ENV PORT=8080
 EXPOSE 8080
 
-# Use shell form to properly expand PORT variable
-CMD ["sh", "-c", "cd web && php -S 0.0.0.0:${PORT:-8080} index.php"]
+# Start PHP built-in server with web/ as the document root
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t web"]
