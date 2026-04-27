@@ -36,10 +36,11 @@ RUN mkdir -p data/db \
 # Change WORKDIR to web for runtime
 WORKDIR /var/www/html/web
 
-# Use PORT environment variable for Railway
+# Use PORT environment variable for Railway (Railway injects this automatically)
+# We default to 8080 if not present
 ENV PORT=8080
 EXPOSE 8080
 
-# Start PHP built-in server from the web folder
-# This ensures that index.php is in the root of the server
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} index.php"]
+# Start PHP built-in server
+# IMPORTANT: We use 0.0.0.0 to allow external connections from Railway's proxy
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT} index.php"]

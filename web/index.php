@@ -1,6 +1,13 @@
 <?php
 declare(strict_types=1);
 
+// Fast Health Check (Before anything else)
+if (($_SERVER['REQUEST_URI'] ?? '/') === '/health' || ($_SERVER['REQUEST_URI'] ?? '/') === '/healthz') {
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'ok', 'timestamp' => date('c')]);
+    exit;
+}
+
 /**
  * entry point for the sovereign machine store
  * all requests are routed through here.
@@ -12,13 +19,6 @@ $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = $requestPath; // alias for compatibility
-
-// Health check endpoint
-if ($path === '/health' || $path === '/healthz') {
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 'ok', 'timestamp' => date('c')]);
-    exit;
-}
 
 // Telegram webhook endpoint
 if ($path === '/telegram-webhook') {
