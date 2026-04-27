@@ -23,6 +23,10 @@ if (php_sapi_name() === 'cli-server') {
 
 try {
     require_once __DIR__ . '/bootstrap.php';
+    if (isset($_GET['debug_db'])) {
+        $test = $productRepo->all(false);
+        echo "<!-- DEBUG DB: Found " . count($test) . " products -->";
+    }
 } catch (\Throwable $e) {
     file_put_contents('php://stderr', "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\n");
     http_response_code(500);
