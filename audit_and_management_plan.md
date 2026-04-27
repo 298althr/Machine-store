@@ -27,7 +27,7 @@ The business is currently operating with several "blind spots":
 4.  **[COMPLETED] Technical Specs**: Created `product_specs.csv`. Addressing the specification discovery lapse.
 
 ### C. UX & Conversion Lapses
-*   **[IN PROGRESS] Technical Discovery**: Industrial buyers search by *specifications*. Data now exists in `product_specs.csv`; UI implementation pending.
+*   **[COMPLETED] Technical Discovery**: Industrial buyers search by *specifications*. Implemented `SpecificationRepository`, updated catalog routing, and added a dynamic filter sidebar.
 *   **[COMPLETED] Mobile Gap**: Mobile responsiveness overhaul complete and verified.
 *   **Checkout Friction**: The transition from Cart to Quote request is currently too manual.
 
@@ -42,7 +42,7 @@ The business is currently operating with several "blind spots":
 *   [x] **Schema Standardization**: Normalized headers and removed BOMs from core tables.
 
 ### Phase 2: UX Refactoring (IN PROGRESS)
-*   [ ] **Specification Sidebars**: Add technical attribute filtering to the `/catalog` page (Data is ready).
+*   [x] **Specification Sidebars**: Added technical attribute filtering to the `/catalog` page.
 *   [ ] **Dynamic Pricing**: Integrate the `exchangeRate` logic more deeply into the checkout flow.
 
 ### Phase 3: Automation (UPCOMING)

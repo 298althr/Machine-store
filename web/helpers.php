@@ -16,6 +16,10 @@ function json_response($data, int $status = 200): void {
 function render_template(string $template, array $params = []): void {
     global $pdo, $lang;
     $params['lang'] = $lang;
+    $params['displayCurrency'] = get_display_currency();
+    $params['exchangeRate'] = get_exchange_rate();
+    $params['currencySymbol'] = get_currency_symbol($params['displayCurrency']);
+    
     extract($params);
     ob_start();
     require __DIR__ . '/templates/' . $template;
@@ -102,6 +106,15 @@ function convert_price(float $eurAmount, string $toCurrency): float {
     }
     $rate = get_exchange_rate();
     return $eurAmount * $rate;
+}
+
+function get_display_currency(): string {
+    return $_SESSION['display_currency'] ?? $_COOKIE['preferred_currency'] ?? 'EUR';
+}
+
+function get_currency_symbol(string $currency = null): string {
+    $currency = $currency ?? get_display_currency();
+    return $currency === 'USD' ? '$' : '€';
 }
 
 function get_cart_count(): int {

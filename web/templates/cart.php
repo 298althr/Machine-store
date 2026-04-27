@@ -1,3 +1,6 @@
+<?php 
+// Currency variables are injected by render_template
+?>
 <div class="container-modern section-padding" style="padding-top: 40px;">
   <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
     <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
@@ -45,11 +48,11 @@
                 </div>
               </div>
             </td>
-            <td style="padding: 24px; font-weight: 600;"><?= format_price($item['price']) ?></td>
+            <td style="padding: 24px; font-weight: 600;"><?= format_price(convert_price($item['price'], $displayCurrency), $displayCurrency) ?></td>
             <td style="padding: 24px; text-align: center;">
               <input type="number" value="<?= (int)$item['qty'] ?>" min="1" style="width: 70px; height: 44px; text-align: center; border: 2px solid #f1f5f9; border-radius: 6px; font-weight: 700; outline: none;" onchange="updateQuantity('<?= htmlspecialchars($item['sku']) ?>', this.value)">
             </td>
-            <td style="padding: 24px; text-align: right; font-weight: 800; color: var(--primary);" class="item-total"><?= format_price($item['price'] * $item['qty']) ?></td>
+            <td style="padding: 24px; text-align: right; font-weight: 800; color: var(--primary);" class="item-total"><?= format_price(convert_price($item['price'] * $item['qty'], $displayCurrency), $displayCurrency) ?></td>
             <td style="padding: 24px; text-align: right;">
               <button onclick="removeItem('<?= htmlspecialchars($item['sku']) ?>')" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 8px;">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -69,14 +72,14 @@
         <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 32px;">
           <div style="display: flex; justify-content: space-between;">
             <span style="color: var(--text-muted); font-weight: 600;">Subtotal</span>
-            <span id="subtotal" style="font-weight: 800; color: var(--primary);"><?= format_price($total) ?></span>
+            <span id="subtotal" style="font-weight: 800; color: var(--primary);"><?= format_price(convert_price($total, $displayCurrency), $displayCurrency) ?></span>
           </div>
           <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #f1f5f9; font-size: 0.9rem; color: var(--text-muted);">
             <?= $lang === 'de' ? 'Versand und Steuern werden beim Checkout berechnet.' : 'Shipping and taxes calculated at checkout.' ?>
           </div>
           <div style="padding-top: 24px; border-top: 2px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
             <span style="font-weight: 800; color: var(--primary);"><?= __('total') ?></span>
-            <span id="total" style="font-size: 2rem; font-weight: 900; color: var(--accent);"><?= format_price($total) ?></span>
+            <span id="total" style="font-size: 2rem; font-weight: 900; color: var(--accent);"><?= format_price(convert_price($total, $displayCurrency), $displayCurrency) ?></span>
           </div>
         </div>
 

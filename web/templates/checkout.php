@@ -76,7 +76,7 @@
                     <div style="font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 8px; letter-spacing: -0.5px;">Standard Industrial Freight</div>
                     <div style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Institutional logistics dispatch (5-9 business cycles)</div>
                   </div>
-                  <div style="font-weight: 900; color: var(--accent); font-size: 1.75rem; font-family: 'Outfit', sans-serif; letter-spacing: -1px;">€5.000,00</div>
+                  <div style="font-weight: 900; color: var(--accent); font-size: 1.75rem; font-family: 'Outfit', sans-serif; letter-spacing: -1px;"><?= format_price(convert_price(5000, $displayCurrency), $displayCurrency) ?></div>
                 </div>
               </label>
 
@@ -88,7 +88,7 @@
                     <div style="font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 8px; letter-spacing: -0.5px;">Emergency Interdisciplinary Air-Lift</div>
                     <div style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Priority critical mobilize protocol (2-4 business cycles)</div>
                   </div>
-                  <div style="font-weight: 900; color: var(--accent); font-size: 1.75rem; font-family: 'Outfit', sans-serif; letter-spacing: -1px;">€15.000,00</div>
+                  <div style="font-weight: 900; color: var(--accent); font-size: 1.75rem; font-family: 'Outfit', sans-serif; letter-spacing: -1px;"><?= format_price(convert_price(15000, $displayCurrency), $displayCurrency) ?></div>
                 </div>
               </label>
             </div>
@@ -150,20 +150,20 @@
           <div style="display: grid; gap: 24px; padding-top: 40px; margin-bottom: 48px; position: relative; z-index: 1;">
             <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
               <span style="opacity: 0.7; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;">Asset Subtotal</span>
-              <span style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;"><?= format_price($total) ?></span>
+              <span style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;"><?= format_price(convert_price($total, $displayCurrency), $displayCurrency) ?></span>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
               <span style="opacity: 0.7; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;">Logistics Protocol</span>
-              <span id="display-delivery" style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">€0,00</span>
+              <span id="display-delivery" style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;"></span>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
               <span style="opacity: 0.7; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;">Statutory VAT (19%)</span>
-              <span id="display-tax" style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">€0,00</span>
+              <span id="display-tax" style="font-weight: 900; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;"></span>
             </div>
             <div style="padding-top: 32px; border-top: 3px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: flex-end;">
               <div>
                 <div style="color: var(--accent); font-weight: 900; text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 8px;">Final Settlement</div>
-                <span style="font-family: 'Outfit', sans-serif; font-weight: 900; color: white; font-size: 3rem; line-height: 1; letter-spacing: -2px;" id="display-total">€0,00</span>
+                <span style="font-family: 'Outfit', sans-serif; font-weight: 900; color: white; font-size: 3rem; line-height: 1; letter-spacing: -2px;" id="display-total"></span>
               </div>
             </div>
           </div>
@@ -179,8 +179,10 @@
 </div>
 
 <script>
-const baseSubtotal = <?= $total ?>;
-const rates = { regular: 5000, emergency: 15000 };
+const baseSubtotal = <?= convert_price($total, $displayCurrency) ?>;
+const rates = { regular: <?= convert_price(5000, $displayCurrency) ?>, emergency: <?= convert_price(15000, $displayCurrency) ?> };
+const symbol = '<?= $currencySymbol ?>';
+const locale = '<?= $displayCurrency === 'USD' ? 'en-US' : 'de-DE' ?>';
 
 function updateDeliveryTotal() {
   const mode = document.querySelector('input[name="delivery_mode"]:checked').value;
@@ -188,9 +190,15 @@ function updateDeliveryTotal() {
   const tax = (baseSubtotal + delivery) * 0.19;
   const total = baseSubtotal + delivery + tax;
   
-  document.getElementById('display-delivery').textContent = '€' + delivery.toLocaleString('de-DE', {minimumFractionDigits: 2});
-  document.getElementById('display-tax').textContent = '€' + tax.toLocaleString('de-DE', {minimumFractionDigits: 2});
-  document.getElementById('display-total').textContent = '€' + total.toLocaleString('de-DE', {minimumFractionDigits: 2});
+  const formatter = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: '<?= $displayCurrency ?>',
+    minimumFractionDigits: 2
+  });
+  
+  document.getElementById('display-delivery').textContent = formatter.format(delivery);
+  document.getElementById('display-tax').textContent = formatter.format(tax);
+  document.getElementById('display-total').textContent = formatter.format(total);
   
   document.querySelectorAll('.delivery-card').forEach(c => {
     c.style.borderColor = '#f1f5f9';
@@ -205,7 +213,3 @@ function updateDeliveryTotal() {
 
 updateDeliveryTotal();
 </script>
- margin-top: 8px;
-  }
-}
-</style>
