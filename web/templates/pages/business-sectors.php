@@ -1,265 +1,69 @@
-<?php
-$pageTitle = $lang === 'de' ? 'Geschäftsbereiche' : 'Business Sectors';
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Geschäftsbereiche' : 'Interdisciplinary Sectors' ?></span>
+  </div>
 
-$sectors = [
-    [
-        'slug' => 'pipelines-plants',
-        'title_de' => 'Pipelines & Anlagen',
-        'title_en' => 'Pipelines & Plants',
-        'desc_de' => 'Pipelinebau, Anlagenbau, Digitale & Kommunale Infrastruktur, Erdkabel, Tiefbohrungen, Horizontalbohrungen (HDD), Dienstleistungen',
-        'desc_en' => 'Pipeline Construction, Plant Construction, Digital & Municipal Infrastructure, Underground Power Lines, Deep Drilling, Horizontal Directional Drilling (HDD), Services',
-        'image' => '/images/photos/pipeline1.jpg',
-        'icon' => '🔧'
-    ],
-    [
-        'slug' => 'mechanical-engineering',
-        'title_de' => 'Maschinenbau',
-        'title_en' => 'Mechanical Engineering',
-        'desc_de' => 'Apparatebau, Anlagentechnik, Bohrtechnik, Verfahrenstechnik, Prozessanlagen, After Sales Service',
-        'desc_en' => 'Apparatus Engineering, Equipment Technology, Drilling Technology, Process Engineering, Process Plants, After Sales Service',
-        'image' => '/images/photos/mechanical1.jpg',
-        'icon' => '⚙️'
-    ],
-    [
-        'slug' => 'electrical-engineering',
-        'title_de' => 'Elektrotechnik',
-        'title_en' => 'Electrical Engineering',
-        'desc_de' => 'Elektroinstallation und Energietechnik, Mess- und Regeltechnik, Automatisierungstechnik, Funktionale Sicherheit, Elektronikwerkstatt, Simulationen und Berechnungen',
-        'desc_en' => 'Electrical Installation and Energy Technology, Electrical Measurement and Control Technology, Automation Technology, Functional Safety, Electronics Workshop, Simulations and Calculations',
-        'image' => '/images/photos/electrical.jpg',
-        'icon' => '⚡'
-    ],
-    [
-        'slug' => 'civil-engineering',
-        'title_de' => 'Hoch- & Tiefbau',
-        'title_en' => 'Civil & Structural Engineering',
-        'desc_de' => 'Straßenbau und Tiefbau, Brückenbau und Ingenieurbau, Wasserbau, Deponiebau, Industriebau und Hochbau, Leitungsbau',
-        'desc_en' => 'Road Construction and Civil Engineering, Bridge Construction and Civil Engineering, Hydraulic Engineering, Landfill Construction, Industrial Construction and Structural Engineering, Conduit Construction',
-        'image' => '/images/photos/civil.jpg',
-        'icon' => '🏗️'
-    ],
-    [
-        'slug' => 'raw-materials',
-        'title_de' => 'Roh- & Baustoffe',
-        'title_en' => 'Raw & Construction Material',
-        'desc_de' => 'Asphaltmischanlagen, Steinbrüche und Kieswerke, Sand- und Kiesgewinnung, Baustoffannahme',
-        'desc_en' => 'Asphalt Mixing Plants, Quarries and Gravel Mills, Sand and Gravel Extraction, Construction Material Acceptance',
-        'image' => '/images/photos/raw-materials.jpg',
-        'icon' => '🪨'
-    ],
-    [
-        'slug' => 'engineering-software',
-        'title_de' => 'Engineering Software',
-        'title_en' => 'Engineering Software',
-        'desc_de' => 'Enterprise-Softwarelösungen für Simulation, Prozesssteuerung, SCADA-Systeme, CAD/CAM, Datenanalyse und industrielle Automatisierung',
-        'desc_en' => 'Enterprise software solutions for simulation, process control, SCADA systems, CAD/CAM, data analytics, and industrial automation',
-        'image' => '/assets/software-product.svg',
-        'icon' => '💻'
-    ],
-    [
-        'slug' => 'aviation-engineering',
-        'title_de' => 'Luftfahrttechnik',
-        'title_en' => 'Aviation Engineering',
-        'desc_de' => 'Flugzeugwartungsausrüstung, Bodenunterstützungssysteme, Triebwerksprüfstände, Avionik-Testsysteme und Luft- und Raumfahrtfertigungsanlagen',
-        'desc_en' => 'Aircraft maintenance equipment, ground support systems, engine test stands, avionics test systems, and aerospace manufacturing facilities',
-        'image' => '/assets/aviation-product.svg',
-        'icon' => '✈️'
-    ],
-];
-?>
-
-<div class="page-header">
-    <div class="container">
-        <nav class="breadcrumb">
-            <a href="/">STREICHER</a>
-            <span>-</span>
-            <span><?= $pageTitle ?></span>
-        </nav>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 120px; min-height: 450px; display: flex; align-items: center; padding: 80px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 100%), url('/images/photos/pipeline2.jpg') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white; max-width: 900px;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 32px; letter-spacing: 2px;">
+        Institutional Diversity
+      </div>
+      <h1 style="font-size: 4.5rem; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 24px; font-weight: 900; letter-spacing: -2px;">Interdisciplinary<br>Engineering.</h1>
+      <p style="font-size: 1.4rem; opacity: 0.9; line-height: 1.6; font-weight: 500;">
+        <?= $lang === 'de' 
+            ? 'Die STREICHER Gruppe bündelt interdisziplinäres Know-how in fünf Kernsektoren für globale Großprojekte.' 
+            : 'The STREICHER Group consolidates interdisciplinary expertise across five core sectors for global large-scale projects.' ?>
+      </p>
     </div>
-</div>
+  </section>
 
-<section class="sectors-hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/photos/pipeline2.jpg') center/cover;">
-    <div class="container">
-        <h1><?= $pageTitle ?></h1>
-        <p class="hero-subtitle">
-            <?= $lang === 'de' 
-                ? 'Die STREICHER Gruppe ist in fünf Geschäftsbereichen tätig und bietet ein breites Spektrum an Dienstleistungen.' 
-                : 'The STREICHER Group operates in five business sectors, offering a wide range of services.' ?>
+  <div style="display: flex; flex-direction: column; gap: 160px; margin-bottom: 160px;">
+    <?php foreach ($sectors as $index => $sector): ?>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; <?= $index % 2 === 1 ? 'direction: rtl;' : '' ?>">
+      <div style="direction: ltr;" class="hover-lift">
+        <div style="position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05);">
+          <img src="<?= $sector['image'] ?>" alt="<?= $lang === 'de' ? $sector['title_de'] : $sector['title_en'] ?>" style="width: 100%; height: 600px; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position: absolute; bottom: 40px; left: 40px; background: white; width: 100px; height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: var(--shadow-xl); border: 1px solid #f1f5f9; z-index: 2;">
+            <?= $sector['icon'] ?>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(15, 23, 42, 0.4), transparent); z-index: 1;"></div>
+        </div>
+      </div>
+      <div style="direction: ltr;">
+        <div style="font-size: 0.9rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+          <span style="width: 60px; height: 3px; background: var(--accent);"></span>
+          DOMAIN PROTOCOL S-<?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?>
+        </div>
+        <h2 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; margin: 0 0 32px 0; color: var(--primary); line-height: 1; font-weight: 900; letter-spacing: -1.5px;">
+          <?= $lang === 'de' ? $sector['title_de'] : $sector['title_en'] ?>
+        </h2>
+        <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 48px; font-weight: 500;">
+          <?= $lang === 'de' ? $sector['desc_de'] : $sector['desc_en'] ?>
         </p>
+        <a href="/business-sectors/<?= $sector['slug'] ?>" class="btn-modern btn-accent" style="padding: 24px 56px; display: inline-flex; align-items: center; gap: 20px; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 8px;">
+          <?= $lang === 'de' ? 'Sektor-Spezifikationen' : 'Sector Protocol' ?> <span style="font-size: 1.5rem;">→</span>
+        </a>
+      </div>
     </div>
-</section>
+    <?php endforeach; ?>
+  </div>
 
-<section class="sectors-list">
-    <div class="container">
-        <?php foreach ($sectors as $index => $sector): ?>
-        <div class="sector-item <?= $index % 2 === 1 ? 'reverse' : '' ?>">
-            <div class="sector-image">
-                <img src="<?= $sector['image'] ?>" alt="<?= $lang === 'de' ? $sector['title_de'] : $sector['title_en'] ?>">
-            </div>
-            <div class="sector-content">
-                <span class="sector-icon"><?= $sector['icon'] ?></span>
-                <h2><?= $lang === 'de' ? $sector['title_de'] : $sector['title_en'] ?></h2>
-                <p><?= $lang === 'de' ? $sector['desc_de'] : $sector['desc_en'] ?></p>
-                <a href="/business-sectors/<?= $sector['slug'] ?>" class="btn btn-primary">
-                    <?= $lang === 'de' ? 'Mehr erfahren' : 'Learn more' ?> →
-                </a>
-            </div>
-        </div>
-        <?php endforeach; ?>
+  <section style="background: var(--primary); border-radius: var(--radius-lg); padding: 120px 100px; text-align: center; color: white; box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -50px; right: -50px; font-size: 20rem; opacity: 0.03; font-weight: 900; font-family: 'Outfit', sans-serif;">HUB</div>
+    <h2 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; margin-bottom: 32px; font-weight: 900; letter-spacing: -1.5px; position: relative; z-index: 1;"><?= $lang === 'de' ? 'Interdisziplinäre Beratung' : 'Interdisciplinary Consulting' ?></h2>
+    <p style="font-size: 1.4rem; opacity: 0.8; max-width: 850px; margin: 0 auto 60px; line-height: 1.6; font-weight: 500; position: relative; z-index: 1;">
+      <?= $lang === 'de' 
+          ? 'Unsere Fachexperten unterstützen Sie bei der Realisierung komplexer technologischer Anforderungen weltweit.' 
+          : 'Our subject matter experts support the realization of your complex technological requirements on a global scale.' ?>
+    </p>
+    <div style="display: flex; gap: 32px; justify-content: center; position: relative; z-index: 1;">
+      <a href="/contact" class="btn-modern btn-accent" style="padding: 28px 60px; font-size: 1.1rem; font-weight: 900; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px;">Institutional Inquiry</a>
+      <a href="/reference-projects" class="btn-modern" style="padding: 28px 60px; font-size: 1.1rem; border: 2px solid rgba(255,255,255,0.2); background: transparent; color: white; font-weight: 900; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='white';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(255,255,255,0.2)';">
+        <?= $lang === 'de' ? 'Referenzen ansehen' : 'View Global Registry' ?>
+      </a>
     </div>
-</section>
-
-<section class="sectors-cta">
-    <div class="container">
-        <h2><?= $lang === 'de' ? 'Haben Sie ein Projekt?' : 'Have a project?' ?></h2>
-        <p><?= $lang === 'de' 
-            ? 'Kontaktieren Sie uns für eine unverbindliche Beratung zu Ihrem Projekt.' 
-            : 'Contact us for a no-obligation consultation about your project.' ?></p>
-        <div class="cta-buttons">
-            <a href="/contact" class="btn btn-primary btn-lg"><?= $lang === 'de' ? 'Kontakt aufnehmen' : 'Get in touch' ?></a>
-            <a href="/reference-projects" class="btn btn-outline-light btn-lg"><?= $lang === 'de' ? 'Referenzprojekte ansehen' : 'View reference projects' ?></a>
-        </div>
-    </div>
-</section>
-
-<style>
-.sectors-hero {
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    color: white;
-    text-align: center;
-}
-
-.sectors-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    max-width: 700px;
-    margin: 0 auto;
-    opacity: 0.9;
-}
-
-.sectors-list {
-    padding: 4rem 0;
-}
-
-.sector-item {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    margin-bottom: 4rem;
-    padding-bottom: 4rem;
-    border-bottom: 1px solid var(--gray-200);
-}
-
-.sector-item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.sector-item.reverse {
-    direction: rtl;
-}
-
-.sector-item.reverse > * {
-    direction: ltr;
-}
-
-.sector-image {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
-
-.sector-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.sector-content {
-    padding: 2rem 0;
-}
-
-.sector-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 1rem;
-}
-
-.sector-content h2 {
-    font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
-}
-
-.sector-content p {
-    font-size: 1.1rem;
-    color: var(--gray-600);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-}
-
-.sectors-cta {
-    background: var(--primary);
-    color: white;
-    padding: 4rem 0;
-    text-align: center;
-}
-
-.sectors-cta h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.sectors-cta p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn-outline-light {
-    border: 2px solid white;
-    color: white;
-    background: transparent;
-}
-
-.btn-outline-light:hover {
-    background: white;
-    color: var(--primary);
-}
-
-@media (max-width: 1024px) {
-    .sector-item {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .sector-item.reverse {
-        direction: ltr;
-    }
-}
-
-@media (max-width: 768px) {
-    .sectors-hero h1 {
-        font-size: 2rem;
-    }
-    
-    .sector-content h2 {
-        font-size: 1.5rem;
-    }
-}
-</style>
+  </section>
+</div>

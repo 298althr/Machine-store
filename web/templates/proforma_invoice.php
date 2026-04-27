@@ -26,8 +26,20 @@ $total = $subtotal + $deliveryCost + $vatAmount;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Invoice <?= htmlspecialchars($invoiceNumber) ?></title>
+  <title>Institutional Invoice <?= htmlspecialchars($invoiceNumber) ?></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #dc2626;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --bg-body: #f8fafc;
+      --radius-lg: 16px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -35,37 +47,57 @@ $total = $subtotal + $deliveryCost + $vatAmount;
     }
     
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', sans-serif;
       line-height: 1.6;
-      color: #1e293b;
-      background: #f1f5f9;
-      padding: 40px 20px;
+      color: var(--text-main);
+      background: var(--bg-body);
+      padding: 60px 20px;
     }
     
     .invoice-container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
       background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+      border-radius: var(--radius-lg);
       overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
     }
     
     .invoice-header {
-      padding: 40px 60px;
-      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      padding: 60px 80px;
+      background: var(--primary);
       color: white;
+      position: relative;
+    }
+
+    .invoice-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(220, 38, 38, 0.05) 100%);
     }
     
     .header-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
     
-    .logo-section img {
-      height: 60px;
-      width: auto;
+    .logo-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo-section span {
+      color: var(--accent);
     }
     
     .invoice-meta {
@@ -73,100 +105,89 @@ $total = $subtotal + $deliveryCost + $vatAmount;
     }
     
     .invoice-type {
-      font-size: 32px;
-      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
       color: white;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-    
-    .meta-row {
-      display: flex;
-      justify-content: flex-end;
-      gap: 32px;
-      margin-top: 12px;
-    }
-    
-    .meta-item {
-      text-align: right;
-    }
-    
-    .meta-label {
-      font-size: 11px;
-      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+      letter-spacing: -1px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 500;
     }
-    
-    .meta-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: white;
-      margin-top: 6px;
+
+    .meta-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--accent);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
     
     .parties-section {
-      background: #f8fafc;
-      padding: 40px 60px;
+      padding: 60px 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      border-bottom: 1px solid #e2e8f0;
+      gap: 80px;
+      border-bottom: 1px solid #f1f5f9;
     }
     
     .party-box h3 {
-      font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 16px;
-      letter-spacing: 1.5px;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
     }
     
     .party-details {
-      font-size: 14px;
-      color: #475569;
-      line-height: 2;
+      font-size: 1rem;
+      color: var(--text-main);
+      line-height: 1.8;
     }
     
     .party-details strong {
-      color: #0f172a;
-      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 8px;
     }
     
     .items-section {
-      padding: 40px 60px;
+      padding: 40px 80px;
     }
     
     .items-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
     
     .items-table thead th {
-      background: #f8fafc;
-      color: #64748b;
-      padding: 16px 20px;
+      padding: 24px;
       text-align: left;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 0.75rem;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      border-bottom: 2px solid #e2e8f0;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      border-bottom: 2px solid #f1f5f9;
     }
     
-    .items-table thead th:nth-child(1) { width: 50px; }
+    .items-table thead th:nth-child(1) { width: 60px; }
     .items-table thead th:nth-child(3),
     .items-table thead th:nth-child(4),
     .items-table thead th:nth-child(5),
     .items-table thead th:nth-child(6) { text-align: right; }
     
     .items-table tbody td {
-      padding: 20px;
+      padding: 32px 24px;
       border-bottom: 1px solid #f1f5f9;
-      font-size: 14px;
+      font-size: 1rem;
       vertical-align: top;
     }
     
@@ -176,198 +197,265 @@ $total = $subtotal + $deliveryCost + $vatAmount;
     .items-table tbody td:nth-child(6) { text-align: right; }
     
     .item-name {
-      font-weight: 600;
-      color: #0f172a;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1.1rem;
     }
     
     .item-sku {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 4px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 6px;
+      font-family: monospace;
     }
     
     .totals-section {
       display: flex;
       justify-content: flex-end;
-      margin-top: 24px;
+      padding: 0 80px 60px;
     }
     
-    .totals-table {
-      width: 420px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
+    .totals-box {
+      width: 450px;
+      background: #f8fafc;
+      border-radius: 12px;
       overflow: hidden;
+      border: 1px solid #f1f5f9;
     }
     
     .totals-row {
       display: flex;
       justify-content: space-between;
-      padding: 16px 24px;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 20px 32px;
+      border-bottom: 1px solid #f1f5f9;
     }
     
-    .totals-row.subtotal {
-      font-size: 14px;
-      color: #64748b;
+    .totals-row span:first-child {
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .totals-row span:last-child {
+      font-weight: 800;
+      color: var(--primary);
     }
     
     .totals-row.total {
-      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      background: var(--primary);
       color: white;
-      font-size: 20px;
-      font-weight: 700;
+      padding: 32px;
       border: none;
-      padding: 20px 24px;
+    }
+
+    .totals-row.total span:first-child {
+      color: var(--accent);
+      font-size: 1rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .totals-row.total span:last-child {
+      color: white;
+      font-size: 2rem;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
     }
     
     .payment-section {
-      padding: 40px 60px;
+      padding: 60px 80px;
       background: #fef2f2;
-      border-top: 3px solid #dc2626;
+      border-top: 4px solid var(--accent);
     }
     
     .payment-section h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #dc2626;
-      margin-bottom: 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 32px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    
-    .payment-details {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px 40px;
-      font-size: 14px;
-    }
-    
-    .payment-row {
-      display: flex;
       gap: 12px;
     }
     
-    .payment-label {
-      color: #64748b;
-      min-width: 150px;
-      font-weight: 500;
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
     }
-    
-    .payment-value {
-      font-weight: 600;
-      color: #0f172a;
-    }
-    
-    .notes-section {
-      padding: 40px 60px;
-      background: white;
-    }
-    
-    .notes-section h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 12px;
+
+    .payment-item label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--text-muted);
       text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+
+    .payment-item span {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .payment-item.reference {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      border: 2px dashed var(--accent);
+      grid-column: span 2;
+      text-align: center;
+    }
+    
+    .disclaimer-section {
+      padding: 60px 80px;
+      background: white;
     }
     
     .disclaimer-box {
       background: #fff7ed;
       border: 2px solid #f59e0b;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 24px;
+      border-radius: 12px;
+      padding: 40px;
     }
     
     .disclaimer-box h4 {
+      font-family: 'Outfit', sans-serif;
       color: #92400e;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .disclaimer-box ul {
-      margin-left: 20px;
+      margin-left: 24px;
       color: #78350f;
-      font-size: 13px;
-      line-height: 1.8;
+      font-size: 0.95rem;
+      line-height: 2;
+      font-weight: 500;
     }
     
     .footer {
-      background: #0f172a;
-      color: #94a3b8;
+      background: var(--primary);
+      color: white;
       text-align: center;
-      padding: 24px;
-      font-size: 12px;
+      padding: 60px 80px;
+    }
+
+    .footer-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand span { color: var(--accent); }
+    
+    .footer-info {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      font-weight: 500;
+      max-width: 600px;
+      margin: 24px auto 0;
+      line-height: 1.8;
     }
     
-    .footer-links {
-      margin-top: 8px;
+    .no-print {
+      max-width: 1100px;
+      margin: 40px auto;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
     }
-    
-    .footer-links span {
-      color: #475569;
-      margin: 0 8px;
+
+    .btn-action {
+      padding: 20px 40px;
+      border-radius: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
+    .btn-primary { background: var(--accent); color: white; border: none; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(220, 38, 38, 0.3); }
     
+    .btn-secondary { background: white; color: var(--primary); border: 2px solid #e2e8f0; }
+    .btn-secondary:hover { background: #f8fafc; border-color: var(--primary); }
+
     @media print {
-      body { background: white; }
-      .invoice-container { box-shadow: none; }
+      body { background: white; padding: 0; }
+      .invoice-container { box-shadow: none; border: none; border-radius: 0; width: 100%; max-width: none; }
       .no-print { display: none; }
+      .invoice-header { padding: 40px; }
+      .parties-section, .items-section, .totals-section, .payment-section, .disclaimer-section { padding: 40px; }
     }
   </style>
 </head>
 <body>
   <div class="invoice-container">
-    <!-- Header -->
+    <!-- Institutional Header -->
     <div class="invoice-header">
       <div class="header-row">
         <div class="logo-section">
-          <img src="/assets/logo.png" alt="Streicher GmbH">
+          <h2>STREICHER<span>GmbH</span></h2>
+          <div style="font-size: 0.8rem; font-weight: 700; opacity: 0.6; margin-top: 4px; letter-spacing: 2px;">INDUSTRIAL EXCELLENCE</div>
         </div>
         <div class="invoice-meta">
-          <div class="invoice-type">ORDER INVOICE</div>
-          <div class="meta-row">
-            <div class="meta-item">
-              <div class="meta-label">Date</div>
-              <div class="meta-value"><?= $invoiceDate ?></div>
+          <div class="invoice-type">PROFORMA INVOICE</div>
+          <div class="meta-badge">OFFICIAL REGISTRY</div>
+          <div style="margin-top: 24px; display: flex; gap: 40px; justify-content: flex-end;">
+            <div>
+              <div style="font-size: 0.7rem; font-weight: 900; opacity: 0.5; text-transform: uppercase;">Date Issued</div>
+              <div style="font-size: 1.1rem; font-weight: 800;"><?= $invoiceDate ?></div>
             </div>
-            <div class="meta-item">
-              <div class="meta-label">Invoice #</div>
-              <div class="meta-value"><?= htmlspecialchars($invoiceNumber) ?></div>
+            <div>
+              <div style="font-size: 0.7rem; font-weight: 900; opacity: 0.5; text-transform: uppercase;">Invoice Registry #</div>
+              <div style="font-size: 1.1rem; font-weight: 800;"><?= htmlspecialchars($invoiceNumber) ?></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Parties -->
+    <!-- Registry Parties -->
     <div class="parties-section">
       <div class="party-box">
-        <h3>Supplier</h3>
+        <h3>Institutional Supplier</h3>
         <div class="party-details">
-          <strong>Streicher GmbH</strong><br>
-          VAT ID: DE123456789<br>
+          <strong>MAX STREICHER GmbH & Co. KG aA</strong>
           Industriestraße 45<br>
           93055 Regensburg<br>
           Germany<br>
           <br>
-          Email: store@streichergmbh.com<br>
-          Phone: +49 991 330-00
+          <span style="font-weight: 800; color: var(--primary);">VAT Registry:</span> DE123456789<br>
+          <span style="font-weight: 800; color: var(--primary);">Email:</span> procurement@streicher.de<br>
+          <span style="font-weight: 800; color: var(--primary);">Protocol:</span> +49 991 330-00
         </div>
       </div>
       <div class="party-box">
-        <h3>Customer</h3>
+        <h3>Institutional Customer</h3>
         <div class="party-details">
-          <strong><?= htmlspecialchars($order['billing_company'] ?? 'N/A') ?></strong><br>
+          <strong><?= htmlspecialchars($order['billing_company'] ?? 'N/A') ?></strong>
           <?php if (!empty($order['vat_number'])): ?>
-          VAT: <?= htmlspecialchars($order['vat_number']) ?><br>
+          <span style="font-weight: 800; color: var(--primary);">VAT ID:</span> <?= htmlspecialchars($order['vat_number']) ?><br>
           <?php endif; ?>
           <?= htmlspecialchars($order['billing_name'] ?? '') ?><br>
           <?= htmlspecialchars($order['billing_address'] ?? '') ?><br>
@@ -375,27 +463,26 @@ $total = $subtotal + $deliveryCost + $vatAmount;
           <?= htmlspecialchars($order['billing_country'] ?? '') ?><br>
           <br>
           <?php if (!empty($order['delivery_facility'])): ?>
-          <strong>Delivery Facility:</strong><br>
+          <span style="font-weight: 800; color: var(--primary);">Destination Facility:</span><br>
           <?= nl2br(htmlspecialchars($order['delivery_facility'])) ?><br>
           <br>
           <?php endif; ?>
-          Email: <?= htmlspecialchars($order['billing_email'] ?? '') ?><br>
-          Phone: <?= htmlspecialchars($order['billing_phone'] ?? '') ?>
+          <span style="font-weight: 800; color: var(--primary);">Representative:</span> <?= htmlspecialchars($order['billing_email'] ?? '') ?>
         </div>
       </div>
     </div>
 
-    <!-- Line Items -->
+    <!-- Asset Inventory -->
     <div class="items-section">
       <table class="items-table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Equipment Details</th>
-            <th>Unit Price</th>
+            <th>Interdisciplinary Asset Details</th>
+            <th>Unit Valuation</th>
             <th>Qty</th>
             <th>VAT (19%)</th>
-            <th>Total</th>
+            <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
@@ -406,130 +493,114 @@ $total = $subtotal + $deliveryCost + $vatAmount;
             $itemTotal = $itemSubtotal + $itemVat;
           ?>
           <tr>
-            <td><?= $index + 1 ?>.</td>
+            <td style="font-weight: 900; color: var(--accent);"><?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?></td>
             <td>
               <div class="item-name"><?= htmlspecialchars($item['name']) ?></div>
-              <div class="item-sku">SKU: <?= htmlspecialchars($item['sku']) ?></div>
+              <div class="item-sku"><?= htmlspecialchars($item['sku']) ?></div>
               <?php if (!empty($item['serial_number'])): ?>
-              <div class="item-sku">Serial: <?= htmlspecialchars($item['serial_number']) ?></div>
+              <div style="font-size: 0.8rem; color: var(--accent); font-weight: 800; margin-top: 4px;">SERIAL: <?= htmlspecialchars($item['serial_number']) ?></div>
               <?php endif; ?>
             </td>
-            <td><?= $currencySymbol ?><?= number_format($item['unit_price'], 2) ?></td>
-            <td><?= (int)$item['quantity'] ?></td>
-            <td><?= $currencySymbol ?><?= number_format($itemVat, 2) ?></td>
-            <td><?= $currencySymbol ?><?= number_format($itemTotal, 2) ?></td>
+            <td style="font-weight: 700;"><?= $currencySymbol ?><?= number_format($item['unit_price'], 2) ?></td>
+            <td style="font-weight: 800; color: var(--primary);"><?= (int)$item['quantity'] ?></td>
+            <td style="font-weight: 600; color: var(--text-muted);"><?= $currencySymbol ?><?= number_format($itemVat, 2) ?></td>
+            <td style="font-weight: 900; color: var(--primary);"><?= $currencySymbol ?><?= number_format($itemTotal, 2) ?></td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
+    </div>
 
-      <!-- Totals -->
-      <div class="totals-section">
-        <div class="totals-table">
-          <div class="totals-row subtotal">
-            <span>Subtotal (Excl. VAT):</span>
-            <span><?= $currencySymbol ?><?= number_format($subtotal, 2) ?></span>
-          </div>
-          <div class="totals-row subtotal">
-            <span><?= htmlspecialchars($deliveryModeLabel) ?>:</span>
-            <span><?= $currencySymbol ?><?= number_format($deliveryCost, 2) ?></span>
-          </div>
-          <div class="totals-row subtotal">
-            <span>VAT (19%):</span>
-            <span><?= $currencySymbol ?><?= number_format($vatAmount, 2) ?></span>
-          </div>
-          <div class="totals-row total">
-            <span>TOTAL:</span>
-            <span><?= $currencySymbol ?><?= number_format($total, 2) ?></span>
-          </div>
+    <!-- Financial Intelligence Totals -->
+    <div class="totals-section">
+      <div class="totals-box">
+        <div class="totals-row">
+          <span>Asset Subtotal</span>
+          <span><?= $currencySymbol ?><?= number_format($subtotal, 2) ?></span>
+        </div>
+        <div class="totals-row">
+          <span>Logistics Dispatch (<?= $deliveryMode === 'emergency' ? 'Priority' : 'Regular' ?>)</span>
+          <span><?= $currencySymbol ?><?= number_format($deliveryCost, 2) ?></span>
+        </div>
+        <div class="totals-row">
+          <span>Statutory VAT (19%)</span>
+          <span><?= $currencySymbol ?><?= number_format($vatAmount, 2) ?></span>
+        </div>
+        <div class="totals-row total">
+          <span>FINAL SETTLEMENT</span>
+          <span><?= $currencySymbol ?><?= number_format($total, 2) ?></span>
         </div>
       </div>
     </div>
 
-    <!-- Payment Details -->
+    <!-- Corporate Settlement Protocol -->
     <div class="payment-section">
-      <h3>🏦 Bank Transfer Details</h3>
-      <div class="payment-details">
-        <div class="payment-row">
-          <span class="payment-label">Bank Name:</span>
-          <span class="payment-value">Commerzbank AG Frankfurt</span>
+      <h3>🏛️ CORPORATE SETTLEMENT PROTOCOL</h3>
+      <div class="payment-grid">
+        <div class="payment-item">
+          <label>Banking Institution</label>
+          <span>Commerzbank AG Frankfurt</span>
         </div>
-        <div class="payment-row">
-          <span class="payment-label">Account Holder:</span>
-          <span class="payment-value">Streicher GmbH</span>
+        <div class="payment-item">
+          <label>Account Beneficiary</label>
+          <span>MAX STREICHER GmbH</span>
         </div>
-        <div class="payment-row">
-          <span class="payment-label">IBAN:</span>
-          <span class="payment-value">DE91 5004 0000 0123 4567 89</span>
+        <div class="payment-item">
+          <label>IBAN Identifier</label>
+          <span style="font-family: monospace; letter-spacing: 1px;">DE91 5004 0000 0123 4567 89</span>
         </div>
-        <div class="payment-row">
-          <span class="payment-label">BIC/SWIFT:</span>
-          <span class="payment-value">COBADEFFXXX</span>
+        <div class="payment-item">
+          <label>BIC / SWIFT Protocol</label>
+          <span style="font-family: monospace; letter-spacing: 1px;">COBADEFFXXX</span>
         </div>
-        <div class="payment-row">
-          <span class="payment-label">Payment Reference:</span>
-          <span class="payment-value"><?= htmlspecialchars($invoiceNumber) ?></span>
-        </div>
-        <div class="payment-row">
-          <span class="payment-label">Amount Due:</span>
-          <span class="payment-value"><?= $currencySymbol ?><?= number_format($total, 2) ?></span>
+        <div class="payment-item reference">
+          <label>MANDATORY PAYMENT REFERENCE</label>
+          <span style="font-size: 2rem; color: var(--accent);"><?= htmlspecialchars($invoiceNumber) ?></span>
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent); margin-top: 8px;">Include this identifier for immediate automated verification</div>
         </div>
       </div>
     </div>
 
-    <!-- Notes & Disclaimers -->
-    <div class="notes-section">
-      <h3>Important Notes</h3>
-      <p style="font-size: 14px; color: #475569; line-height: 1.8;">
-        This is your official Order Invoice. When you are ready to proceed with payment, please transfer the amount to the bank account above using the invoice number as reference. After making payment, upload your payment receipt below for verification.
-      </p>
-
+    <!-- Legal Intelligence & Disclaimers -->
+    <div class="disclaimer-section">
       <div class="disclaimer-box">
-        <h4>⚠️ Import Duties & Documentation</h4>
+        <h4>⚖️ INSTITUTIONAL DISCLAIMERS & LOGISTICS PROTOCOLS</h4>
         <ul>
-          <li><strong>Import Duties:</strong> All prices are FOB (Free On Board) and do NOT include import duties, customs fees, or local taxes. The customer is responsible for all import duties, customs clearance, and associated fees when equipment arrives at the destination port.</li>
-          <li><strong>Required Documentation:</strong> Commercial invoice, packing list, certificate of origin, and equipment specifications will be provided for customs clearance.</li>
-          <li><strong>Delivery Responsibility:</strong> Once equipment is loaded at the port of origin, risk transfers to the customer. Customer is responsible for customs clearance, import duties, and inland transportation to the final delivery facility/offshore platform.</li>
-          <li><strong>Payment Terms:</strong> Payment must be received and cleared before shipment. Upload payment receipt for verification (1-2 business days processing).</li>
+          <li><strong>Import & Customs Matrix:</strong> All valuations are FOB (Free On Board). The institutional customer maintains full responsibility for all import duties, regional taxes, and interdisciplinary customs clearance protocols at the destination facility.</li>
+          <li><strong>Institutional Documentation:</strong> Commercial manifests, packing specifications, and interdisciplinary technical certifications will be provided for global transit authorization.</li>
+          <li><strong>Lifecycle Responsibility:</strong> Risk transfer occurs upon asset mobilization at the point of origin. The customer assumes liability for inland transit and interdisciplinary installation at the target facility.</li>
+          <li><strong>Settlement Protocol:</strong> Full financial settlement must be authenticated before asset mobilization. Protocol verification requires 1-2 business cycles.</li>
         </ul>
       </div>
-
-      <?php if (!empty($order['notes'])): ?>
-      <div style="margin-top: 24px; padding: 16px; background: #f8fafc; border-radius: 8px;">
-        <strong style="font-size: 13px; color: #0f172a;">Customer Notes:</strong>
-        <p style="font-size: 13px; color: #475569; margin-top: 8px; white-space: pre-wrap;"><?= htmlspecialchars($order['notes']) ?></p>
-      </div>
-      <?php endif; ?>
     </div>
 
-    <!-- Footer -->
+    <!-- Institutional Footer -->
     <div class="footer">
-      <div>Streicher GmbH - German Engineering Excellence Since 1970</div>
-      <div class="footer-links">
-        store@streichergmbh.com
-        <span>|</span>
-        +49 991 330-00
-        <span>|</span>
-        www.streichergmbh.com
+      <div class="footer-brand">STREICHER<span>GmbH</span></div>
+      <div style="font-size: 0.75rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 32px; opacity: 0.6;">German Engineering Excellence Since 1909</div>
+      <div style="display: flex; gap: 40px; justify-content: center; font-weight: 800; font-size: 0.9rem;">
+        <span>procurement@streicher.de</span>
+        <span>+49 991 330-00</span>
+        <span>www.streicher.de</span>
       </div>
-      <div style="margin-top: 12px; font-size: 11px;">
-        VAT ID: DE123456789 | Commercial Register: HRB 12345 Regensburg | ISO 9001:2015 Certified
+      <div class="footer-info">
+        MAX STREICHER GmbH & Co. KG aA | VAT ID: DE123456789 | Commercial Register: HRB 12345 Regensburg | Interdisciplinary ISO 9001:2015 Technical Certification Registry
       </div>
     </div>
   </div>
 
-  <div class="no-print" style="max-width: 1000px; margin: 32px auto 0; display: flex; gap: 16px; justify-content: center; align-items: center;">
-    <a href="/order/<?= $order['id'] ?>/payment" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.3); transition: all 0.2s;">
-      📤 Upload Payment Receipt
+  <div class="no-print">
+    <a href="/order/<?= $order['id'] ?>/payment" class="btn-action btn-primary">
+      📤 Upload Payment Protocol
     </a>
-    <a href="/order/<?= $order['id'] ?>/invoice/pdf" style="background: white; color: #0f172a; border: 2px solid #e2e8f0; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;">
-      📄 Download PDF Invoice
+    <a href="/order/<?= $order['id'] ?>/invoice/pdf" class="btn-action btn-secondary">
+      📄 Download Official PDF
     </a>
-    <button onclick="window.print()" style="background: #f1f5f9; color: #0f172a; border: 2px solid #e2e8f0; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
-      🖨️ Print
+    <button onclick="window.print()" class="btn-action btn-secondary">
+      🖨️ Print Document
     </button>
-    <a href="/account" style="display: inline-block; padding: 16px 32px; background: #f1f5f9; color: #64748b; text-decoration: none; border-radius: 8px; font-weight: 600;">
-      ← Back to Orders
+    <a href="/account" class="btn-action btn-secondary">
+      ← Back to Portal
     </a>
   </div>
 </body>

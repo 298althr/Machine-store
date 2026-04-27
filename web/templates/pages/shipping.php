@@ -1,185 +1,112 @@
-<div class="breadcrumb">
-  <a href="/">Home</a> <span>/</span>
-  <span>Shipping Information</span>
-</div>
-
-<div class="page-header text-center">
-  <h1 class="page-title">Shipping Information</h1>
-  <p class="page-subtitle">Worldwide delivery of industrial equipment</p>
-</div>
-
-<div style="max-width: 1000px; margin: 0 auto;">
-  <!-- Shipping Options -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">Shipping Options</h3>
-    </div>
-    <div class="card-body">
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <div style="text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🚚</div>
-          <h4 style="margin: 0 0 8px 0;">Standard Freight</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">
-            Ground or sea freight for large equipment. 4-8 weeks delivery.
-          </p>
-        </div>
-        <div style="text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">✈️</div>
-          <h4 style="margin: 0 0 8px 0;">Air Freight</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">
-            Expedited air shipping for urgent orders. 1-2 weeks delivery.
-          </p>
-        </div>
-        <div style="text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">📦</div>
-          <h4 style="margin: 0 0 8px 0;">Express Courier</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">
-            For spare parts and small items. 3-7 business days.
-          </p>
-        </div>
-      </div>
-    </div>
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Versandinformationen' : 'Global Logistics' ?></span>
   </div>
 
-  <!-- Delivery Regions -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">Delivery Regions & Estimated Times</h3>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 400px; display: flex; align-items: center; padding: 80px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.5) 100%), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white; max-width: 800px;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 30px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 32px; letter-spacing: 2px;">
+        Institutional Supply Chain
+      </div>
+      <h1 style="font-size: 4rem; font-family: 'Outfit', sans-serif; line-height: 1.1; margin-bottom: 24px;"><?= $lang === 'de' ? 'Logistik & Versand' : 'Global Logistics & Shipping' ?></h1>
+      <p style="font-size: 1.3rem; opacity: 0.9; line-height: 1.6;">
+        <?= $lang === 'de' 
+            ? 'Weltweite Lieferung interdisziplinärer Anlagen mit höchster Präzision und Zuverlässigkeit.' 
+            : 'Worldwide delivery of interdisciplinary plant and machinery systems with absolute precision and reliability.' ?>
+      </p>
     </div>
-    <div class="card-body" style="padding: 0;">
-      <table class="data-table">
-        <thead>
+  </section>
+
+  <div style="max-width: 1200px; margin: 0 auto 120px;">
+    <!-- Shipping Tiers -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 100px;">
+      <?php 
+      $options = [
+        ['icon' => '🚢', 'title' => 'Industrial Freight', 'desc' => 'Global ground or sea freight optimized for heavy interdisciplinary equipment.', 'time' => '4-8 weeks'],
+        ['icon' => '✈️', 'title' => 'Urgent Air Lift', 'desc' => 'Expedited institutional air shipping for critical system components.', 'time' => '1-2 weeks'],
+        ['icon' => '📦', 'title' => 'Rapid Courier', 'desc' => 'Priority dispatch for technical spare parts and documentation.', 'time' => '3-7 days'],
+      ];
+      foreach ($options as $opt):
+      ?>
+      <div class="hover-lift" style="background: white; padding: 50px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); text-align: center; border: 1px solid rgba(0,0,0,0.05); transition: var(--transition);">
+        <div style="font-size: 4rem; margin-bottom: 32px;"><?= $opt['icon'] ?></div>
+        <h4 style="font-size: 1.4rem; font-family: 'Outfit', sans-serif; margin-bottom: 16px; color: var(--primary);"><?= $opt['title'] ?></h4>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 24px; line-height: 1.6;"><?= $opt['desc'] ?></p>
+        <div style="font-weight: 800; color: var(--accent); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;"><?= $opt['time'] ?></div>
+      </div>
+      <?php endforeach; ?>
+    </div>
+
+    <!-- Global Transit Matrix -->
+    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 100px;">
+      <div style="padding: 40px; border-bottom: 1px solid #f1f5f9; background: #f8fafc; display: flex; align-items: center; justify-content: space-between;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin: 0; color: var(--primary);">Institutional Transit Matrix</h3>
+        <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">SLA Estimates</span>
+      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead style="background: white;">
           <tr>
-            <th>Region</th>
-            <th>Standard Freight</th>
-            <th>Air Freight</th>
-            <th>Express</th>
+            <th style="text-align: left; padding: 24px 40px; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid #f1f5f9;">Global Region</th>
+            <th style="text-align: left; padding: 24px 40px; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid #f1f5f9;">Freight</th>
+            <th style="text-align: left; padding: 24px 40px; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid #f1f5f9;">Air</th>
+            <th style="text-align: left; padding: 24px 40px; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid #f1f5f9;">Express</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Europe (EU)</strong></td>
-            <td>2-4 weeks</td>
-            <td>5-7 days</td>
-            <td>3-5 days</td>
+          <?php 
+          $regions = [
+            ['r' => 'European Union (EU)', 's' => '2-4 weeks', 'a' => '5-7 days', 'e' => '3-5 days'],
+            ['r' => 'North America (USA/CAN)', 's' => '4-6 weeks', 'a' => '7-10 days', 'e' => '5-7 days'],
+            ['r' => 'Middle East & Gulf Region', 's' => '4-6 weeks', 'a' => '5-7 days', 'e' => '5-7 days'],
+            ['r' => 'Asia Pacific (APAC)', 's' => '6-8 weeks', 'a' => '7-14 days', 'e' => '7-10 days'],
+          ];
+          foreach ($regions as $row):
+          ?>
+          <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.3s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+            <td style="padding: 24px 40px; font-weight: 800; color: var(--primary); font-size: 1.1rem;"><?= $row['r'] ?></td>
+            <td style="padding: 24px 40px; font-size: 1rem; color: var(--text-muted);"><?= $row['s'] ?></td>
+            <td style="padding: 24px 40px; font-size: 1rem; color: var(--text-muted);"><?= $row['a'] ?></td>
+            <td style="padding: 24px 40px; font-size: 1rem; color: var(--text-muted);"><?= $row['e'] ?></td>
           </tr>
-          <tr>
-            <td><strong>Europe (Non-EU)</strong></td>
-            <td>3-5 weeks</td>
-            <td>7-10 days</td>
-            <td>5-7 days</td>
-          </tr>
-          <tr>
-            <td><strong>North America</strong></td>
-            <td>4-6 weeks</td>
-            <td>7-10 days</td>
-            <td>5-7 days</td>
-          </tr>
-          <tr>
-            <td><strong>Middle East</strong></td>
-            <td>4-6 weeks</td>
-            <td>5-7 days</td>
-            <td>5-7 days</td>
-          </tr>
-          <tr>
-            <td><strong>Asia Pacific</strong></td>
-            <td>6-8 weeks</td>
-            <td>7-14 days</td>
-            <td>7-10 days</td>
-          </tr>
-          <tr>
-            <td><strong>Africa</strong></td>
-            <td>6-10 weeks</td>
-            <td>10-14 days</td>
-            <td>7-14 days</td>
-          </tr>
-          <tr>
-            <td><strong>South America</strong></td>
-            <td>6-10 weeks</td>
-            <td>10-14 days</td>
-            <td>7-14 days</td>
-          </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div>
-  </div>
 
-  <!-- Shipping Process -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">Shipping Process</h3>
-    </div>
-    <div class="card-body">
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: #dc2626; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 700;">1</div>
-          <h4 style="margin: 0 0 8px 0;">Order Confirmed</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Payment verified and order processed</p>
+    <!-- Fulfillment Protocol -->
+    <div style="background: #f8fafc; border-radius: var(--radius-lg); padding: 80px 60px; margin-bottom: 100px; border: 1px solid rgba(0,0,0,0.02);">
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; margin-bottom: 60px; text-align: center; color: var(--primary); text-transform: uppercase; letter-spacing: 3px;">Fulfillment Protocol</h3>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;">
+        <?php 
+        $steps = ['Institutional Verification', 'Precision Preparation', 'Global Dispatch', 'Final Commissioning'];
+        foreach ($steps as $i => $step):
+        ?>
+        <div style="text-align: center; position: relative;">
+          <div style="width: 60px; height: 60px; background: var(--primary); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-weight: 900; font-size: 1.5rem; box-shadow: var(--shadow-md); border: 4px solid white;"><?= $i+1 ?></div>
+          <h5 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary); font-weight: 800;"><?= $step ?></h5>
         </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: #dc2626; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 700;">2</div>
-          <h4 style="margin: 0 0 8px 0;">Preparation</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Equipment tested and packaged</p>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: #dc2626; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 700;">3</div>
-          <h4 style="margin: 0 0 8px 0;">Shipped</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Tracking number provided</p>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: #dc2626; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 700;">4</div>
-          <h4 style="margin: 0 0 8px 0;">Delivered</h4>
-          <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Equipment arrives at destination</p>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
-  </div>
 
-  <!-- Important Information -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">Important Information</h3>
-    </div>
-    <div class="card-body">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+    <!-- Assurance Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+      <div class="hover-lift" style="background: white; padding: 48px; border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-sm); display: flex; gap: 32px; align-items: flex-start;">
+        <div style="font-size: 3rem;">📋</div>
         <div>
-          <h4 style="margin: 0 0 12px 0;">📋 Documentation</h4>
-          <p style="color: #64748b; margin: 0;">
-            All shipments include commercial invoice, packing list, certificate of origin, and relevant compliance documentation. Additional certificates available upon request.
-          </p>
-        </div>
-        <div>
-          <h4 style="margin: 0 0 12px 0;">📦 Packaging</h4>
-          <p style="color: #64748b; margin: 0;">
-            Equipment is professionally packaged in wooden crates or containers suitable for international shipping. Special packaging available for sensitive equipment.
-          </p>
-        </div>
-        <div>
-          <h4 style="margin: 0 0 12px 0;">🛡️ Insurance</h4>
-          <p style="color: #64748b; margin: 0;">
-            All shipments are fully insured against loss or damage during transit. Insurance documentation provided with each shipment.
-          </p>
-        </div>
-        <div>
-          <h4 style="margin: 0 0 12px 0;">🏛️ Customs & Duties</h4>
-          <p style="color: #64748b; margin: 0;">
-            Import duties and taxes are the responsibility of the buyer. We provide all necessary documentation for customs clearance.
-          </p>
+          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: var(--primary); margin-bottom: 12px; font-weight: 800;">Global Documentation</h4>
+          <p style="color: var(--text-muted); font-size: 1rem; margin: 0; line-height: 1.6;">Full institutional and commercial documentation, including customs clearance support, provided with every interdisciplinary shipment.</p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Contact -->
-  <div class="card" style="background: #f8fafc;">
-    <div class="card-body text-center" style="padding: 32px;">
-      <h3 style="margin: 0 0 12px 0;">Questions About Shipping?</h3>
-      <p style="color: #64748b; margin: 0 0 24px 0;">
-        Contact our logistics team for shipping quotes and delivery information.
-      </p>
-      <div style="display: flex; gap: 16px; justify-content: center;">
-        <a href="/contact" class="btn btn-primary">Contact Us</a>
-        <a href="mailto:store@streichergmbh.com" class="btn btn-outline">store@streichergmbh.com</a>
+      <div class="hover-lift" style="background: white; padding: 48px; border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-sm); display: flex; gap: 32px; align-items: flex-start;">
+        <div style="font-size: 3rem;">🛡️</div>
+        <div>
+          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: var(--primary); margin-bottom: 12px; font-weight: 800;">Asset Insurance</h4>
+          <p style="color: var(--text-muted); font-size: 1rem; margin: 0; line-height: 1.6;">Comprehensive transit insurance is standard for all global industrial orders, ensuring absolute security for your technological assets.</p>
+        </div>
       </div>
     </div>
   </div>

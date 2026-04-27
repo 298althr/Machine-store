@@ -165,3 +165,32 @@ function verify_csrf(): bool {
 function csrf_field(): string {
     return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars($_SESSION['csrf_token'] ?? '') . '">';
 }
+
+/**
+ * Get product image URL with fallback
+ */
+function get_product_image(array $product): string {
+    if (!empty($product['image_url'])) {
+        return $product['image_url'];
+    }
+    
+    $slug = $product['slug'] ?? '';
+    if ($slug) {
+        $path = 'web/images/' . $slug . '/1.jpg';
+        if (file_exists(__DIR__ . '/' . $path)) {
+            return '/images/' . $slug . '/1.jpg';
+        }
+        $path = 'web/images/' . $slug . '/1.webp';
+        if (file_exists(__DIR__ . '/' . $path)) {
+            return '/images/' . $slug . '/1.webp';
+        }
+    }
+    
+    // Industrial placeholders based on type
+    $type = $product['product_type'] ?? 'hardware';
+    if ($type === 'software') {
+        return '/images/photos/electrical.jpg';
+    }
+    
+    return '/images/photos/mechanical1.jpg';
+}

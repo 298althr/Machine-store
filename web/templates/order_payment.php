@@ -1,288 +1,164 @@
-<?php
-$billingAddress = json_decode($order['billing_address'] ?? '{}', true) ?: [];
-$hasUploads = !empty($uploads);
-$latestUpload = $hasUploads ? $uploads[0] : null;
-?>
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <a href="/order/<?= $order['id'] ?>" style="text-decoration: none; color: var(--accent);">Asset #<?= htmlspecialchars($order['order_number']) ?></a>
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;">Financial Portal</span>
+  </div>
 
-<div class="breadcrumb">
-  <a href="/">Home</a> <span>/</span>
-  <a href="/order/<?= $order['id'] ?>">Order <?= htmlspecialchars($order['order_number']) ?></a> <span>/</span>
-  <span>Payment</span>
-</div>
-
-<div style="max-width: 900px; margin: 0 auto;">
-  <div class="page-header text-center">
-    <h1 class="page-title">Complete Your Payment</h1>
-    <p class="page-subtitle">Order <?= htmlspecialchars($order['order_number']) ?></p>
-  </div>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 60px; min-height: 250px; display: flex; align-items: center; padding: 60px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 30px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+        Institutional Settlement
+      </div>
+      <h1 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; line-height: 1.1; margin-bottom: 12px;"><?= $lang === 'de' ? 'Transaktion abschließen' : 'Complete Transaction' ?></h1>
+      <p style="font-size: 1.25rem; opacity: 0.9;">
+        <?= $lang === 'de' ? 'Sicheres Zahlungsportal für Auftrag' : 'Secure financial portal for Asset' ?> #<?= htmlspecialchars($order['order_number']) ?>
+      </p>
+    </div>
+  </section>
   
-  <!-- Order Status -->
-  <div class="alert alert-info mb-4">
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <span style="font-size: 1.5rem;">📋</span>
-      <div>
-        <div class="alert-title">Order Status: <?= get_status_label($order['status']) ?></div>
-        <p style="margin: 4px 0 0 0;">
-          <?php if ($order['status'] === 'awaiting_payment'): ?>
-            Please transfer the payment and upload your receipt below.
-          <?php elseif ($order['status'] === 'payment_uploaded'): ?>
-            Your payment receipt has been uploaded. We're reviewing it now.
-          <?php elseif ($order['status'] === 'payment_confirmed'): ?>
-            Payment confirmed! Your order is being processed.
-          <?php endif; ?>
-        </p>
-      </div>
-    </div>
-  </div>
-  
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
-    <!-- Bank Details -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Bank Transfer Details</h3>
-      </div>
-      <div class="card-body">
-        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; font-family: monospace;">
-          <div style="margin-bottom: 16px;">
-            <div style="color: #64748b; font-size: 0.85rem;">Bank Name</div>
-            <div style="font-weight: 600;">Deutsche Bank AG</div>
-          </div>
-          <div style="margin-bottom: 16px;">
-            <div style="color: #64748b; font-size: 0.85rem;">Account Holder</div>
-            <div style="font-weight: 600;">Streicher GmbH</div>
-          </div>
-          <div style="margin-bottom: 16px;">
-            <div style="color: #64748b; font-size: 0.85rem;">IBAN</div>
-            <div style="font-weight: 600;">DE89 3704 0044 0532 0130 00</div>
-          </div>
-          <div style="margin-bottom: 16px;">
-            <div style="color: #64748b; font-size: 0.85rem;">BIC/SWIFT</div>
-            <div style="font-weight: 600;">COBADEFFXXX</div>
-          </div>
-          <div>
-            <div style="color: #64748b; font-size: 0.85rem;">Reference</div>
-            <div style="font-weight: 600; color: #dc2626;"><?= htmlspecialchars($order['order_number']) ?></div>
-          </div>
-        </div>
-        
-        <div class="alert alert-warning mt-3" style="margin-bottom: 0;">
-          <strong>Important:</strong> Please include the order number <strong><?= htmlspecialchars($order['order_number']) ?></strong> as the payment reference.
-        </div>
-      </div>
-    </div>
-    
-    <!-- Order Summary -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Order Summary</h3>
-      </div>
-      <div class="card-body">
-        <?php foreach ($items as $item): ?>
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
-          <div>
-            <div style="font-weight: 500;"><?= htmlspecialchars($item['product_name'] ?? $item['sku'] ?? 'Product') ?></div>
-            <div style="font-size: 0.85rem; color: #64748b;">Qty: <?= (int)($item['quantity'] ?? $item['qty'] ?? 0) ?></div>
-          </div>
-          <div style="font-weight: 600;"><?= format_price((float)($item['total_price'] ?? $item['total'] ?? 0)) ?></div>
-        </div>
-        <?php endforeach; ?>
-        
-        <div style="padding-top: 16px; margin-top: 8px; border-top: 2px solid #e2e8f0;">
-          <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
-            <span>Total Due</span>
-            <span><?= format_price((float)$order['total']) ?></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Upload Payment Receipt -->
-  <div class="card mt-4">
-    <div class="card-header">
-      <h3 class="card-title">Upload Payment Receipt</h3>
-    </div>
-    <div class="card-body">
-      <?php if ($order['status'] === 'payment_uploaded' || $order['status'] === 'payment_confirmed'): ?>
-        <div class="alert alert-success">
-          <div class="alert-title">Receipt Uploaded</div>
-          <p style="margin: 4px 0 0 0;">
-            <?php if ($latestUpload): ?>
-              File: <?= htmlspecialchars($latestUpload['original_filename']) ?> 
-              (uploaded <?= date('M j, Y g:i A', strtotime($latestUpload['created_at'])) ?>)
+  <div style="display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: start; margin-bottom: 120px;">
+    <!-- Main Content Infrastructure -->
+    <main>
+      <!-- Status Intelligence -->
+      <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 40px; display: flex; align-items: center; gap: 32px;">
+        <div style="width: 80px; height: 80px; background: #f8fafc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; border: 1px solid #f1f5f9;">🛡️</div>
+        <div>
+          <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 6px;">Lifecycle Status</div>
+          <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif;"><?= get_status_label($order['status']) ?></div>
+          <p style="color: var(--text-muted); font-size: 1rem; margin-top: 12px; line-height: 1.6; font-weight: 500;">
+            <?php if ($order['status'] === 'awaiting_payment'): ?>
+              Transfer the institutional funds to the STREICHER corporate registry and upload the verified transaction receipt.
+            <?php elseif ($order['status'] === 'payment_uploaded'): ?>
+              Verification protocol active. Our interdisciplinary finance department is auditing the submitted documentation.
+            <?php else: ?>
+              Transaction fully authenticated. Industrial logistics operations are in progress.
             <?php endif; ?>
           </p>
         </div>
-        
-        <?php if ($order['status'] === 'payment_uploaded'): ?>
-        <p style="color: #64748b;">
-          Your payment receipt is being reviewed. You'll receive an email once it's confirmed.
-          You can also upload additional documents if needed.
-        </p>
-        <?php endif; ?>
-      <?php endif; ?>
-      
-      <?php if (isset($_GET['error'])): ?>
-      <div class="alert alert-error mb-3">
-        <?php
-        $errors = [
-          'upload_failed' => 'Failed to upload file. Please try again.',
-          'invalid_type' => 'Invalid file type. Please upload JPG, PNG, GIF, or PDF.',
-          'save_failed' => 'Failed to save file. Please try again.',
-        ];
-        echo $errors[$_GET['error']] ?? 'An error occurred.';
-        ?>
       </div>
-      <?php endif; ?>
-      
-      <form action="/order/<?= $order['id'] ?>/payment" method="POST" enctype="multipart/form-data">
-        <div class="payment-upload-zone" id="dropZone" onclick="document.getElementById('receiptFile').click()">
-          <div class="upload-icon">📄</div>
-          <div class="upload-text">Click to upload or drag and drop</div>
-          <div class="upload-hint">JPG, PNG, GIF, or PDF (max 10MB)</div>
-          <input type="file" name="receipt" id="receiptFile" accept=".jpg,.jpeg,.png,.gif,.pdf" style="display: none;" required>
+
+      <!-- Corporate Financial Registry -->
+      <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 40px;">
+        <div style="background: #f8fafc; padding: 24px 40px; border-bottom: 1px solid #f1f5f9;">
+          <h3 style="font-size: 1.1rem; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; color: var(--primary); margin: 0;">Institutional Banking Registry</h3>
         </div>
-        
-        <div id="filePreview" style="display: none; margin-top: 16px; padding: 16px; background: #f8fafc; border-radius: 8px;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 2rem;">📎</span>
+        <div style="padding: 48px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 48px;">
             <div>
-              <div id="fileName" style="font-weight: 500;"></div>
-              <div id="fileSize" style="font-size: 0.85rem; color: #64748b;"></div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Banking Institution</div>
+              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;">Commerzbank AG Frankfurt</div>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Account Beneficiary</div>
+              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;">MAX STREICHER GmbH</div>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">IBAN Identifier</div>
+              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;">DE91 5004 0000 0123 4567 89</div>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">BIC / SWIFT Protocol</div>
+              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;">COBADEFFXXX</div>
             </div>
           </div>
-        </div>
-        
-        <div class="form-group mt-3">
-          <label class="form-label">Notes (Optional)</label>
-          <textarea name="notes" class="form-control" rows="2" placeholder="Transaction ID, date of transfer, etc."></textarea>
-        </div>
-        
-        <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">
-          Upload Payment Receipt
-        </button>
-      </form>
-    </div>
-  </div>
-  
-  <!-- Previous Uploads -->
-  <?php if ($hasUploads): ?>
-  <div class="card mt-4">
-    <div class="card-header">
-      <h3 class="card-title">Uploaded Documents</h3>
-    </div>
-    <div class="card-body" style="padding: 0;">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>File</th>
-            <th>Uploaded</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($uploads as $upload): ?>
-          <tr>
-            <td>
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 1.5rem;">📄</span>
-                <div>
-                  <div style="font-weight: 500;"><?= htmlspecialchars($upload['original_filename']) ?></div>
-                  <div style="font-size: 0.85rem; color: #64748b;"><?= number_format($upload['file_size'] / 1024, 1) ?> KB</div>
-                </div>
-              </div>
-            </td>
-            <td><?= date('M j, Y g:i A', strtotime($upload['created_at'])) ?></td>
-            <td>
-              <span class="order-status-badge status-<?= $upload['status'] ?>">
-                <?= ucfirst($upload['status']) ?>
-              </span>
-            </td>
-          </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <?php endif; ?>
-  
-  <!-- Next Steps -->
-  <div class="card mt-4">
-    <div class="card-body">
-      <h4 style="margin: 0 0 16px 0;">What happens next?</h4>
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: <?= $order['status'] !== 'awaiting_payment' ? '#dcfce7' : '#dbeafe' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.25rem;">
-            <?= $order['status'] !== 'awaiting_payment' ? '✓' : '1' ?>
+          
+          <div style="background: #fff7ed; border: 2px dashed #f59e0b; border-radius: var(--radius-lg); padding: 32px; text-align: center; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 0.85rem; color: #92400e; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">MANDATORY INSTITUTIONAL REFERENCE</div>
+            <div style="font-size: 2.5rem; font-weight: 900; color: #7c2d12; font-family: 'Outfit', sans-serif; line-height: 1;"><?= htmlspecialchars($order['order_number']) ?></div>
+            <div style="font-size: 1rem; color: #92400e; margin-top: 16px; font-weight: 700; max-width: 400px; margin-left: auto; margin-right: auto;">Include this identifier in the transaction narrative for automated interdisciplinary verification.</div>
           </div>
-          <div style="font-weight: 500;">Upload Receipt</div>
-          <div style="font-size: 0.85rem; color: #64748b;">Submit payment proof</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: <?= in_array($order['status'], ['payment_confirmed', 'processing', 'shipped', 'delivered']) ? '#dcfce7' : '#f1f5f9' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.25rem;">
-            <?= in_array($order['status'], ['payment_confirmed', 'processing', 'shipped', 'delivered']) ? '✓' : '2' ?>
-          </div>
-          <div style="font-weight: 500;">Verification</div>
-          <div style="font-size: 0.85rem; color: #64748b;">We confirm payment</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: <?= in_array($order['status'], ['shipped', 'delivered']) ? '#dcfce7' : '#f1f5f9' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.25rem;">
-            <?= in_array($order['status'], ['shipped', 'delivered']) ? '✓' : '3' ?>
-          </div>
-          <div style="font-weight: 500;">Shipping</div>
-          <div style="font-size: 0.85rem; color: #64748b;">Order dispatched</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: <?= $order['status'] === 'delivered' ? '#dcfce7' : '#f1f5f9' ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.25rem;">
-            <?= $order['status'] === 'delivered' ? '✓' : '4' ?>
-          </div>
-          <div style="font-weight: 500;">Delivery</div>
-          <div style="font-size: 0.85rem; color: #64748b;">Receive your order</div>
         </div>
       </div>
-    </div>
+
+      <!-- Verification Upload Portal -->
+      <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); padding: 60px 48px;">
+        <h3 style="font-size: 1.5rem; font-family: 'Outfit', sans-serif; margin-bottom: 32px; font-weight: 800; color: var(--primary);">Institutional Payment Verification</h3>
+        
+        <form action="/order/<?= $order['id'] ?>/payment" method="POST" enctype="multipart/form-data">
+          <div id="dropZone" onclick="document.getElementById('receiptFile').click()" style="border: 3px dashed #f1f5f9; border-radius: var(--radius-lg); padding: 60px; text-align: center; cursor: pointer; transition: all 0.4s; background: #fafafa;" onmouseover="this.style.borderColor='var(--accent)'; this.style.background='#fffefb';" onmouseout="this.style.borderColor='#f1f5f9'; this.style.background='#fafafa';">
+            <div style="font-size: 4rem; margin-bottom: 24px; opacity: 0.2;">📁</div>
+            <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem; margin-bottom: 8px;">Upload Transaction Protocol</div>
+            <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">PDF, JPG, or PNG specification (Institutional Max 10MB)</div>
+            <input type="file" name="receipt" id="receiptFile" accept=".jpg,.jpeg,.png,.gif,.pdf" style="display: none;" required onchange="showPreview(this.files[0])">
+          </div>
+          
+          <div id="filePreview" style="display: none; margin-top: 32px; padding: 24px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid #e2e8f0; align-items: center; gap: 20px;">
+            <div style="font-size: 2.5rem;">📎</div>
+            <div style="flex: 1;">
+              <div id="fileName" style="font-weight: 900; color: var(--primary); font-size: 1rem;"></div>
+              <div id="fileSize" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;"></div>
+            </div>
+            <div style="color: #10b981; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">VERIFICATION READY</div>
+          </div>
+          
+          <div style="margin-top: 48px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 1px;">Institutional Remarks (Technical)</label>
+            <textarea name="notes" rows="4" style="width: 100%; border: 2px solid #f1f5f9; border-radius: var(--radius-md); padding: 20px; font-family: inherit; font-size: 1rem; outline: none; transition: var(--transition); font-weight: 500;" onfocus="this.style.borderColor='var(--accent)'" placeholder="Interdisciplinary wire reference, originating bank, authorization codes..."></textarea>
+          </div>
+          
+          <button type="submit" class="btn-modern btn-accent" style="width: 100%; height: 72px; font-size: 1.2rem; font-weight: 900; margin-top: 48px; text-transform: uppercase; letter-spacing: 2px;">
+            Authorize Submission Protocol
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Financial Intelligence Sidebar -->
+    <aside style="position: sticky; top: 120px;">
+      <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); padding: 40px;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 32px; font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--primary);">Asset Summary</h3>
+        
+        <div style="margin-bottom: 40px;">
+          <?php foreach ($items as $item): ?>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 1px solid #f8fafc; padding-bottom: 16px;">
+            <div>
+              <div style="font-weight: 800; font-size: 1rem; color: var(--primary); line-height: 1.3;"><?= htmlspecialchars($item['product_name'] ?? $item['sku']) ?></div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-top: 4px;">QTY: <?= (int)$item['quantity'] ?> Units</div>
+            </div>
+            <div style="font-weight: 900; color: var(--primary); font-size: 1rem;"><?= format_price((float)$item['total_price']) ?></div>
+          </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div style="padding-top: 32px; border-top: 3px solid #f1f5f9;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-weight: 800; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Settlement Total</span>
+            <span style="font-size: 2.2rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif; line-height: 1;"><?= format_price((float)$order['total_amount']) ?></span>
+          </div>
+          <div style="text-align: right; font-size: 0.8rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Includes Statutory VAT</div>
+        </div>
+
+        <div style="margin-top: 60px; padding: 40px 0; border-top: 1px solid #f1f5f9; text-align: center;">
+          <h4 style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; letter-spacing: 2px;">Security Protocol Matrix</h4>
+          <div style="display: flex; justify-content: center; gap: 32px; opacity: 0.5;">
+            <span style="font-size: 2.5rem;">🔒</span>
+            <span style="font-size: 2.5rem;">🏛️</span>
+            <span style="font-size: 2.5rem;">⚖️</span>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
 </div>
 
 <script>
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('receiptFile');
-const filePreview = document.getElementById('filePreview');
-const fileName = document.getElementById('fileName');
-const fileSize = document.getElementById('fileSize');
-
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropZone.addEventListener(eventName, e => {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-});
-
-['dragenter', 'dragover'].forEach(eventName => {
-  dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'));
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-  dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'));
-});
-
-dropZone.addEventListener('drop', e => {
-  const files = e.dataTransfer.files;
-  if (files.length) {
-    fileInput.files = files;
-    showPreview(files[0]);
-  }
-});
-
-fileInput.addEventListener('change', e => {
-  if (e.target.files.length) {
-    showPreview(e.target.files[0]);
-  }
-});
-
 function showPreview(file) {
-  fileName.textContent = file.name;
-  fileSize.textContent = (file.size / 1024).toFixed(1) + ' KB';
-  filePreview.style.display = 'block';
+  if (!file) return;
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+  document.getElementById('filePreview').style.display = 'flex';
+}
+</script>
+
+<script>
+function showPreview(file) {
+  if (!file) return;
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+  document.getElementById('filePreview').style.display = 'flex';
 }
 </script>

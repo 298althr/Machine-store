@@ -1,262 +1,50 @@
-<?php
-$pageTitle = $lang === 'de' ? 'Referenzprojekte' : 'Reference Projects';
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Referenzprojekte' : 'Institutional Showcase' ?></span>
+  </div>
 
-$projects = [
-    [
-        'title_de' => 'EUGAL Pipeline',
-        'title_en' => 'EUGAL Pipeline',
-        'location' => 'Germany',
-        'year' => '2019-2020',
-        'category' => 'Pipelines & Plants',
-        'image' => '/images/photos/pipeline1.jpg',
-        'desc_de' => 'Europäische Gas-Anbindungsleitung - 480 km Pipeline für den Transport von Erdgas.',
-        'desc_en' => 'European Gas Link - 480 km pipeline for natural gas transport.',
-    ],
-    [
-        'title_de' => 'TENP III Pipeline',
-        'title_en' => 'TENP III Pipeline',
-        'location' => 'Germany',
-        'year' => '2023-2025',
-        'category' => 'Pipelines & Plants',
-        'image' => '/images/photos/pipeline2.jpg',
-        'desc_de' => 'Trans-Europa-Naturgas-Pipeline - wichtige Verbindung im europäischen Gasnetz.',
-        'desc_en' => 'Trans-Europa-Naturgas-Pipeline - important connection in the European gas network.',
-    ],
-    [
-        'title_de' => 'Zeelink Pipeline',
-        'title_en' => 'Zeelink Pipeline',
-        'location' => 'Germany/Belgium',
-        'year' => '2020-2021',
-        'category' => 'Pipelines & Plants',
-        'image' => '/images/photos/pipeline3.jpg',
-        'desc_de' => 'Grenzüberschreitende Pipeline zwischen Deutschland und Belgien.',
-        'desc_en' => 'Cross-border pipeline between Germany and Belgium.',
-    ],
-    [
-        'title_de' => 'Offshore Drilling Platform',
-        'title_en' => 'Offshore Drilling Platform',
-        'location' => 'North Sea',
-        'year' => '2021-2022',
-        'category' => 'Drilling Technology',
-        'image' => '/images/photos/drilling.jpg',
-        'desc_de' => 'Komplette Bohrausrüstung und Hydrauliksysteme für Offshore-Plattform.',
-        'desc_en' => 'Complete drilling equipment and hydraulic systems for offshore platform.',
-    ],
-    [
-        'title_de' => 'Amprion Erdkabelprojekt',
-        'title_en' => 'Amprion Underground Cable Project',
-        'location' => 'Germany',
-        'year' => '2024-2027',
-        'category' => 'Civil Engineering',
-        'image' => '/images/photos/civil.jpg',
-        'desc_de' => 'Über 1.300 km Tiefbauarbeiten für die Energiewende.',
-        'desc_en' => 'Over 1,300 km of civil engineering works for the energy transition.',
-    ],
-    [
-        'title_de' => 'LNG Terminal Wilhelmshaven',
-        'title_en' => 'LNG Terminal Wilhelmshaven',
-        'location' => 'Germany',
-        'year' => '2023-2025',
-        'category' => 'Pipelines & Plants',
-        'image' => '/images/photos/pipeline4.jpg',
-        'desc_de' => 'Installation von Hochdruck-Rohrleitungssystemen für das LNG-Import-Terminal.',
-        'desc_en' => 'Installation of high-pressure piping systems for the LNG import terminal.',
-    ],
-    [
-        'title_de' => 'Geothermie-Bohrprojekt Bayern',
-        'title_en' => 'Geothermal Drilling Project Bavaria',
-        'location' => 'Germany',
-        'year' => '2022-2023',
-        'category' => 'Drilling Technology',
-        'image' => '/images/photos/mechanical2.jpg',
-        'desc_de' => 'Tiefbohrungen für Geothermie-Kraftwerk mit mobilen Bohranlagen.',
-        'desc_en' => 'Deep drilling for geothermal power plant with mobile drilling rigs.',
-    ],
-    [
-        'title_de' => 'Raffinerie-Modernisierung',
-        'title_en' => 'Refinery Modernization',
-        'location' => 'Germany',
-        'year' => '2020-2021',
-        'category' => 'Mechanical Engineering',
-        'image' => '/images/photos/mechanical1.jpg',
-        'desc_de' => 'Modernisierung der Prozessanlagen und Rohrleitungssysteme.',
-        'desc_en' => 'Modernization of process plants and piping systems.',
-    ],
-    [
-        'title_de' => 'Airbus A320 Wartungszentrum',
-        'title_en' => 'Airbus A320 Maintenance Center',
-        'location' => 'Hamburg, Germany',
-        'year' => '2023-2024',
-        'category' => 'Aviation Engineering',
-        'image' => '/assets/aviation-product.svg',
-        'desc_de' => 'Komplette Ausstattung des Wartungszentrums mit Triebwerksprüfständen, Avionik-Testsystemen und Hydraulik-Bodengeräten.',
-        'desc_en' => 'Complete equipment for maintenance center including engine test stands, avionics test systems, and hydraulic ground support equipment.',
-    ],
-    [
-        'title_de' => 'Lufthansa Technik Prüfanlage',
-        'title_en' => 'Lufthansa Technik Test Facility',
-        'location' => 'Frankfurt, Germany',
-        'year' => '2022-2023',
-        'category' => 'Aviation Engineering',
-        'image' => '/assets/aviation-product.svg',
-        'desc_de' => 'Installation von Fahrwerksprüfständen und Turbinenschaufel-Inspektionssystemen für MRO-Betrieb.',
-        'desc_en' => 'Installation of landing gear test rigs and turbine blade inspection systems for MRO operations.',
-    ],
-];
-?>
-
-<div class="page-header">
-    <div class="container">
-        <nav class="breadcrumb">
-            <a href="/">STREICHER</a>
-            <span>-</span>
-            <span><?= $pageTitle ?></span>
-        </nav>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 400px; display: flex; align-items: center; padding: 80px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 100%), url('/images/photos/civil2.jpg') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+        Institutional Portfolio
+      </div>
+      <h1 style="font-size: 4.5rem; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 16px; font-weight: 900; letter-spacing: -2px;">Engineering<br>Excellence.</h1>
+      <p style="font-size: 1.4rem; opacity: 0.9; max-width: 650px; font-weight: 500; line-height: 1.6;"><?= $lang === 'de' ? 'Unsere globalen Meilensteine und interdisziplinären Erfolge im Großprojektbau.' : 'Our global milestones and interdisciplinary achievements in large-scale project construction.' ?></p>
     </div>
-</div>
+  </section>
 
-<section class="projects-hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/photos/civil2.jpg') center/cover;">
-    <div class="container">
-        <h1><?= $pageTitle ?></h1>
-        <p class="hero-subtitle">
-            <?= $lang === 'de' 
-                ? 'Entdecken Sie unsere erfolgreich abgeschlossenen Projekte weltweit.' 
-                : 'Discover our successfully completed projects worldwide.' ?>
-        </p>
-    </div>
-</section>
-
-<section class="projects-section">
-    <div class="container">
-        <div class="projects-grid">
-            <?php foreach ($projects as $project): ?>
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="<?= $project['image'] ?>" alt="<?= $lang === 'de' ? $project['title_de'] : $project['title_en'] ?>">
-                    <span class="project-category"><?= $project['category'] ?></span>
-                </div>
-                <div class="project-content">
-                    <div class="project-meta">
-                        <span class="project-location">📍 <?= $project['location'] ?></span>
-                        <span class="project-year">📅 <?= $project['year'] ?></span>
-                    </div>
-                    <h3><?= $lang === 'de' ? $project['title_de'] : $project['title_en'] ?></h3>
-                    <p><?= $lang === 'de' ? $project['desc_de'] : $project['desc_en'] ?></p>
-                </div>
-            </div>
-            <?php endforeach; ?>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 48px; margin-bottom: 120px;">
+    <?php foreach ($projects as $project): ?>
+    <article style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.4s ease-out; position: relative;" onmouseover="this.style.transform='translateY(-12px)'; this.style.boxShadow='0 30px 60px -12px rgba(15, 23, 42, 0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-xl)';">
+      <div style="position: relative; aspect-ratio: 16/10; overflow: hidden;">
+        <img src="<?= $project['image'] ?>" alt="<?= $lang === 'de' ? $project['title_de'] : $project['title_en'] ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
+        <div style="position: absolute; top: 32px; left: 32px; background: var(--accent); color: white; padding: 8px 20px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; box-shadow: var(--shadow-md); z-index: 2;">
+          <?= $project['category'] ?>
         </div>
-    </div>
-</section>
-
-<style>
-.projects-hero {
-    min-height: 350px;
-    display: flex;
-    align-items: center;
-    color: white;
-    text-align: center;
-}
-
-.projects-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-}
-
-.projects-section {
-    padding: 4rem 0;
-    background: var(--gray-50);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-}
-
-.project-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-}
-
-.project-image {
-    position: relative;
-    aspect-ratio: 16/10;
-    overflow: hidden;
-}
-
-.project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-
-.project-card:hover .project-image img {
-    transform: scale(1.05);
-}
-
-.project-category {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: var(--primary);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.project-content {
-    padding: 1.5rem;
-}
-
-.project-meta {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-    font-size: 0.85rem;
-    color: var(--gray-500);
-}
-
-.project-content h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: var(--dark);
-}
-
-.project-content p {
-    color: var(--gray-600);
-    line-height: 1.6;
-}
-
-@media (max-width: 1024px) {
-    .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .projects-hero h1 {
-        font-size: 2rem;
-    }
-}
-</style>
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent); z-index: 1;"></div>
+      </div>
+      <div style="padding: 48px; flex: 1; display: flex; flex-direction: column;">
+        <div style="display: flex; gap: 32px; margin-bottom: 24px; font-size: 0.85rem; color: var(--text-muted); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">
+          <span style="display: flex; align-items: center; gap: 10px;"><span style="font-size: 1.2rem;">📍</span> <?= $project['location'] ?></span>
+          <span style="display: flex; align-items: center; gap: 10px;"><span style="font-size: 1.2rem;">📅</span> <?= $project['year'] ?></span>
+        </div>
+        <h3 style="font-size: 2rem; font-family: 'Outfit', sans-serif; color: var(--primary); margin: 0 0 24px 0; line-height: 1.1; font-weight: 900; letter-spacing: -1px;">
+          <?= $lang === 'de' ? $project['title_de'] : $project['title_en'] ?>
+        </h3>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 40px; font-weight: 500;">
+          <?= $lang === 'de' ? $project['desc_de'] : $project['desc_en'] ?>
+        </p>
+        <div style="margin-top: auto; padding-top: 32px; border-top: 2px solid #f8fafc;">
+          <a href="#" style="color: var(--primary); font-weight: 900; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s;" onmouseover="this.style.color='var(--accent)'; this.children[1].style.transform='translateX(8px)';" onmouseout="this.style.color='var(--primary)'; this.children[1].style.transform='translateX(0)';">
+            <span><?= $lang === 'de' ? 'Projekt-Protokoll' : 'Project Protocol' ?></span>
+            <span style="font-size: 1.5rem; transition: transform 0.3s;">→</span>
+          </a>
+        </div>
+      </div>
+    </article>
+    <?php endforeach; ?>
+  </div>
+</div>

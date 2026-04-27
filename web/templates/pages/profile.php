@@ -1,359 +1,113 @@
-<?php
-$pageTitle = $lang === 'de' ? 'Unternehmensprofil' : 'Company Profile';
-$pageSubtitle = $lang === 'de' ? 'Langjährige Erfahrung, technische Kompetenz und ein breites Leistungsspektrum' : 'Long-time Experience, Technical Competence and a Wide Scope of Services';
-?>
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Unternehmensidentität' : 'Institutional Identity' ?></span>
+  </div>
 
-<div class="page-header profile-header">
-    <div class="container">
-        <nav class="breadcrumb">
-            <a href="/"><?= $lang === 'de' ? 'Startseite' : 'Home' ?></a>
-            <span>/</span>
-            <span><?= $pageTitle ?></span>
-        </nav>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 550px; display: flex; align-items: center; padding: 80px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.5) 100%), url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; max-width: 900px; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 32px; letter-spacing: 2px;">
+        <?= $lang === 'de' ? 'Unsere Wurzeln' : 'Institutional Heritage' ?>
+      </div>
+      <h1 style="font-size: 4.5rem; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 24px; font-weight: 900; letter-spacing: -2px;">
+        <?= $lang === 'de' ? 'Technische Exzellenz,<br>Jahrzehntelange Präzision.' : 'Decades of Excellence,<br>Technical Precision.' ?>
+      </h1>
+      <p style="font-size: 1.5rem; opacity: 0.9; line-height: 1.6; max-width: 700px; font-weight: 500;">
+        <?= $lang === 'de' 
+            ? 'Seit 1909 setzen wir Maßstäbe im internationalen Anlagenbau und interdisziplinären Maschinenbau.' 
+            : 'Setting global benchmarks in plant and interdisciplinary mechanical engineering since 1909.' ?>
+      </p>
     </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 80px; align-items: start; margin-bottom: 120px;">
+    <!-- Institutional Narrative -->
+    <div style="line-height: 1.8; color: var(--text-muted); font-size: 1.15rem;">
+      <h2 style="font-family: 'Outfit', sans-serif; color: var(--primary); font-size: 2.75rem; margin-bottom: 48px; font-weight: 900; letter-spacing: -1.5px;">
+        <?= $lang === 'de' ? 'Unternehmensentwicklung' : 'Institutional Evolution' ?>
+      </h2>
+      
+      <?php if ($lang === 'de'): ?>
+        <p style="font-size: 1.6rem; color: var(--primary); font-weight: 800; font-family: 'Outfit', sans-serif; margin-bottom: 48px; line-height: 1.4; letter-spacing: -0.5px;">
+          MAX STREICHER GmbH & Co. KG aA mit Hauptsitz in Deggendorf ist ein international tätiger Konzern mit über 4.500 Mitarbeitern.
+        </p>
+        <div style="background: white; border-left: 8px solid var(--accent); padding: 40px; border-radius: 8px; margin-bottom: 48px; box-shadow: var(--shadow-md);">
+          <p style="margin-bottom: 0; font-weight: 500; font-style: italic;">"Was 1909 mit Straßenbau begann, hat sich zu einem interdisziplinären Konzern entwickelt. Wir meistern nationale und internationale Großprojekte durch technisches Know-how und eine solide Eigenkapitalstruktur."</p>
+        </div>
+        <p style="margin-bottom: 32px;">Unser Spektrum umfasst Pipelines, Anlagenbau, Maschinenbau sowie Hoch- und Tiefbau, unterstützt durch eigene Rohstoffquellen zur Qualitätssicherung.</p>
+      <?php else: ?>
+        <p style="font-size: 1.6rem; color: var(--primary); font-weight: 800; font-family: 'Outfit', sans-serif; margin-bottom: 48px; line-height: 1.4; letter-spacing: -0.5px;">
+          MAX STREICHER GmbH & Co. KG aA, headquartered in Deggendorf, is an internationally active corporate group with more than 4,500 employees.
+        </p>
+        <div style="background: white; border-left: 8px solid var(--accent); padding: 40px; border-radius: 8px; margin-bottom: 48px; box-shadow: var(--shadow-md);">
+          <p style="margin-bottom: 0; font-weight: 500; font-style: italic;">"Established in 1909 with a focus on infrastructure, STREICHER has evolved into a global interdisciplinary powerhouse. Organic growth and technical subject matter expertise are the pillars of our success in massive international projects."</p>
+        </div>
+        <p style="margin-bottom: 32px;">Our scope includes pipelines, plant engineering, mechanical engineering, and complex civil structures, backed by proprietary raw material plants for vertical quality control.</p>
+      <?php endif; ?>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 80px;">
+        <div style="background: #f8fafc; padding: 60px 48px; border-radius: var(--radius-lg); text-align: center; border: 1px solid #f1f5f9; box-shadow: var(--shadow-md); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: -10px; right: -10px; font-size: 8rem; opacity: 0.03; font-weight: 900; color: var(--primary);">HQ</div>
+          <div style="font-size: 4.5rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif; line-height: 1; letter-spacing: -2px;">1909</div>
+          <div style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-top: 24px;"><?= $lang === 'de' ? 'Gründung' : 'Established' ?></div>
+        </div>
+        <div style="background: #f8fafc; padding: 60px 48px; border-radius: var(--radius-lg); text-align: center; border: 1px solid #f1f5f9; box-shadow: var(--shadow-md); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: -10px; right: -10px; font-size: 8rem; opacity: 0.03; font-weight: 900; color: var(--primary);">GL</div>
+          <div style="font-size: 4.5rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif; line-height: 1; letter-spacing: -2px;">4,500+</div>
+          <div style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-top: 24px;"><?= $lang === 'de' ? 'Mitarbeiter' : 'Global Talent' ?></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corporate Infrastructure Sidebar -->
+    <aside style="position: sticky; top: 120px;">
+      <div style="background: white; border-radius: var(--radius-lg); padding: 60px 48px; box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 48px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.02; font-weight: 900;">OFFICE</div>
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 40px; font-weight: 900; letter-spacing: -0.5px;">Executive Registry</h3>
+        <address style="font-style: normal; color: var(--text-muted); line-height: 1.8; margin-bottom: 48px; font-size: 1.05rem; font-weight: 600;">
+          MAX STREICHER GmbH & Co. KG aA<br>
+          Schwaigerbreite 17<br>
+          94469 Deggendorf<br>
+          Germany
+        </address>
+        <div style="display: grid; gap: 24px; margin-bottom: 48px;">
+          <a href="mailto:info@streicher.de" style="color: var(--accent); font-weight: 900; text-decoration: none; font-size: 1.25rem; font-family: 'Outfit', sans-serif;">info@streicher.de</a>
+          <a href="https://www.streicher.de" target="_blank" style="color: var(--primary); font-weight: 900; text-decoration: none; border-bottom: 4px solid var(--accent); display: inline-block; width: fit-content; padding-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">Global Group Website</a>
+        </div>
+        <a href="/contact" class="btn-modern btn-accent" style="width: 100%; height: 72px; font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">Institutional Inquiry</a>
+      </div>
+
+      <div style="background: var(--primary); border-radius: var(--radius-lg); padding: 60px 48px; color: white; box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.05; font-weight: 900;">SEC</div>
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: white; margin-bottom: 40px; font-weight: 900; letter-spacing: -0.5px;">Interdisciplinary Sectors</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+          <?php 
+          $sectors = [
+            ['Pipelines & Plants', 'Infrastructure'],
+            ['Mechanical Engineering', 'Advanced Systems'],
+            ['Electrical Engineering', 'Global Control'],
+            ['Civil Engineering', 'Structural Design'],
+            ['Raw Materials', 'Vertical Integration']
+          ];
+          foreach ($sectors as $s): ?>
+          <li style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
+            <a href="/business-sectors" style="color: white; text-decoration: none; display: block; transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'" onmouseout="this.style.transform='translateX(0)'">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 1.1rem; font-weight: 900; font-family: 'Outfit', sans-serif;"><?= $s[0] ?></div>
+                  <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;"><?= $s[1] ?></div>
+                </div>
+                <span style="color: var(--accent); font-size: 1.5rem; font-weight: 900;">→</span>
+              </div>
+            </a>
+          </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    </aside>
+  </div>
 </div>
-
-<section class="profile-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/photos/mechanical3.jpg') center/cover;">
-    <div class="container">
-        <div class="profile-hero-content">
-            <h2 class="section-label"><?= $lang === 'de' ? 'Unternehmensübersicht' : 'Company Overview' ?></h2>
-            <h1><?= $pageSubtitle ?></h1>
-        </div>
-    </div>
-</section>
-
-<section class="profile-sectors">
-    <div class="container">
-        <div class="sectors-gallery">
-            <a href="/business-sectors/pipelines-plants" class="sector-thumb">
-                <img src="/images/photos/pipeline1.jpg" alt="Pipelines & Plants">
-                <span><?= $lang === 'de' ? 'Pipelines & Anlagen' : 'Pipelines & Plants' ?></span>
-            </a>
-            <a href="/business-sectors/mechanical-engineering" class="sector-thumb">
-                <img src="/images/photos/mechanical1.jpg" alt="Mechanical Engineering">
-                <span><?= $lang === 'de' ? 'Maschinenbau' : 'Mechanical Engineering' ?></span>
-            </a>
-            <a href="/business-sectors/electrical-engineering" class="sector-thumb">
-                <img src="/images/photos/electrical.jpg" alt="Electrical Engineering">
-                <span><?= $lang === 'de' ? 'Elektrotechnik' : 'Electrical Engineering' ?></span>
-            </a>
-            <a href="/business-sectors/civil-engineering" class="sector-thumb">
-                <img src="/images/photos/civil.jpg" alt="Civil Engineering">
-                <span><?= $lang === 'de' ? 'Hoch- & Tiefbau' : 'Civil & Structural Engineering' ?></span>
-            </a>
-            <a href="/business-sectors/raw-materials" class="sector-thumb">
-                <img src="/images/photos/raw-materials.jpg" alt="Raw Materials">
-                <span><?= $lang === 'de' ? 'Roh- & Baustoffe' : 'Raw & Construction Material' ?></span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<section class="profile-content">
-    <div class="container">
-        <div class="profile-grid">
-            <div class="profile-text">
-                <?php if ($lang === 'de'): ?>
-                <p><strong>Durch die Geschäftsbereiche <a href="/business-sectors/pipelines-plants">Pipelines und Anlagen</a>, <a href="/business-sectors/mechanical-engineering">Maschinenbau</a>, <a href="/business-sectors/electrical-engineering">Elektrotechnik</a>, <a href="/business-sectors/civil-engineering">Hoch- und Tiefbau</a> sowie <a href="/business-sectors/raw-materials">Roh- und Baustoffe</a> ist die MAX STREICHER GmbH & Co. KG aA mit Hauptsitz in Deggendorf sehr breit aufgestellt.</strong> Bei der Gründung des Unternehmens im Jahr 1909 konzentrierte sich STREICHER fast ausschließlich auf den Straßenbau. Heute ist STREICHER ein international tätiges Unternehmen, das mehr als 4.500 Mitarbeiter an ca. 30 Standorten beschäftigt.</p>
-                
-                <p>In den 1990er Jahren expandierte STREICHER erstmals über die bayerische Region hinaus - seitdem stellen nationale und internationale Projekte das Unternehmen vor neue Herausforderungen. Neben dem hervorragenden technischen Know-how sind eine solide Eigenkapitalstruktur und ein organisches Wachstum der STREICHER-Gruppe weitere Eckpfeiler der Unternehmensentwicklung.</p>
-                
-                <p>Ein steigender Energiebedarf, insbesondere an Erdgas, führte dazu, dass STREICHER in den 1970er Jahren das Leistungsspektrum auf den Geschäftsbereich <strong>Pipelines und Anlagen</strong> ausweitete. Der Beweis für diese Entscheidung zeigt sich im Erfolg nationaler und internationaler Projekte, z.B. dem Ausbau der deutschen Gasversorgungsinfrastruktur oder den Anlagen zur Energiespeicherung und Energieumwandlung.</p>
-                
-                <p>Ein weiteres wichtiges Element des Unternehmens ist der Geschäftsbereich <strong>Hoch- und Tiefbau</strong>. Bei komplexen Großprojekten im Straßenbau, Brückenbau oder Wasserbau sowie bei zeitkritischen Baustellen, z.B. der Sanierung von Autobahnen in einem engen Zeitrahmen, beweist STREICHER seine fachliche und organisatorische Kompetenz.</p>
-                
-                <p>Auch im Geschäftsbereich <strong>Maschinenbau</strong> verfügt das Unternehmen über große Expertise. Neben dem klassischen Apparatebau und dem in den letzten Jahren ausgebauten Bereich Bohrtechnik ist STREICHER auch in der Herstellung von Fahrgeschäften stark positioniert. Darüber hinaus realisiert STREICHER Modelliermaschinen und ist in der Verfahrenstechnik tätig.</p>
-                
-                <p>Der Geschäftsbereich <strong>Elektrotechnik</strong> vereint eine Vielzahl von Dienstleistungen - von der Elektroinstallation, Energietechnik, Mess- und Regeltechnik und Automatisierungstechnik bis hin zur funktionalen Sicherheit, Elektronikwerkstatt und Simulationen. In ihrer Funktion unterstützen diese Bereiche interdisziplinär interne und externe Projekte unterschiedlicher Art und Größenordnung.</p>
-                
-                <p>Eigene Steinbrüche und Kieswerke sowie Asphaltmischanlagen an verschiedenen Standorten in Deutschland liefern hochwertige Materialien für Projekte der Unternehmensgruppe, aber auch für externe Kunden. Diese Aktivitäten ergänzen das Leistungsspektrum im Bereich <strong>Roh- und Baustoffe</strong>.</p>
-                <?php else: ?>
-                <p><strong>Due to the business sectors <a href="/business-sectors/pipelines-plants">Pipelines and Plants</a>, <a href="/business-sectors/mechanical-engineering">Mechanical Engineering</a>, <a href="/business-sectors/electrical-engineering">Electrical Engineering</a>, <a href="/business-sectors/civil-engineering">Civil and Structural Engineering</a> as well as <a href="/business-sectors/raw-materials">Raw and Construction Material</a>, MAX STREICHER GmbH & Co. KG aA with its headquarters in Deggendorf is quite diversified.</strong> When the company was established in 1909, STREICHER focused exclusively almost on road construction. Now, STREICHER is an internationally operating company, which employs more than 4,500 people in approx. 30 locations.</p>
-                
-                <p>In the 1990s STREICHER first expanded beyond the Bavarian region - since then, national and international projects place new challenges to the company. Besides the excellent technical know-how, further cornerstones of the company development are a solid equity structure and an organic growth of the STREICHER Group.</p>
-                
-                <p>An increasing demand in energy, especially in natural gas, led STREICHER to extend the scope of services to the business sector <strong>Pipelines and Plants</strong> in the 1970s. The proof for this decision is evident in the success of national and international projects, e.g. the expansion of the German gas supply infrastructure or the plants for energy storage and energy conversion.</p>
-                
-                <p>Another important element of the company is the business sector <strong>Civil and Structural Engineering</strong>. In case of complex major projects in road construction, bridge construction or hydraulic engineering as well as in case of time-sensitive construction sites, e.g. the rehabilitation of motorways within a narrow time frame, STREICHER proves its professional and organisational competence.</p>
-                
-                <p>Also in the business sector <strong>Mechanical Engineering</strong> the company has great expertise. Besides the classical apparatus engineering and the sector drilling technology, which has expanded during recent years, STREICHER also has a strong position in the manufacturing of amusement rides. Moreover, STREICHER realises modeling machines and is active in process engineering.</p>
-                
-                <p>The business sector <strong>Electrical Engineering</strong> combines a variety of services - from electrical installation, energy technology, electrical measurement and control and automation technology to functional safety, electronics workshop and simulations. In their function these sections provide interdisciplinary support for internal and external projects of different type and scale.</p>
-                
-                <p>Own quarries and gravel mills as well as asphalt mixing plants at diverse locations in Germany supply materials of high quality for projects of the company group but also for external clients. These activities complement the scope of services in the sector <strong>Raw and Construction Material</strong>.</p>
-                <?php endif; ?>
-            </div>
-            
-            <div class="profile-sidebar">
-                <div class="company-card">
-                    <img src="https://www.streichergmbh.com/fileadmin/theme/templates/img/logo_streicher.svg" alt="MAX STREICHER" class="company-logo">
-                    <h3>MAX STREICHER GmbH & Co. Kommanditgesellschaft auf Aktien</h3>
-                    <address>
-                        Schwaigerbreite 17<br>
-                        94469 Deggendorf<br>
-                        Germany
-                    </address>
-                    <p>
-                        <a href="https://www.streichergmbh.com">www.streichergmbh.com</a><br>
-                        <a href="mailto:info@streichergmbh.com">info@streichergmbh.com</a>
-                    </p>
-                    <a href="https://goo.gl/maps/v2uwGuFPi4v" class="btn btn-outline" target="_blank">
-                        <?= $lang === 'de' ? 'So finden Sie uns' : 'How to find us' ?> »
-                    </a>
-                </div>
-                
-                <div class="sectors-list">
-                    <h3><?= $lang === 'de' ? 'Geschäftsbereiche' : 'Business Sectors' ?></h3>
-                    <ul>
-                        <li><a href="/business-sectors/pipelines-plants"><?= $lang === 'de' ? 'Pipelines & Anlagen' : 'Pipelines & Plants' ?></a></li>
-                        <li><a href="/business-sectors/mechanical-engineering"><?= $lang === 'de' ? 'Maschinenbau' : 'Mechanical Engineering' ?></a></li>
-                        <li><a href="/business-sectors/electrical-engineering"><?= $lang === 'de' ? 'Elektrotechnik' : 'Electrical Engineering' ?></a></li>
-                        <li><a href="/business-sectors/civil-engineering"><?= $lang === 'de' ? 'Hoch- & Tiefbau' : 'Civil & Structural Engineering' ?></a></li>
-                        <li><a href="/business-sectors/raw-materials"><?= $lang === 'de' ? 'Roh- & Baustoffe' : 'Raw & Construction Material' ?></a></li>
-                        <li><a href="/catalog?category=engineering-software">💻 Engineering Software</a></li>
-                        <li><a href="/catalog?category=aviation-engineering">✈️ <?= $lang === 'de' ? 'Luftfahrttechnik' : 'Aviation Engineering' ?></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="profile-stats">
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-number">1909</span>
-                <span class="stat-label"><?= $lang === 'de' ? 'Gegründet' : 'Founded' ?></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">4,500+</span>
-                <span class="stat-label"><?= $lang === 'de' ? 'Mitarbeiter' : 'Employees' ?></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">30+</span>
-                <span class="stat-label"><?= $lang === 'de' ? 'Standorte' : 'Locations' ?></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">7</span>
-                <span class="stat-label"><?= $lang === 'de' ? 'Geschäftsbereiche' : 'Business Sectors' ?></span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-.profile-header {
-    background: var(--gray-100);
-    padding: 1rem 0;
-}
-
-.profile-hero {
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    color: white;
-    text-align: center;
-}
-
-.profile-hero h2 {
-    color: var(--primary);
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 1rem;
-}
-
-.profile-hero h1 {
-    font-size: 2.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.profile-sectors {
-    padding: 3rem 0;
-    background: var(--gray-100);
-}
-
-.sectors-gallery {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-}
-
-.sector-thumb {
-    position: relative;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.sector-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-
-.sector-thumb:hover img {
-    transform: scale(1.05);
-}
-
-.sector-thumb span {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    color: white;
-    padding: 2rem 1rem 1rem;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-.profile-content {
-    padding: 4rem 0;
-}
-
-.profile-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
-}
-
-.profile-text p {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-}
-
-.profile-text a {
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.profile-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.company-card {
-    background: white;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
-}
-
-.company-logo {
-    max-width: 150px;
-    margin-bottom: 1rem;
-}
-
-.company-card h3 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-.company-card address {
-    font-style: normal;
-    margin-bottom: 1rem;
-    color: var(--gray-600);
-}
-
-.sectors-list {
-    background: white;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 1.5rem;
-}
-
-.sectors-list h3 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--primary);
-}
-
-.sectors-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sectors-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--gray-100);
-}
-
-.sectors-list li:last-child {
-    border-bottom: none;
-}
-
-.sectors-list a {
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.sectors-list a::before {
-    content: '›';
-    color: var(--primary);
-}
-
-.profile-stats {
-    background: var(--dark);
-    color: white;
-    padding: 4rem 0;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    text-align: center;
-}
-
-.stat-number {
-    display: block;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.stat-label {
-    font-size: 1rem;
-    color: var(--gray-400);
-}
-
-@media (max-width: 1024px) {
-    .sectors-gallery {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .profile-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .sectors-gallery {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .profile-hero h1 {
-        font-size: 1.75rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .sectors-gallery {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+iv>
+</div>

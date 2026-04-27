@@ -55,7 +55,13 @@ if ($path === '/api/cart' && $method === 'POST') {
     }
     unset($item);
     if (!$found) {
-        $cart[] = ['sku' => $sku, 'name' => $product['name'], 'price' => (float)$product['unit_price'], 'qty' => $qty];
+        $cart[] = [
+            'sku' => $sku, 
+            'name' => $product['name'], 
+            'slug' => $product['slug'] ?? '',
+            'price' => (float)$product['unit_price'], 
+            'qty' => $qty
+        ];
     }
     $_SESSION['cart'] = $cart;
     json_response(['ok' => true, 'cart_count' => get_cart_count(), 'message' => 'Added to cart']);

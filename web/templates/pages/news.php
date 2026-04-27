@@ -1,294 +1,51 @@
-<?php
-$pageTitle = $lang === 'de' ? 'Neuigkeiten' : 'News';
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Neuigkeiten' : 'Corporate Intelligence' ?></span>
+  </div>
 
-// News items from Streicher website
-$newsItems = [
-    [
-        'date' => '2025-12-10',
-        'title_de' => 'STREICHER erweitert Bohrtechnik-Portfolio mit neuen Tiefbohranlagen',
-        'title_en' => 'STREICHER expands drilling technology portfolio with new deep drilling rigs',
-        'excerpt_de' => 'Mit der Einführung der neuen SDR-5000 Serie erweitert STREICHER sein Angebot an Tiefbohranlagen für Geothermie und Öl-Gas-Exploration...',
-        'excerpt_en' => 'With the introduction of the new SDR-5000 series, STREICHER expands its range of deep drilling rigs for geothermal and oil-gas exploration...',
-        'image' => 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=600',
-        'slug' => 'new-deep-drilling-rigs'
-    ],
-    [
-        'date' => '2025-11-28',
-        'title_de' => 'Partnerschaft mit Siemens Energy für Wasserstoff-Infrastruktur',
-        'title_en' => 'Partnership with Siemens Energy for hydrogen infrastructure',
-        'excerpt_de' => 'STREICHER und Siemens Energy unterzeichnen strategische Partnerschaft für den Ausbau der Wasserstoff-Pipeline-Infrastruktur in Europa...',
-        'excerpt_en' => 'STREICHER and Siemens Energy sign strategic partnership for the expansion of hydrogen pipeline infrastructure in Europe...',
-        'image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600',
-        'slug' => 'siemens-hydrogen-partnership'
-    ],
-    [
-        'date' => '2025-11-15',
-        'title_de' => 'Erfolgreicher Abschluss des Nord Stream Wartungsprojekts',
-        'title_en' => 'Successful completion of Nord Stream maintenance project',
-        'excerpt_de' => 'Nach 18 Monaten intensiver Arbeit hat STREICHER die umfangreichen Wartungsarbeiten an kritischen Pipeline-Komponenten erfolgreich abgeschlossen...',
-        'excerpt_en' => 'After 18 months of intensive work, STREICHER has successfully completed extensive maintenance work on critical pipeline components...',
-        'image' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600',
-        'slug' => 'nord-stream-maintenance'
-    ],
-    [
-        'date' => '2025-10-22',
-        'title_de' => 'STREICHER gewinnt Großauftrag für LNG-Terminal in Wilhelmshaven',
-        'title_en' => 'STREICHER wins major contract for LNG terminal in Wilhelmshaven',
-        'excerpt_de' => 'Der Auftrag umfasst die Installation von Hochdruck-Rohrleitungssystemen und Sicherheitsventilen für das neue LNG-Import-Terminal...',
-        'excerpt_en' => 'The contract includes the installation of high-pressure piping systems and safety valves for the new LNG import terminal...',
-        'image' => 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600',
-        'slug' => 'lng-terminal-wilhelmshaven'
-    ],
-    [
-        'date' => '2025-10-05',
-        'title_de' => 'Innovatives Pflugverfahren – eingesetzt für die Energiewende',
-        'title_en' => 'Innovative ploughing method – used for the energy transition',
-        'excerpt_de' => '4.000 MW und die Leistung von rund 1.400 Windkraftanlagen, das ist die Kapazität, die geliefert wird...',
-        'excerpt_en' => '4,000 MW and the output of around 1,400 wind turbines, that is the capacity that will be delivered...',
-        'image' => 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600',
-        'slug' => 'innovative-ploughing-method'
-    ],
-    [
-        'date' => '2025-09-18',
-        'title_de' => 'Neue Hydrauliksysteme für Offshore-Plattformen vorgestellt',
-        'title_en' => 'New hydraulic systems for offshore platforms unveiled',
-        'excerpt_de' => 'Auf der SMM Hamburg präsentierte STREICHER die neueste Generation von Hochleistungs-Hydrauliksystemen für den Offshore-Einsatz...',
-        'excerpt_en' => 'At SMM Hamburg, STREICHER presented the latest generation of high-performance hydraulic systems for offshore applications...',
-        'image' => 'https://images.unsplash.com/photo-1562077981-4d7eafd44932?w=600',
-        'slug' => 'offshore-hydraulic-systems'
-    ],
-    [
-        'date' => '2025-08-26',
-        'title_de' => 'STREICHER unterzeichnet Vertrag für Baulos 12 der Rheinwassertransportleitung',
-        'title_en' => 'STREICHER signs the Contract for Construction Lot 12 of the Rhine Water Transport Pipeline',
-        'excerpt_de' => 'RWE Power AG vergibt Baulos 12 der Rheinwassertransportleitung an ein Joint Venture...',
-        'excerpt_en' => 'RWE Power AG awards construction lot 12 of the Rhine water transport pipeline to a joint venture...',
-        'image' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600',
-        'slug' => 'rhine-water-transport-pipeline'
-    ],
-    [
-        'date' => '2025-07-15',
-        'title_de' => 'Zertifizierung nach ISO 45001 für alle Produktionsstandorte',
-        'title_en' => 'ISO 45001 certification for all production sites',
-        'excerpt_de' => 'STREICHER hat die internationale Zertifizierung für Arbeitsschutz-Managementsysteme an allen deutschen Produktionsstandorten erhalten...',
-        'excerpt_en' => 'STREICHER has received international certification for occupational health and safety management systems at all German production sites...',
-        'image' => 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600',
-        'slug' => 'iso-45001-certification'
-    ],
-    [
-        'date' => '2025-06-11',
-        'title_de' => 'THD-Hochschulleitung beeindruckt vom vielfältigen Leistungsspektrum der STREICHER Gruppe',
-        'title_en' => 'THD University Management Impressed by the Diverse Range of Services of the STREICHER Group',
-        'excerpt_de' => 'Die Hochschulleitung der Technischen Hochschule Deggendorf, angeführt von ihrem Präsidenten, Prof...',
-        'excerpt_en' => 'The university management of the Deggendorf Institute of Technology, led by its president, Prof...',
-        'image' => 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600',
-        'slug' => 'thd-university-visit'
-    ],
-    [
-        'date' => '2025-06-05',
-        'title_de' => 'STREICHER Bohrtechnik entwickelt neue Modelle mobiler Bohranlagen',
-        'title_en' => 'STREICHER Bohrtechnik develops new models of mobile drilling rigs',
-        'excerpt_de' => 'Die STREICHER Gruppe ist seit 2009 im Bereich der mobilen Bohranlagen tätig. In der...',
-        'excerpt_en' => 'The STREICHER Group has been active in the field of mobile drilling rigs since 2009. In the...',
-        'image' => 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=600',
-        'slug' => 'mobile-drilling-rigs'
-    ],
-    [
-        'date' => '2025-05-28',
-        'title_de' => 'UIC baut den weltweit größten Kurzwegverdampfer',
-        'title_en' => 'UIC builds world\'s largest short path evaporator',
-        'excerpt_de' => 'Auf Kundenwunsch entwickelte, konstruierte, baute und lieferte UIC den weltweit größten Kurzweg...',
-        'excerpt_en' => 'At the customer\'s request, UIC developed, designed, built and delivered the world\'s largest short...',
-        'image' => 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600',
-        'slug' => 'uic-short-path-evaporator'
-    ],
-    [
-        'date' => '2025-02-17',
-        'title_de' => 'Video Pipeline-Bau TENP III, Deutschland',
-        'title_en' => 'Video Pipeline Construction TENP III, Germany',
-        'excerpt_de' => 'Die Trans-Europa-Naturgas-Pipeline (kurz TENP) ist eine wichtige Verbindung innerhalb des Erdgas...',
-        'excerpt_en' => 'The Trans-Europa-Naturgas-Pipeline (TENP in short) is an important connection within the natural gas...',
-        'image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600',
-        'slug' => 'tenp-iii-pipeline',
-        'hasVideo' => true
-    ],
-];
-?>
-
-<div class="page-header">
-    <div class="container">
-        <nav class="breadcrumb">
-            <a href="/">STREICHER</a>
-            <span>-</span>
-            <span><?= $pageTitle ?></span>
-        </nav>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 400px; display: flex; align-items: center; padding: 80px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+        Institutional Intelligence Hub
+      </div>
+      <h1 style="font-size: 4.5rem; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 16px; font-weight: 900; letter-spacing: -2px;">Corporate<br>Intelligence.</h1>
+      <p style="font-size: 1.4rem; opacity: 0.9; max-width: 650px; font-weight: 500; line-height: 1.6;"><?= $lang === 'de' ? 'Aktuelle Entwicklungen und technische Innovationen der STREICHER Gruppe.' : 'Latest developments and technical innovations from the STREICHER Group.' ?></p>
     </div>
-</div>
+  </section>
 
-<section class="news-hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600') center/cover;">
-    <div class="container">
-        <h1><?= $pageTitle ?></h1>
-    </div>
-</section>
-
-<section class="news-section">
-    <div class="container">
-        <div class="news-grid">
-            <?php foreach ($newsItems as $news): ?>
-            <article class="news-card">
-                <a href="/news/<?= $news['slug'] ?>" class="news-image">
-                    <img src="<?= $news['image'] ?>" alt="<?= $lang === 'de' ? $news['title_de'] : $news['title_en'] ?>">
-                    <?php if (!empty($news['hasVideo'])): ?>
-                    <span class="video-badge">▶ Video</span>
-                    <?php endif; ?>
-                </a>
-                <div class="news-content">
-                    <time datetime="<?= $news['date'] ?>">
-                        <?= date($lang === 'de' ? 'd.m.Y' : 'F d, Y', strtotime($news['date'])) ?>
-                    </time>
-                    <h3>
-                        <a href="/news/<?= $news['slug'] ?>">
-                            <?= $lang === 'de' ? $news['title_de'] : $news['title_en'] ?>
-                        </a>
-                    </h3>
-                    <p><?= $lang === 'de' ? $news['excerpt_de'] : $news['excerpt_en'] ?></p>
-                    <a href="/news/<?= $news['slug'] ?>" class="read-more">
-                        <?= $lang === 'de' ? 'Weiterlesen' : 'Read more' ?> →
-                    </a>
-                </div>
-            </article>
-            <?php endforeach; ?>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 48px; margin-bottom: 120px;">
+    <?php foreach ($newsItems as $news): ?>
+    <article style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.4s ease-out; position: relative;" onmouseover="this.style.transform='translateY(-12px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="position: relative; aspect-ratio: 16/10; overflow: hidden;">
+        <img src="<?= $news['image'] ?>" alt="<?= $lang === 'de' ? $news['title_de'] : $news['title_en'] ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
+        <?php if (!empty($news['hasVideo'])): ?>
+        <div style="position: absolute; top: 32px; right: 32px; background: var(--accent); color: white; padding: 8px 20px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-md); z-index: 2; letter-spacing: 2px;">
+          <span style="font-size: 0.9rem;">▶</span> VIDEO REPORT
         </div>
-    </div>
-</section>
-
-<style>
-.news-hero {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.news-hero h1 {
-    font-size: 3rem;
-    margin: 0;
-}
-
-.news-section {
-    padding: 4rem 0;
-    background: var(--gray-50);
-}
-
-.news-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-}
-
-.news-card {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.news-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.news-image {
-    display: block;
-    position: relative;
-    aspect-ratio: 16/10;
-    overflow: hidden;
-}
-
-.news-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-
-.news-card:hover .news-image img {
-    transform: scale(1.05);
-}
-
-.video-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: var(--primary);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.news-content {
-    padding: 1.5rem;
-}
-
-.news-content time {
-    display: inline-block;
-    background: var(--primary);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-}
-
-.news-content h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
-}
-
-.news-content h3 a {
-    color: var(--dark);
-    text-decoration: none;
-}
-
-.news-content h3 a:hover {
-    color: var(--primary);
-}
-
-.news-content p {
-    color: var(--gray-600);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.read-more {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-
-.read-more:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 1024px) {
-    .news-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .news-hero h1 {
-        font-size: 2rem;
-    }
-}
-</style>
+        <?php endif; ?>
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(15, 23, 42, 0.6), transparent); z-index: 1;"></div>
+      </div>
+      <div style="padding: 48px; flex: 1; display: flex; flex-direction: column;">
+        <time style="font-size: 0.85rem; color: var(--accent); font-weight: 900; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 20px;">
+          <?= date($lang === 'de' ? 'd. M Y' : 'M d, Y', strtotime($news['date'])) ?>
+        </time>
+        <h3 style="font-size: 2rem; font-family: 'Outfit', sans-serif; margin: 0 0 24px 0; line-height: 1.1; color: var(--primary); font-weight: 900; letter-spacing: -1px;">
+          <a href="/news/<?= $news['slug'] ?>" style="text-decoration: none; color: inherit; transition: all 0.3s;"><?= $lang === 'de' ? $news['title_de'] : $news['title_en'] ?></a>
+        </h3>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 40px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+          <?= $lang === 'de' ? $news['excerpt_de'] : $news['excerpt_en'] ?>
+        </p>
+        <div style="margin-top: auto; padding-top: 32px; border-top: 2px solid #f8fafc;">
+          <a href="/news/<?= $news['slug'] ?>" style="color: var(--primary); font-weight: 900; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s;" onmouseover="this.style.color='var(--accent)'; this.children[1].style.transform='translateX(8px)';" onmouseout="this.style.color='var(--primary)'; this.children[1].style.transform='translateX(0)';">
+            <span><?= $lang === 'de' ? 'Vollständiger Bericht' : 'Access Full Report' ?></span>
+            <span style="font-size: 1.5rem; transition: transform 0.3s;">→</span>
+          </a>
+        </div>
+      </div>
+    </article>
+    <?php endforeach; ?>
+  </div>
+</div>

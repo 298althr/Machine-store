@@ -1,158 +1,113 @@
-<div class="breadcrumb">
-  <a href="/">Home</a> <span>/</span>
-  <span>Technical Support</span>
-</div>
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Technischer Support' : 'Institutional Support' ?></span>
+  </div>
 
-<div class="page-header text-center">
-  <h1 class="page-title">Technical Support</h1>
-  <p class="page-subtitle">Expert assistance for all your industrial equipment needs</p>
-</div>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 350px; display: flex; align-items: center; padding: 60px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 30px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+        Engineering Support
+      </div>
+      <h1 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; line-height: 1.1; margin-bottom: 16px;"><?= $lang === 'de' ? 'Technischer Support' : 'Interdisciplinary Support' ?></h1>
+      <p style="font-size: 1.25rem; opacity: 0.9; max-width: 600px;">
+        <?= $lang === 'de' 
+            ? 'Weltweite Experten-Unterstützung für Ihre interdisziplinären Anlagen – rund um die Uhr.' 
+            : 'Subject matter expertise for your interdisciplinary systems – accessible globally, 24/7.' ?>
+      </p>
+    </div>
+  </section>
 
-<!-- Support Options -->
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px;">
-  <div class="card text-center" style="padding: 32px;">
-    <div style="font-size: 3rem; margin-bottom: 16px;">💬</div>
-    <h3 style="margin: 0 0 8px 0;">Live Chat</h3>
-    <p style="color: #64748b; margin-bottom: 16px;">Chat with our technical experts</p>
-    <a href="/contact" class="btn btn-primary">Start Chat</a>
-    <div style="color: #64748b; font-size: 0.9rem; margin-top: 12px;">Mon-Fri: 8AM - 6PM CET</div>
-  </div>
-  
-  <div class="card text-center" style="padding: 32px;">
-    <div style="font-size: 3rem; margin-bottom: 16px;">✉️</div>
-    <h3 style="margin: 0 0 8px 0;">Email Support</h3>
-    <p style="color: #64748b; margin-bottom: 16px;">Get detailed technical assistance via email</p>
-    <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px;">store@streichergmbh.com</div>
-    <div style="color: #64748b; font-size: 0.9rem;">Response within 24 hours</div>
-  </div>
-  
-  <div class="card text-center" style="padding: 32px; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white;">
-    <div style="font-size: 3rem; margin-bottom: 16px;">🚨</div>
-    <h3 style="margin: 0 0 8px 0;">Emergency Support</h3>
-    <p style="margin-bottom: 16px; opacity: 0.9;">24/7 critical equipment support</p>
-    <a href="/contact" class="btn" style="background: white; color: #dc2626; font-weight: 600;">Contact Emergency Team</a>
-    <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 12px;">Available 24/7/365</div>
-  </div>
-</div>
+  <!-- Support Protocols -->
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 100px;">
+    <div class="hover-lift" style="background: white; padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); text-align: center; border: 1px solid rgba(0,0,0,0.05);">
+      <div style="font-size: 4rem; margin-bottom: 32px;">💬</div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 16px; font-weight: 800;">Engineering Chat</h3>
+      <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">Direct synchronous access to our senior engineering desk for immediate technical resolution.</p>
+      <a href="/contact" class="btn-modern btn-accent" style="width: 100%; justify-content: center; font-weight: 800;">Initialize Tech Chat</a>
+    </div>
 
-<!-- Support Services -->
-<div class="card mb-4">
-  <div class="card-header">
-    <h3 class="card-title">Our Support Services</h3>
-  </div>
-  <div class="card-body">
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;">
-      <div>
-        <h4 style="display: flex; align-items: center; gap: 12px; margin: 0 0 12px 0;">
-          <span style="font-size: 1.5rem;">🔧</span> Installation Support
-        </h4>
-        <p style="color: #64748b; margin: 0;">
-          Expert guidance for equipment installation, commissioning, and startup. Our engineers can provide remote assistance or on-site support.
-        </p>
-      </div>
-      <div>
-        <h4 style="display: flex; align-items: center; gap: 12px; margin: 0 0 12px 0;">
-          <span style="font-size: 1.5rem;">🛠️</span> Maintenance Support
-        </h4>
-        <p style="color: #64748b; margin: 0;">
-          Preventive maintenance schedules, troubleshooting guides, and repair assistance to keep your equipment running at peak performance.
-        </p>
-      </div>
-      <div>
-        <h4 style="display: flex; align-items: center; gap: 12px; margin: 0 0 12px 0;">
-          <span style="font-size: 1.5rem;">📋</span> Technical Documentation
-        </h4>
-        <p style="color: #64748b; margin: 0;">
-          Access to operation manuals, technical specifications, spare parts catalogs, and maintenance procedures.
-        </p>
-      </div>
-      <div>
-        <h4 style="display: flex; align-items: center; gap: 12px; margin: 0 0 12px 0;">
-          <span style="font-size: 1.5rem;">🎓</span> Training Programs
-        </h4>
-        <p style="color: #64748b; margin: 0;">
-          Comprehensive training for operators and maintenance personnel, available on-site or at our training facility.
-        </p>
-      </div>
+    <div class="hover-lift" style="background: white; padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); text-align: center; border: 1px solid rgba(0,0,0,0.05);">
+      <div style="font-size: 4rem; margin-bottom: 32px;">✉️</div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 16px; font-weight: 800;">Technical Inquiry</h3>
+      <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">Formal submission for complex interdisciplinary specifications and documentation requests.</p>
+      <div style="font-weight: 900; color: var(--accent); font-size: 1.1rem; letter-spacing: 0.5px;">tech.support@streicher-group.com</div>
+    </div>
+
+    <div class="hover-lift" style="background: var(--primary); padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); text-align: center; color: white; border: 1px solid var(--accent);">
+      <div style="font-size: 4rem; margin-bottom: 32px;">🚨</div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: white; margin-bottom: 16px; font-weight: 800;">Emergency Hotline</h3>
+      <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">24/7 Rapid response protocol for critical industrial equipment failures and site safety.</p>
+      <div style="font-weight: 900; color: var(--accent); font-size: 1.4rem;">+49 941 123 456-99</div>
     </div>
   </div>
-</div>
 
-<!-- Submit Support Request -->
-<div class="card mb-4">
-  <div class="card-header">
-    <h3 class="card-title">Submit a Support Request</h3>
-  </div>
-  <div class="card-body">
-    <form action="/support" method="POST">
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-        <div class="form-group">
-          <label class="form-label">Name *</label>
-          <input type="text" name="name" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Company *</label>
-          <input type="text" name="company" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email *</label>
-          <input type="email" name="email" class="form-control" required>
-        </div>
-      </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label class="form-label">Equipment Model/SKU</label>
-          <input type="text" name="equipment" class="form-control" placeholder="e.g., HYD-PWR-5000">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Priority</label>
-          <select name="priority" class="form-control">
-            <option value="low">Low - General inquiry</option>
-            <option value="medium">Medium - Issue affecting operations</option>
-            <option value="high">High - Equipment down</option>
-            <option value="critical">Critical - Safety concern</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Describe Your Issue *</label>
-        <textarea name="issue" class="form-control" rows="5" required placeholder="Please describe the issue in detail, including any error messages or symptoms..."></textarea>
-      </div>
-      
-      <button type="submit" class="btn btn-primary btn-lg">Submit Support Request</button>
-    </form>
-  </div>
-</div>
-
-<!-- Resources -->
-<div class="card">
-  <div class="card-header">
-    <h3 class="card-title">Self-Service Resources</h3>
-  </div>
-  <div class="card-body">
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-      <a href="/faq" style="text-decoration: none; color: inherit; text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-        <div style="font-size: 2rem; margin-bottom: 8px;">❓</div>
-        <div style="font-weight: 600;">FAQ</div>
-        <div style="font-size: 0.85rem; color: #64748b;">Common questions</div>
-      </a>
-      <a href="#" style="text-decoration: none; color: inherit; text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-        <div style="font-size: 2rem; margin-bottom: 8px;">📚</div>
-        <div style="font-weight: 600;">Documentation</div>
-        <div style="font-size: 0.85rem; color: #64748b;">Technical manuals</div>
-      </a>
-      <a href="#" style="text-decoration: none; color: inherit; text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-        <div style="font-size: 2rem; margin-bottom: 8px;">🎥</div>
-        <div style="font-weight: 600;">Video Tutorials</div>
-        <div style="font-size: 0.85rem; color: #64748b;">How-to guides</div>
-      </a>
-      <a href="/catalog?category=spare-parts" style="text-decoration: none; color: inherit; text-align: center; padding: 24px; background: #f8fafc; border-radius: 8px;">
-        <div style="font-size: 2rem; margin-bottom: 8px;">⚙️</div>
-        <div style="font-weight: 600;">Spare Parts</div>
-        <div style="font-size: 0.85rem; color: #64748b;">Order parts online</div>
-      </a>
+  <!-- Technical Ticket Infrastructure -->
+  <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 120px;">
+    <div style="padding: 48px; background: #f8fafc; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+      <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; color: var(--primary); margin: 0; font-weight: 800;">System Support Ticket</h2>
+      <span style="background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; letter-spacing: 1px;">ENCRYPTION ACTIVE</span>
     </div>
+    <div style="padding: 80px;">
+      <form action="/support" method="POST">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 40px;">
+          <div class="form-group-modern">
+            <label>Authorized Representative *</label>
+            <input type="text" name="name" required placeholder="John Doe">
+          </div>
+          <div class="form-group-modern">
+            <label>Legal Entity / Company *</label>
+            <input type="text" name="company" required placeholder="Global Industrial AG">
+          </div>
+          <div class="form-group-modern">
+            <label>Corporate Email *</label>
+            <input type="email" name="email" required placeholder="representative@company.com">
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px;">
+          <div class="form-group-modern">
+            <label>Equipment Asset ID / SKU</label>
+            <input type="text" name="equipment" placeholder="e.g. STR-SYS-5000-X">
+          </div>
+          <div class="form-group-modern">
+            <label>Operational Priority Level</label>
+            <select name="priority" style="font-weight: 600;">
+              <option value="low">Institutional Inquiry (Non-Critical)</option>
+              <option value="medium">Standard Issue (Ops Affected)</option>
+              <option value="high">Critical Failure (Equipment Down)</option>
+              <option value="critical">Severe Risk (Safety Protocol Active)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group-modern" style="margin-bottom: 60px;">
+          <label>Detailed Technical Description *</label>
+          <textarea name="issue" rows="6" required placeholder="Outline the technical specifications, interdisciplinary symptoms, and site conditions..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn-modern btn-accent" style="padding: 24px 60px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Transmit Support Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Interdisciplinary Resource Library -->
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-bottom: 100px;">
+    <?php 
+    $resources = [
+      ['icon' => '📚', 'title' => 'Technical Manuals'],
+      ['icon' => '⚙️', 'title' => 'System Components'],
+      ['icon' => '🎥', 'title' => 'Integration Guides'],
+      ['icon' => '❓', 'title' => 'Knowledge Base'],
+    ];
+    foreach ($resources as $res):
+    ?>
+    <div class="hover-lift" style="background: white; padding: 40px; border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.05); text-align: center; box-shadow: var(--shadow-sm);">
+      <div style="font-size: 3rem; margin-bottom: 24px;"><?= $res['icon'] ?></div>
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--primary); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;"><?= $res['title'] ?></div>
+    </div>
+    <?php endforeach; ?>
   </div>
 </div>

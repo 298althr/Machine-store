@@ -1,126 +1,115 @@
-<div class="breadcrumb">
-  <a href="/">Home</a> <span>/</span>
-  <span>Returns & Warranty</span>
-</div>
-
-<div class="page-header text-center">
-  <h1 class="page-title">Returns & Warranty Policy</h1>
-  <p class="page-subtitle">Our commitment to your satisfaction</p>
-</div>
-
-<div style="max-width: 900px; margin: 0 auto;">
-  <!-- Warranty -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">🛡️ Warranty Coverage</h3>
-    </div>
-    <div class="card-body">
-      <div style="background: #dcfce7; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-        <h4 style="margin: 0 0 8px 0; color: #166534;">24-Month Standard Warranty</h4>
-        <p style="margin: 0; color: #166534;">All Streicher products are covered by our comprehensive 24-month warranty against manufacturing defects.</p>
-      </div>
-      
-      <h4>What's Covered:</h4>
-      <ul style="color: #475569; margin-bottom: 24px;">
-        <li>Manufacturing defects in materials and workmanship</li>
-        <li>Component failures under normal operating conditions</li>
-        <li>Performance issues not meeting published specifications</li>
-      </ul>
-      
-      <h4>What's Not Covered:</h4>
-      <ul style="color: #475569; margin-bottom: 24px;">
-        <li>Normal wear and tear</li>
-        <li>Damage from improper installation or operation</li>
-        <li>Unauthorized modifications or repairs</li>
-        <li>Damage from accidents, misuse, or neglect</li>
-        <li>Consumable parts (filters, seals, etc.)</li>
-      </ul>
-      
-      <div class="alert alert-info" style="margin-bottom: 0;">
-        <strong>Extended Warranty:</strong> Extended warranty options up to 5 years are available for most products. Contact our sales team for details.
-      </div>
-    </div>
+<div class="container-modern section-padding" style="padding-top: 40px;">
+  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
+    <span style="margin: 0 8px;">/</span> 
+    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Retouren & Garantie' : 'Institutional Warranty' ?></span>
   </div>
 
-  <!-- Returns -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">📦 Returns Policy</h3>
-    </div>
-    <div class="card-body">
-      <h4>Return Eligibility</h4>
-      <p style="color: #475569;">Products may be returned within 30 days of delivery if:</p>
-      <ul style="color: #475569; margin-bottom: 24px;">
-        <li>Product is unused and in original packaging</li>
-        <li>All accessories and documentation are included</li>
-        <li>Return is pre-authorized by our customer service team</li>
-      </ul>
-      
-      <h4>Non-Returnable Items</h4>
-      <ul style="color: #475569; margin-bottom: 24px;">
-        <li>Custom-manufactured or modified products</li>
-        <li>Products that have been installed or used</li>
-        <li>Electrical components that have been powered on</li>
-        <li>Hazardous materials or chemicals</li>
-      </ul>
-      
-      <h4>Return Process</h4>
-      <ol style="color: #475569;">
-        <li style="margin-bottom: 12px;"><strong>Contact Us:</strong> Email returns@streichergmbh.com to request a Return Authorization (RA) number.</li>
-        <li style="margin-bottom: 12px;"><strong>Pack Securely:</strong> Repack the product in its original packaging with all accessories.</li>
-        <li style="margin-bottom: 12px;"><strong>Ship:</strong> Send the package to our returns center with the RA number clearly marked.</li>
-        <li><strong>Refund:</strong> Once inspected, refunds are processed within 10 business days.</li>
-      </ol>
-    </div>
-  </div>
-
-  <!-- Warranty Claims -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">🔧 Warranty Claims</h3>
-    </div>
-    <div class="card-body">
-      <h4>How to File a Warranty Claim</h4>
-      <ol style="color: #475569; margin-bottom: 24px;">
-        <li style="margin-bottom: 12px;">Contact our technical support team with your order number and product details.</li>
-        <li style="margin-bottom: 12px;">Describe the issue and provide photos or videos if possible.</li>
-        <li style="margin-bottom: 12px;">Our team will diagnose the issue and determine warranty eligibility.</li>
-        <li style="margin-bottom: 12px;">If approved, we will repair or replace the product at no charge.</li>
-      </ol>
-      
-      <h4>Warranty Service Options</h4>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-        <div style="padding: 20px; background: #f8fafc; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; margin-bottom: 8px;">🔄</div>
-          <div style="font-weight: 600;">Replacement</div>
-          <div style="color: #64748b; font-size: 0.9rem;">New product shipped</div>
-        </div>
-        <div style="padding: 20px; background: #f8fafc; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; margin-bottom: 8px;">🛠️</div>
-          <div style="font-weight: 600;">Repair</div>
-          <div style="color: #64748b; font-size: 0.9rem;">Factory repair service</div>
-        </div>
-        <div style="padding: 20px; background: #f8fafc; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; margin-bottom: 8px;">👨‍🔧</div>
-          <div style="font-weight: 600;">On-Site</div>
-          <div style="color: #64748b; font-size: 0.9rem;">Field service available</div>
-        </div>
+  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 350px; display: flex; align-items: center; padding: 60px; background: #0f172a;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600') center/cover; opacity: 0.8;"></div>
+    <div style="position: relative; z-index: 1; color: white;">
+      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 30px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+        Institutional Assurance
       </div>
-    </div>
-  </div>
-
-  <!-- Contact -->
-  <div class="card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white;">
-    <div class="card-body text-center" style="padding: 48px;">
-      <h3 style="margin: 0 0 16px 0;">Need Assistance?</h3>
-      <p style="margin: 0 0 24px 0; opacity: 0.9;">
-        Our customer service team is here to help with returns and warranty claims.
+      <h1 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; line-height: 1.1; margin-bottom: 16px;"><?= $lang === 'de' ? 'Service & Garantie' : 'Service & Technical Warranty' ?></h1>
+      <p style="font-size: 1.25rem; opacity: 0.9; max-width: 600px;">
+        <?= $lang === 'de' 
+            ? 'Unser Versprechen für interdisziplinäre Qualität und Zuverlässigkeit auch nach der Inbetriebnahme.' 
+            : 'Our commitment to interdisciplinary quality and operational reliability continues far beyond commissioning.' ?>
       </p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+    </div>
+  </section>
+
+  <div style="max-width: 1000px; margin: 0 auto 120px;">
+    <!-- Warranty Dashboard -->
+    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 60px;">
+      <div style="background: var(--primary); padding: 40px; color: white; display: flex; align-items: center; justify-content: space-between;">
         <div>
-          <strong>📧 Email:</strong> returns@streichergmbh.com
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+            <span style="font-size: 2rem;">🛡️</span>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin: 0;"><?= $lang === 'de' ? '24 Monate Institutional Garantie' : '24-Month Institutional Warranty' ?></h3>
+          </div>
+          <p style="margin: 0; opacity: 0.8; font-size: 1.05rem;">
+            <?= $lang === 'de' 
+                ? 'Alle STREICHER Systeme sind durch unsere globale 24-monatige Werksgarantie abgedeckt.' 
+                : 'All STREICHER systems are covered by our global 24-month factory warranty against manufacturing defects.' ?>
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7;">Status</div>
+          <div style="font-weight: 900; color: var(--accent); font-size: 1.2rem;">CERTIFIED ACTIVE</div>
+        </div>
+      </div>
+      <div style="padding: 50px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
+          <div>
+            <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary); margin-bottom: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;"><?= $lang === 'de' ? 'Abgedeckte Leistungen:' : "Institutional Coverage:" ?></h4>
+            <ul style="padding: 0; margin: 0; list-style: none; display: grid; gap: 16px;">
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #10b981; font-weight: 900;">✓</span> Material- & Verarbeitungsfehler</li>
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #10b981; font-weight: 900;">✓</span> Komponentenversagen unter Nennlast</li>
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #10b981; font-weight: 900;">✓</span> Software- & Steuerungssystemfehler</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary); margin-bottom: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;"><?= $lang === 'de' ? 'Ausschlüsse:' : "Exclusions:" ?></h4>
+            <ul style="padding: 0; margin: 0; list-style: none; display: grid; gap: 16px;">
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #ef4444; font-weight: 900;">×</span> Betrieblich bedingter Verschleiß</li>
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #ef4444; font-weight: 900;">×</span> Fehler durch unsachgemäße Wartung</li>
+              <li style="display: flex; gap: 12px; font-size: 1rem; color: var(--text-muted);"><span style="color: #ef4444; font-weight: 900;">×</span> Nicht autorisierte Systemmodifikationen</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Reverse Logistics -->
+    <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid rgba(0,0,0,0.05); padding: 50px; margin-bottom: 60px;">
+      <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 40px; border-bottom: 1px solid #f1f5f9; padding-bottom: 24px;">
+        <span style="font-size: 2rem;">📦</span>
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin: 0; color: var(--primary);"><?= $lang === 'de' ? 'Reverse Logistics & Retouren' : 'Reverse Logistics Protocols' ?></h3>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
+        <div>
+          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary); margin-bottom: 16px;">Procurement Eligibility</h4>
+          <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.7;">
+            Unused system components and standard industrial parts can be returned within 30 days of acquisition. All returns must maintain original factory sealing and institutional documentation.
+          </p>
+        </div>
+        <div>
+          <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary); margin-bottom: 16px;">Restricted Assets</h4>
+          <ul style="padding: 0; margin: 0; list-style: none; display: grid; gap: 12px;">
+            <li style="font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;"><span style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></span> Custom-Engineered Solutions</li>
+            <li style="font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;"><span style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></span> Installed Interdisciplinary Components</li>
+            <li style="font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;"><span style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></span> HazMat & Regulated Chemicals</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claim Infrastructure -->
+    <section style="background: #f8fafc; border-radius: var(--radius-lg); padding: 60px; border: 1px solid rgba(0,0,0,0.02);">
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 48px; text-align: center; color: var(--primary); text-transform: uppercase; letter-spacing: 2px;">
+        <?= $lang === 'de' ? 'Service-Infrastruktur' : 'Service Infrastructure' ?>
+      </h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center;">
+        <div class="hover-lift" style="background: white; padding: 40px 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05);">
+          <div style="font-size: 3rem; margin-bottom: 24px;">🔄</div>
+          <h5 style="font-size: 1.2rem; font-family: 'Outfit', sans-serif; margin-bottom: 12px; color: var(--primary);">Rapid Exchange</h5>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Immediate replacement protocols for critical defective units.</p>
+        </div>
+        <div class="hover-lift" style="background: white; padding: 40px 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05);">
+          <div style="font-size: 3rem; margin-bottom: 24px;">🛠️</div>
+          <h5 style="font-size: 1.2rem; font-family: 'Outfit', sans-serif; margin-bottom: 12px; color: var(--primary);">Factory Overhaul</h5>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Precision reconditioning by our senior engineering experts.</p>
+        </div>
+        <div class="hover-lift" style="background: white; padding: 40px 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05);">
+          <div style="font-size: 3rem; margin-bottom: 24px;">👨‍🔧</div>
+          <h5 style="font-size: 1.2rem; font-family: 'Outfit', sans-serif; margin-bottom: 12px; color: var(--primary);">Global On-Site</h5>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Direct deployment for large-scale plant maintenance.</p>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
