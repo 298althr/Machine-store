@@ -2,7 +2,15 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+// Resilient autoloader detection
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+} else {
+    // Final fallback for root-level execution
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
 use Dotenv\Dotenv;
 use Streicher\App\Services\CsvDb;
