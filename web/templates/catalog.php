@@ -1,3 +1,8 @@
+<?php 
+$lang = $_SESSION['lang'] ?? 'de';
+$displayCurrency = $_SESSION['display_currency'] ?? 'EUR';
+$exchangeRate = get_exchange_rate();
+?>
 <div class="container-modern section-padding catalog-page">
   <div class="breadcrumb">
     <a href="/"><?= __('home') ?></a> 

@@ -44,7 +44,7 @@
 
   <div class="hero-image-side desktop-only">
      <div class="hero-image-wrapper">
-        <img src="/assets/images/drilling.jpg" alt="Industrial Drilling">
+        <img src="/images/photos/drilling.jpg" alt="Industrial Drilling">
         <div class="image-overlay-accent"></div>
      </div>
   </div>
