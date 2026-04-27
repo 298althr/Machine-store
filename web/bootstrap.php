@@ -21,8 +21,13 @@ $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
 // Configure error reporting based on environment
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
+    error_reporting(0);
+    ini_set('display_errors', '0');
+} else {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+}
 
 // Set timezone
 date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Chicago');

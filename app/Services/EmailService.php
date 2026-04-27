@@ -26,8 +26,8 @@ class EmailService
         $this->db = $db;
         $this->host = $_ENV['MAIL_HOST'] ?? 'localhost';
         $this->port = (int)($_ENV['MAIL_PORT'] ?? 1025);
-        $this->username = $_ENV['MAIL_USERNAME'] ?: null;
-        $this->password = $_ENV['MAIL_PASSWORD'] ?: null;
+        $this->username = $_ENV['MAIL_USERNAME'] ?? null;
+        $this->password = $_ENV['MAIL_PASSWORD'] ?? null;
         $this->fromAddress = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@streicher.de';
         $this->fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Streicher GmbH';
     }

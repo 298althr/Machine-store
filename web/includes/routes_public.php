@@ -1,3 +1,4 @@
+<?php
 // ============ HTML ROUTES ============
 
 // GET / - Homepage with featured products
