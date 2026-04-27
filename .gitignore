@@ -1,0 +1,62 @@
+# Dependencies
+/vendor/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker (not needed for Railway)
+docker-compose.override.yml
+# docker-compose.yml (keep if you want dev parity)
+
+# Uploads (dynamic content)
+/web/uploads/*
+!/web/uploads/.gitkeep
+
+# Cache
+/cache/
+
+# Temp files
+*.tmp
+*.temp
+
+# Audit and development files (root)
+AUDIT_REPORT.md
+UX_AUDIT_REPORT.md
+DOCUMENTATION.md
+checklist.md
+issues.txt
+project_feedback.md
+scrape_log.csv
+random.png
+
+# Root documents (not part of the app)
+*.pdf
+*.html
+!web/*.html
+
+# Local database
+*.sql.gz
+
+# Backups
+/backups/
+
+# DATABASE - CRITICAL: Allow data/db CSV files
+!/data/db/*.csv
+# Ignore specific root csv files if any
+products.csv
+scrape_log.csv

@@ -1,0 +1,2 @@
+id,product_id,requires_serial,requires_activation_code,license_key_format,support_email,download_url,activation_instructions,price,currency,is_active,created_at,updated_at
+1,4,1,1,003XXXXXXXXXXXX,support@streichergmbh.com,https://streichergmbh.com/download/pipeflow,1. Install PipeFlow Pro. 2. Enter serial. 3. Use activation code.,125000.00,USD,1,2026-04-26 12:00:00,2026-04-26 12:00:00

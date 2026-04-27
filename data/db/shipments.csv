@@ -1,0 +1,1 @@
+id,order_id,assigned_agent_id,tracking_number,carrier,status,shipped_at,estimated_delivery,actual_delivery,origin_city,origin_country,destination_city,destination_country,weight_kg,dimensions,service_type,created_at

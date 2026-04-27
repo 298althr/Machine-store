@@ -1,0 +1,8 @@
+id,name,slug,description,image_url,parent_id,sort_order,is_active,created_at
+1,Pipelines & Plants,pipelines-plants,Pipeline construction and plant equipment,,0,0,1,2026-04-26 12:00:00
+2,Mechanical Engineering,mechanical-engineering,Mechanical engineering equipment,,0,0,1,2026-04-26 12:00:00
+3,Drilling Technology,drilling-technology,Drilling rigs and equipment,,0,0,1,2026-04-26 12:00:00
+4,Hydraulic Systems,hydraulic-systems,Hydraulic power units and components,,0,0,1,2026-04-26 12:00:00
+5,Instrumentation,instrumentation,Measurement and control instruments,,0,0,1,2026-04-26 12:00:00
+6,Engineering Software,engineering-software,"Enterprise software solutions for industrial engineering, simulation, and process control",,0,0,1,2026-04-26 12:00:00
+7,Aviation Engineering,aviation-engineering,"Aircraft maintenance equipment, ground support systems, and aerospace manufacturing tools",,0,0,1,2026-04-26 12:00:00

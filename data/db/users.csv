@@ -1,0 +1,2 @@
+id,company_id,email,password_hash,full_name,phone,role,is_active,created_at
+1,,admin@streichergmbh.com,"$2y$10$O99Y7E.mBvH164u5uM7LveN3l5l6n7l8n9l0l1l2l3l4l5l6l7l8.",Administrator,,admin,1,2026-04-26 12:00:00

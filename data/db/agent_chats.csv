@@ -1,0 +1,1 @@
+id,shipment_id,agent_id,tracking_number,customer_name,customer_email,customer_phone,is_open,last_message_at,closed_reason,closed_at,created_at,updated_at
