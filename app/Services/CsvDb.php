@@ -166,6 +166,12 @@ class CsvDb
             fclose($handle);
             return [];
         }
+        
+        // Trim headers and strip BOM
+        $headers = array_map(function($h) {
+            $h = trim($h);
+            return preg_replace('/^\x{FEFF}/u', '', $h);
+        }, $headers);
 
         $records = [];
         $rowNum = 1;
