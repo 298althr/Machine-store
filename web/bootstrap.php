@@ -21,19 +21,15 @@ $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
 // Configure error reporting based on environment
-if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
-    error_reporting(0);
-    ini_set('display_errors', '0');
-} else {
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-}
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 // Set timezone
 date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Chicago');
 
 // Database Initialization
-$dbType = $_ENV['DB_TYPE'] ?? 'mysql';
+// Default to 'csv' for the zero-infrastructure setup on Railway
+$dbType = $_ENV['DB_TYPE'] ?? 'csv';
 
 if ($dbType === 'csv') {
     $csvDb = new CsvDb();
