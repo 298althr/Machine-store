@@ -27,20 +27,22 @@ class InventoryRepository
         return $stmt->fetch() ?: null;
     }
 
-    public function decrementStock(int $productId, int $quantity): bool
+    public function decrementStock(int $productId, int $quantity): ?int
     {
         $inventory = $this->getByProductId($productId);
         if (!$inventory) {
-            return false;
+            return null;
         }
 
         $currentStock = (int)$inventory['stock_level'];
         $newStock = max(0, $currentStock - $quantity);
 
-        return (bool)$this->db->update('inventory', [
+        $success = (bool)$this->db->update('inventory', [
             'stock_level' => $newStock,
             'updated_at' => date('Y-m-d H:i:s')
         ], ['product_id' => $productId]);
+
+        return $success ? $newStock : null;
     }
 
     public function isAvailable(int $productId, int $requestedQty): bool

@@ -154,7 +154,26 @@ if ($path === '/checkout' && $method === 'POST') {
                 $hasHardware = true;
                 // Decrement stock for hardware
                 if ($product) {
-                    $inventoryRepo->decrementStock((int)$product['id'], (int)$item['qty']);
+                    $newStock = $inventoryRepo->decrementStock((int)$product['id'], (int)$item['qty']);
+                    
+                    // Check for low stock alert
+                    if ($newStock !== null) {
+                        $threshold = 5; // Default
+                        $stmt = $pdo->prepare("SELECT setting_value FROM settings WHERE setting_key = 'low_stock_threshold' LIMIT 1");
+                        $stmt->execute();
+                        $dbThreshold = $stmt->fetchColumn();
+                        if ($dbThreshold !== false) $threshold = (int)$dbThreshold;
+                        
+                        $notifyEnabled = true;
+                        $stmt = $pdo->prepare("SELECT setting_value FROM settings WHERE setting_key = 'notify_low_stock' LIMIT 1");
+                        $stmt->execute();
+                        $dbNotify = $stmt->fetchColumn();
+                        if ($dbNotify !== false) $notifyEnabled = (bool)$dbNotify;
+
+                        if ($notifyEnabled && $newStock <= $threshold) {
+                            $telegramService->notifyLowStock($product, $newStock);
+                        }
+                    }
                 }
             }
 

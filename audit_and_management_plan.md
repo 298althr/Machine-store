@@ -46,9 +46,10 @@ The business is currently operating with several "blind spots":
 *   [x] **Dynamic Pricing**: Integrated real-time `EUR/USD` exchange rates across Cart and Checkout, including logistical costs and tax calculations.
 *   [x] **Checkout Friction**: Humanized form vocabulary, implemented real-time stock badges, and integrated inventory decrementing upon order placement.
 
-### Phase 3: Automation (UPCOMING)
-*   [ ] **Auto-Correlator**: Automate image matching for new SKUs.
-*   [ ] **Telegram Admin Integration**: Connect store alerts to the owner's Telegram for instant response.
+### Phase 3: Automation (IN PROGRESS)
+*   [x] **Auto-Correlator**: Implemented `AutoCorrelator` service and admin route to sync images with SKUs.
+*   [x] **Telegram Admin Integration**: Real-time order alerts now dispatched to the owner's Telegram.
+*   [ ] **Low Stock Alerts**: Automated notifications when inventory drops below safety thresholds.
 
 ---
 

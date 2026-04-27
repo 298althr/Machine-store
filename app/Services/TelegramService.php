@@ -87,6 +87,25 @@ class TelegramService
         $this->sendMessage((int)$chatId, $msg, 'HTML');
     }
 
+    public function notifyLowStock(array $product, int $stockLevel): void
+    {
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return;
+        }
+
+        $msg = "⚠️ <b>LOW STOCK ALERT</b>\n\n";
+        $msg .= "<b>Product:</b> {$product['name']}\n";
+        $msg .= "<b>SKU:</b> {$product['sku']}\n";
+        $msg .= "<b>Current Stock:</b> <b style=\"color: #ef4444;\">{$stockLevel}</b>\n";
+        $msg .= "\n<a href=\"https://streicher.up.railway.app/admin/products\">Manage Inventory</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
     private function handleAgentReply(int $chatId, string $trackingNumber, string $replyMessage): void
     {
         $stmt = $this->db->prepare('SELECT * FROM shipments WHERE tracking_number = ?');
