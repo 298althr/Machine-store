@@ -799,6 +799,19 @@ if ($path === '/admin/settings' && $method === 'POST') {
     exit;
 }
 
+// POST /admin/inventory/correlate - Run image correlation
+if ($path === '/admin/inventory/correlate' && $method === 'POST') {
+    require_admin();
+    
+    $imagesDir = dirname(__DIR__) . '/images';
+    $correlator = new \Streicher\App\Services\AutoCorrelator($pdo, $imagesDir);
+    $results = $correlator->run();
+    
+    set_flash_message("Correlation complete: {$results['correlated']} products linked, {$results['missing_images']} still missing images.");
+    header('Location: /admin/products');
+    exit;
+}
+
 // ============ STATIC PAGES ============
 
 // GET /contact - Contact page

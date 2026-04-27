@@ -185,7 +185,7 @@ if ($path === '/checkout' && $method === 'POST') {
         
         $totalConverted = convert_price((float)$total, $displayCurrency);
         
-        $orderId = $orderRepo->create([
+        $orderData = [
             'user_id' => $_SESSION['user_id'] ?? null,
             'order_number' => $orderNumber,
             'invoice_number' => $invoiceNumber,
@@ -212,7 +212,13 @@ if ($path === '/checkout' && $method === 'POST') {
             'shipping_country' => $_POST['country'] ?? 'Germany',
             'delivery_facility' => $_POST['delivery_facility'] ?? null,
             'notes' => $_POST['notes'] ?? null,
-        ], $orderItems);
+        ];
+
+        $orderId = $orderRepo->create($orderData, $orderItems);
+        
+        // Notify Admin via Telegram
+        $orderData['id'] = $orderId;
+        $telegramService->notifyNewOrder($orderData);
         
         $_SESSION['cart'] = [];
         header('Location: /order/' . $orderId . '/invoice');

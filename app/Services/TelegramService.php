@@ -61,6 +61,32 @@ class TelegramService
         }
     }
 
+    public function notifyNewOrder(array $order): void
+    {
+        // Get owner's chat ID from settings if available, else use a default or first subscriber
+        // For now, we'll try to find any admin who has started the bot
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return; // No admin chat ID configured
+        }
+
+        $symbol = $order['currency'] === 'USD' ? '$' : '€';
+        $amountFormatted = number_format((float)$order['total_amount'], 2, ',', '.');
+
+        $msg = "🔔 <b>NEW INDUSTRIAL ORDER</b>\n\n";
+        $msg .= "<b>Order:</b> #{$order['order_number']}\n";
+        $msg .= "<b>Amount:</b> {$symbol}{$amountFormatted}\n";
+        $msg .= "<b>Type:</b> " . ucfirst($order['order_type']) . "\n";
+        $msg .= "<b>Customer:</b> {$order['billing_name']}\n";
+        $msg .= "<b>Company:</b> {$order['billing_company']}\n";
+        $msg .= "\n<a href=\"https://streicher.up.railway.app/admin/orders/{$order['id']}\">View in Admin Panel</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
     private function handleAgentReply(int $chatId, string $trackingNumber, string $replyMessage): void
     {
         $stmt = $this->db->prepare('SELECT * FROM shipments WHERE tracking_number = ?');

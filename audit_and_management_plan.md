@@ -41,10 +41,10 @@ The business is currently operating with several "blind spots":
 *   [x] **Create Supplier Module**: Initialized `data/db/suppliers.csv`.
 *   [x] **Schema Standardization**: Normalized headers and removed BOMs from core tables.
 
-### Phase 2: UX Refactoring (IN PROGRESS)
+### Phase 2: UX Refactoring (COMPLETED)
 *   [x] **Specification Sidebars**: Added technical attribute filtering to the `/catalog` page.
 *   [x] **Dynamic Pricing**: Integrated real-time `EUR/USD` exchange rates across Cart and Checkout, including logistical costs and tax calculations.
-*   [ ] **Checkout Friction**: Streamlining the Quote Request process and reducing "robotic" terminology in forms.
+*   [x] **Checkout Friction**: Humanized form vocabulary, implemented real-time stock badges, and integrated inventory decrementing upon order placement.
 
 ### Phase 3: Automation (UPCOMING)
 *   [ ] **Auto-Correlator**: Automate image matching for new SKUs.
