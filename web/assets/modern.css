@@ -439,7 +439,82 @@ body {
   align-items: center;
 }
 
-/* ========== CATALOG PAGE ========== */
+/* ========== CATALOG FILTERS ========== */
+.filter-card {
+  margin-top: 24px;
+}
+
+.filter-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filter-group-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  padding: 4px 0;
+}
+
+.filter-option:hover {
+  color: var(--accent);
+}
+
+.filter-option.active {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.filter-option .checkbox {
+  font-size: 1rem;
+}
+
+.filter-actions {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-clear-filters {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  text-decoration: none;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-clear-filters:hover {
+  background: #f8fafc;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ========== FOOTER MODERN ========== */
 .catalog-page {
   padding-top: 40px;
 }

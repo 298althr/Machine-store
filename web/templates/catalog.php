@@ -42,6 +42,48 @@ $exchangeRate = get_exchange_rate();
           <?php endforeach; ?>
         </div>
       </div>
+
+      <!-- Technical Specifications Filters -->
+      <?php if (!empty($filterOptions)): ?>
+      <div class="sidebar-card filter-card">
+        <div class="sidebar-card-header">
+          <h3 class="sidebar-title"><?= $lang === 'de' ? 'Technische Filter' : 'Technical Filters' ?></h3>
+        </div>
+        <div class="filter-groups">
+          <?php foreach ($filterOptions as $name => $opt): ?>
+          <div class="filter-group">
+            <h4 class="filter-group-title"><?= htmlspecialchars($name) ?> <?= $opt['unit'] ? '('.$opt['unit'].')' : '' ?></h4>
+            <div class="filter-options">
+              <?php foreach ($opt['values'] as $val): ?>
+              <?php 
+                $isChecked = (isset($specFilters[$name]) && (string)$specFilters[$name] === (string)$val); 
+                $query = $_GET;
+                if ($isChecked) {
+                  unset($query[$name]);
+                } else {
+                  $query[$name] = $val;
+                }
+                $filterUrl = '/catalog?' . http_build_query($query);
+              ?>
+              <a href="<?= htmlspecialchars($filterUrl) ?>" class="filter-option <?= $isChecked ? 'active' : '' ?>">
+                <span class="checkbox"><?= $isChecked ? '✅' : '⬜' ?></span>
+                <span class="label"><?= htmlspecialchars($val) ?> <?= htmlspecialchars($opt['unit']) ?></span>
+              </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        
+        <?php if (!empty($specFilters)): ?>
+        <div class="filter-actions">
+          <a href="/catalog?<?= $currentCategory ? 'category='.htmlspecialchars($currentCategory['slug']) : '' ?>" class="btn-clear-filters">
+            <?= $lang === 'de' ? 'Filter zurücksetzen' : 'Clear All Filters' ?>
+          </a>
+        </div>
+        <?php endif; ?>
+      </div>
+      <?php endif; ?>
     </aside>
     
     <!-- Product Area -->

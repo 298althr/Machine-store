@@ -29,12 +29,22 @@ if (($path === '/catalog' || $path === '/catalog/') && $method === 'GET') {
     $search = $_GET['search'] ?? '';
     $categorySlug = $_GET['category'] ?? '';
     
+    // Collect spec filters from GET
+    $specFilters = [];
+    $reservedKeys = ['category', 'search', 'page', 'lang', 'currency', 'sort'];
+    foreach ($_GET as $key => $value) {
+        if (!in_array($key, $reservedKeys) && !empty($value)) {
+            $specFilters[$key] = $value;
+        }
+    }
+    
     $currentCategory = null;
     if ($categorySlug) {
         $currentCategory = $categoryRepo->findBySlug($categorySlug);
     }
     
-    $products = $productRepo->search($search, $categorySlug);
+    $products = $productRepo->search($search, $categorySlug, $specFilters);
+    $filterOptions = $specRepo->getFilterOptions();
     
     render_template('catalog.php', [
         'title' => ($currentCategory ? $currentCategory['name'] . ' - ' : '') . 'Product Catalog - Streicher',
@@ -42,6 +52,8 @@ if (($path === '/catalog' || $path === '/catalog/') && $method === 'GET') {
         'categories' => $categories,
         'currentCategory' => $currentCategory,
         'search' => $search,
+        'filterOptions' => $filterOptions,
+        'specFilters' => $specFilters,
     ]);
 }
 

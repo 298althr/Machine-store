@@ -96,7 +96,7 @@ class ProductRepository
         return array_map([$this, 'hydrate'], array_values($products));
     }
 
-    public function search(?string $query = null, ?string $categorySlug = null): array
+    public function search(?string $query = null, ?string $categorySlug = null, array $specFilters = []): array
     {
         $products = $this->all();
         
@@ -121,6 +121,26 @@ class ProductRepository
                 return strpos($name, $query) !== false || 
                        strpos($sku, $query) !== false || 
                        strpos($desc, $query) !== false;
+            });
+        }
+
+        if (!empty($specFilters)) {
+            $products = array_filter($products, function($p) use ($specFilters) {
+                $stmt = $this->db->prepare("SELECT * FROM product_specs WHERE product_id = ?");
+                $stmt->execute([$p['id']]);
+                $productSpecs = $stmt->fetchAll();
+                
+                $specMap = [];
+                foreach ($productSpecs as $ps) {
+                    $specMap[$ps['spec_name']] = $ps['spec_value'];
+                }
+
+                foreach ($specFilters as $name => $value) {
+                    if (!isset($specMap[$name]) || (string)$specMap[$name] !== (string)$value) {
+                        return false;
+                    }
+                }
+                return true;
             });
         }
 
