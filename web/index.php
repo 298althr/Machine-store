@@ -41,33 +41,6 @@ $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = $requestPath; // alias for compatibility
 
-// Seeding route
-if ($path === '/seed' || isset($_GET['seed_system'])) {
-    require_once __DIR__ . '/bootstrap.php';
-    $adminEmail = 'mgr@streichergmbh.com';
-    $userRepo->create([
-        'email' => $adminEmail,
-        'password_hash' => password_hash('Americana12', PASSWORD_DEFAULT),
-        'full_name' => 'General Manager',
-        'role' => 'admin',
-        'is_active' => 1
-    ]);
-    
-    $criticalSettings = [
-        'admin_telegram_chat_id' => $_ENV['TELEGRAM_CHAT_ID'] ?? '',
-        'low_stock_threshold' => '5',
-        'notify_low_stock' => '1',
-        'notify_new_order' => '1',
-        'eur_usd_rate' => '1.08',
-        'quote_mode_active' => '1'
-    ];
-    foreach ($criticalSettings as $key => $val) {
-        $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
-        try { $stmt->execute([$key, $val]); } catch(\Exception $e) {}
-    }
-    exit("SYSTEM SEEDED SUCCESSFULLY - Admin account: {$adminEmail}");
-}
-
 // Telegram webhook endpoint
 if ($path === '/telegram-webhook') {
     $content = file_get_contents('php://input');
