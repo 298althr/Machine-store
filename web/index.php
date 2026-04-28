@@ -1,8 +1,6 @@
 <?php
-die("INDEX RUNNING");
 declare(strict_types=1);
 
-// Fast Health Check (Before anything else)
 // Diagnostic route (Temporary)
 if (($_SERVER['REQUEST_URI'] ?? '') === '/diag-login' || isset($_GET['diag_login'])) {
     require_once __DIR__ . '/bootstrap.php';
