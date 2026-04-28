@@ -5,18 +5,15 @@ if (($_SERVER['REQUEST_URI'] ?? '') === '/diag-login' || isset($_GET['diag_login
     require_once __DIR__ . '/bootstrap.php';
     header('Content-Type: text/plain');
     echo "DIAGNOSTIC START\n";
-    $email = 'mgr@streichergmbh.com';
-    $pass = 'Americana12';
-    $user = $userRepo->findByEmail($email);
-    if (!$user) {
-        echo "ERROR: User not found in database.\n";
-        $stmt = $pdo->prepare("SELECT * FROM users");
-        $stmt->execute();
-        print_r($stmt->fetchAll());
-    } else {
-        echo "User found: " . $user['email'] . "\n";
-        $verify = password_verify($pass, $user['password_hash']);
-        echo "Verify Result: " . ($verify ? "SUCCESS" : "FAILURE") . "\n";
+    $stmt = $pdo->prepare("SELECT * FROM users");
+    $stmt->execute();
+    $all = $stmt->fetchAll();
+    echo "Total users: " . count($all) . "\n";
+    foreach ($all as $u) {
+        echo " - Email: [" . $u['email'] . "] Role: " . $u['role'] . "\n";
+        if ($u['email'] === 'mgr@streichergmbh.com') {
+             echo "   PASSWORD VERIFY TEST: " . (password_verify('Americana12', $u['password_hash']) ? "PASS" : "FAIL") . "\n";
+        }
     }
     exit;
 }
