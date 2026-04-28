@@ -2,6 +2,27 @@
 declare(strict_types=1);
 
 // Fast Health Check (Before anything else)
+// Diagnostic route (Temporary)
+if (($_SERVER['REQUEST_URI'] ?? '') === '/diag-login' || isset($_GET['diag_login'])) {
+    require_once __DIR__ . '/bootstrap.php';
+    header('Content-Type: text/plain');
+    echo "DIAGNOSTIC START\n";
+    $email = 'mgr@streichergmbh.com';
+    $pass = 'Americana12';
+    $user = $userRepo->findByEmail($email);
+    if (!$user) {
+        echo "ERROR: User not found in database.\n";
+        $stmt = $pdo->prepare("SELECT * FROM users");
+        $stmt->execute();
+        print_r($stmt->fetchAll());
+    } else {
+        echo "User found: " . $user['email'] . "\n";
+        $verify = password_verify($pass, $user['password_hash']);
+        echo "Verify Result: " . ($verify ? "SUCCESS" : "FAILURE") . "\n";
+    }
+    exit;
+}
+
 if (($_SERVER['REQUEST_URI'] ?? '/') === '/health' || ($_SERVER['REQUEST_URI'] ?? '/') === '/healthz') {
     header('Content-Type: application/json');
     echo json_encode(['status' => 'ok', 'timestamp' => date('c')]);
@@ -38,39 +59,6 @@ $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = $requestPath; // alias for compatibility
-
-// Path debug (Temporary)
-if (isset($_GET['debug_path'])) {
-    header('Content-Type: text/plain');
-    echo "URI: " . ($_SERVER['REQUEST_URI'] ?? 'NULL') . "\n";
-    echo "PATH: " . ($path ?? 'NULL') . "\n";
-    exit;
-}
-
-// Diagnostic route (Temporary)
-if ($path === '/diag-login' && isset($_GET['auth']) && $_GET['auth'] === 'Americana12') {
-    require_once __DIR__ . '/bootstrap.php';
-    $email = 'mgr@streichergmbh.com';
-    $pass = 'Americana12';
-    $user = $userRepo->findByEmail($email);
-    
-    header('Content-Type: text/plain');
-    if (!$user) {
-        echo "ERROR: User not found in database via findByEmail.\n";
-        // Dump all users to see what's there
-        $stmt = $pdo->prepare("SELECT * FROM users");
-        $stmt->execute();
-        $all = $stmt->fetchAll();
-        echo "Listing all users:\n";
-        print_r($all);
-    } else {
-        echo "User found: " . $user['email'] . "\n";
-        echo "Hash in DB: " . $user['password_hash'] . "\n";
-        $verify = password_verify($pass, $user['password_hash']);
-        echo "Password Verify Result: " . ($verify ? "SUCCESS" : "FAILURE") . "\n";
-    }
-    exit;
-}
 
 // Telegram webhook endpoint
 if ($path === '/telegram-webhook') {
