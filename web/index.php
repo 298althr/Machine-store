@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 // Diagnostic route (Temporary)
 if (($_SERVER['REQUEST_URI'] ?? '') === '/diag-login' || isset($_GET['diag_login'])) {
