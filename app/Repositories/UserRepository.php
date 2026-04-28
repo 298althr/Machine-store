@@ -40,4 +40,18 @@ class UserRepository
         }
         return $count;
     }
+
+    public function create(array $data): int
+    {
+        $stmt = $this->db->prepare("INSERT INTO users (email, password_hash, full_name, role, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $data['email'],
+            $data['password_hash'],
+            $data['full_name'] ?? '',
+            $data['role'] ?? 'user',
+            $data['is_active'] ?? 1,
+            date('Y-m-d H:i:s')
+        ]);
+        return (int)$this->db->lastInsertId();
+    }
 }

@@ -205,6 +205,13 @@ class CsvDb
             // Read current data
             rewind($handle);
             $headers = fgetcsv($handle, 0, $this->separator);
+            if ($headers) {
+                $headers = array_map(function($h) {
+                    $h = trim($h);
+                    return preg_replace('/^\x{FEFF}/u', '', $h);
+                }, $headers);
+            }
+            
             $records = [];
             while (($row = fgetcsv($handle, 0, $this->separator)) !== false) {
                 if (count($row) === count($headers)) {

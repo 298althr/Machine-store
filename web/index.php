@@ -24,9 +24,16 @@ if (php_sapi_name() === 'cli-server') {
 try {
     require_once __DIR__ . '/bootstrap.php';
 } catch (\Throwable $e) {
-    file_put_contents('php://stderr', "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . "\n");
+    $errorMsg = "FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+    file_put_contents('php://stderr', $errorMsg . "\n");
     http_response_code(500);
-    exit("Internal Server Error");
+    if (($_ENV['APP_ENV'] ?? 'production') !== 'production') {
+        echo "<h1>Internal Server Error</h1>";
+        echo "<pre>" . htmlspecialchars($errorMsg) . "\n" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+    } else {
+        echo "Internal Server Error";
+    }
+    exit;
 }
 
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';

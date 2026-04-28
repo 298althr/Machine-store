@@ -86,11 +86,11 @@ function get_exchange_rate(): float {
     
     // Cache the rate (silently fail if database is not writable)
     try {
-        $stmt = $pdo->prepare("UPDATE settings SET setting_value = ?, updated_at = NOW() WHERE setting_key = ?");
-        $stmt->execute([$rate, 'eur_usd_rate']);
+        $stmt = $pdo->prepare("UPDATE settings SET setting_value = ?, updated_at = ? WHERE setting_key = ?");
+        $stmt->execute([$rate, date('Y-m-d H:i:s'), 'eur_usd_rate']);
         if ($stmt->rowCount() === 0) {
-            $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
-            $stmt->execute(['eur_usd_rate', $rate]);
+            $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value, updated_at) VALUES (?, ?, ?)");
+            $stmt->execute(['eur_usd_rate', $rate, date('Y-m-d H:i:s')]);
         }
     } catch (\Throwable $e) {
         // Log to stderr but don't crash
