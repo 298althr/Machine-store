@@ -9,11 +9,25 @@ if (($_SERVER['REQUEST_URI'] ?? '') === '/diag-login' || isset($_GET['diag_login
     $stmt->execute();
     $all = $stmt->fetchAll();
     echo "Total users: " . count($all) . "\n";
+    $found = false;
     foreach ($all as $u) {
         echo " - Email: [" . $u['email'] . "] Role: " . $u['role'] . "\n";
         if ($u['email'] === 'mgr@streichergmbh.com') {
+             $found = true;
              echo "   PASSWORD VERIFY TEST: " . (password_verify('Americana12', $u['password_hash']) ? "PASS" : "FAIL") . "\n";
         }
+    }
+    
+    if (!$found) {
+        echo "MGR NOT FOUND. Creating...\n";
+        $res = $userRepo->create([
+            'email' => 'mgr@streichergmbh.com',
+            'password_hash' => password_hash('Americana12', PASSWORD_DEFAULT),
+            'full_name' => 'General Manager',
+            'role' => 'admin',
+            'is_active' => 1
+        ]);
+        echo "Creation Result: " . ($res ? "SUCCESS" : "FAILURE") . "\n";
     }
     exit;
 }
