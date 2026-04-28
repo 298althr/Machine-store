@@ -132,6 +132,7 @@ if (isset($_GET['seed_system']) || !empty($_ENV['SEED_SYSTEM'])) {
             $stmt->execute([$key, $val]);
         }
     }
+    exit("SYSTEM SEEDED SUCCESSFULLY - Admin account: {$adminEmail}");
 }
 require_once __DIR__ . '/includes/agent_chat.php';
 

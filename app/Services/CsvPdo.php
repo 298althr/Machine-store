@@ -75,9 +75,12 @@ class CsvStatement
         $sql = $this->sql;
         
         // Simple SQL Parsing logic
-        if (preg_match('/SELECT\s+.*?\s+FROM\s+([a-zA-Z0-9_]+)(?:\s+WHERE\s+(.*))?/is', $sql, $matches)) {
+        if (preg_match('/SELECT\s+.*?\s+FROM\s+[`"\'\s]*([a-zA-Z0-9_]+)[`"\'\s]*(?:\s+WHERE\s+(.*))?/is', $sql, $matches)) {
             $table = $matches[1];
             $whereStr = $matches[2] ?? '';
+            
+            // Aggressive LIMIT cleaning
+            $whereStr = preg_replace('/LIMIT\s+\d+\s*$/i', '', trim($whereStr));
             
             $where = $this->parseWhere($whereStr, $params);
             $this->results = $this->db->select($table, $where);
