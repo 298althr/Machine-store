@@ -41,6 +41,13 @@ $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = $requestPath; // alias for compatibility
 
+// Debug route (Temporary)
+if ($path === '/debug-users' && isset($_GET['auth']) && $_GET['auth'] === 'Americana12') {
+    header('Content-Type: text/plain');
+    echo file_get_contents(dirname(__DIR__) . '/data/db/users.csv');
+    exit;
+}
+
 // Telegram webhook endpoint
 if ($path === '/telegram-webhook') {
     $content = file_get_contents('php://input');
