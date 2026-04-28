@@ -1,1 +1,3 @@
 id,order_id,product_id,sku,name,serial_number,quantity,unit_price,total_price
+1,1,1,HYD-0001,"Hydraulic Power Unit 5000 HP",SN-HYD-00-20260428-1BA3,4,427091,1708364
+2,2,1,HYD-0001,"Hydraulic Power Unit 5000 HP",SN-HYD-00-20260428-9EE4,1,427091,427091

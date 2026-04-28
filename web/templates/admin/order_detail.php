@@ -63,6 +63,15 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
     </form>
   </div>
 </div>
+<?php elseif ($order['status'] === 'payment_pending_upload'): ?>
+<div class="alert alert-warning mb-4">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <div class="alert-title">⏳ Payment Claimed</div>
+      <p style="margin: 4px 0 0 0;">Customer claims they have made payment. Awaiting receipt upload.</p>
+    </div>
+  </div>
+</div>
 <?php elseif ($order['status'] === 'payment_confirmed'): ?>
 <div class="alert alert-info mb-4">
   <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -400,7 +409,7 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
         <h3 class="card-title">🚛 Create Shipment - Streicher Logistics</h3>
       </div>
       <div class="card-body">
-        <form action="/admin/orders/<?= $order['id'] ?>/ship" method="POST">
+        <form action="/admin/orders/<?= $order['id'] ?>/create-shipment" method="POST">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div class="form-group">
               <label class="form-label">Carrier</label>

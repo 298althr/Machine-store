@@ -115,14 +115,16 @@ class CsvStatement
             return true;
         }
 
-        if (preg_match('/UPDATE\s+([a-zA-Z0-9_]+)\s+SET\s+(.*?)(?:\s+WHERE\s+(.*))?/is', $sql, $matches)) {
+        if (preg_match('/UPDATE\s+([a-zA-Z0-9_]+)\s+SET\s+(.*?)\s+WHERE\s+(.*)/is', $sql, $matches)
+            || preg_match('/UPDATE\s+([a-zA-Z0-9_]+)\s+SET\s+(.*)/is', $sql, $matches)
+        ) {
             $table = $matches[1];
             $setStr = $matches[2];
             $whereStr = $matches[3] ?? '';
-            
+
             $updates = $this->parseSet($setStr, $params);
             $where = $this->parseWhere($whereStr, $params);
-            
+
             $this->rowCount = $this->db->update($table, $updates, $where);
             return true;
         }

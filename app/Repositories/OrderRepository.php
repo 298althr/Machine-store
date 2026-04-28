@@ -96,7 +96,7 @@ class OrderRepository
         return $stmt->fetchAll();
     }
 
-    public function all(string $status = null, int $limit = null): array
+    public function all(?string $status = null, ?int $limit = null): array
     {
         $sql = "SELECT * FROM orders";
         if ($status) {

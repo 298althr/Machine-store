@@ -249,6 +249,37 @@ if ($path === '/checkout' && $method === 'POST') {
     }
 }
 
+// GET /order/lookup - Guest order lookup form
+if ($path === '/order/lookup' && $method === 'GET') {
+    render_template('pages/order_lookup.php', [
+        'title' => 'Find Your Order - Streicher',
+        'error' => $_GET['error'] ?? null,
+    ]);
+}
+
+// POST /order/lookup - Guest order lookup handler
+if ($path === '/order/lookup' && $method === 'POST') {
+    $orderNumber = trim($_POST['order_number'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+    if (empty($orderNumber) || empty($email)) {
+        header('Location: /order/lookup?error=missing_fields');
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE order_number = ? AND billing_email = ? LIMIT 1');
+    $stmt->execute([$orderNumber, $email]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        header('Location: /order/lookup?error=not_found');
+        exit;
+    }
+
+    header('Location: /order/' . $order['id'] . '/invoice');
+    exit;
+}
+
 // GET /order/{id}/invoice - Order Invoice
 if (preg_match('#^/order/(\d+)/invoice$#', $path, $m) && $method === 'GET') {
     $orderId = (int)$m[1];
@@ -286,6 +317,66 @@ if (preg_match('#^/order/(\d+)/invoice/pdf$#', $path, $m) && $method === 'GET') 
     exit;
 }
 
+// GET /order/{id}/payment-confirm - "I have made payment" confirmation step
+if (preg_match('#^/order/(\d+)/payment-confirm$#', $path, $m) && $method === 'GET') {
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        http_response_code(404);
+        render_template('404.php', ['title' => 'Order Not Found']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT oi.*, p.name as product_name, p.sku FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?');
+    $stmt->execute([$orderId]);
+    $items = $stmt->fetchAll();
+
+    $settings = $settingRepo->all();
+
+    render_template('order_payment_confirm.php', [
+        'title' => 'Confirm Payment - Order ' . $order['order_number'],
+        'order' => $order,
+        'items' => $items,
+        'settings' => $settings,
+    ]);
+}
+
+// POST /order/{id}/payment-confirm - Record "I have made payment" intent
+if (preg_match('#^/order/(\d+)/payment-confirm$#', $path, $m) && $method === 'POST') {
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        http_response_code(404);
+        echo 'Order not found';
+        exit;
+    }
+
+    // Only allow if currently awaiting payment
+    if ($order['status'] !== 'awaiting_payment') {
+        header('Location: /order/' . $orderId . '/payment');
+        exit;
+    }
+
+    $pdo->prepare('UPDATE orders SET status = ?, updated_at = ? WHERE id = ?')
+        ->execute(['payment_pending_upload', date('Y-m-d H:i:s'), $orderId]);
+
+    // Notify admin via Telegram
+    $orderData = $order;
+    $orderData['id'] = $orderId;
+    $telegramService->notifyPaymentClaimed($orderData);
+
+    header('Location: /order/' . $orderId . '/payment');
+    exit;
+}
+
 // GET /order/{id}/payment - Payment upload page
 if (preg_match('#^/order/(\d+)/payment$#', $path, $m) && $method === 'GET') {
     $orderId = (int)$m[1];
@@ -297,6 +388,13 @@ if (preg_match('#^/order/(\d+)/payment$#', $path, $m) && $method === 'GET') {
     if (!$order) {
         http_response_code(404);
         render_template('404.php', ['title' => 'Order Not Found']);
+        exit;
+    }
+
+    // Enforce confirmation step: redirect if user hasn't clicked "I have made payment"
+    if ($order['status'] === 'awaiting_payment') {
+        header('Location: /order/' . $orderId . '/payment-confirm');
+        exit;
     }
     
     $stmt = $pdo->prepare('SELECT oi.*, p.name as product_name, p.sku FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?');
@@ -307,11 +405,14 @@ if (preg_match('#^/order/(\d+)/payment$#', $path, $m) && $method === 'GET') {
     $stmt->execute([$orderId]);
     $uploads = $stmt->fetchAll();
     
+    $settings = $settingRepo->all();
+    
     render_template('order_payment.php', [
         'title' => 'Upload Payment - Order ' . $order['order_number'],
         'order' => $order,
         'items' => $items,
         'uploads' => $uploads,
+        'settings' => $settings,
     ]);
 }
 
@@ -372,6 +473,11 @@ if (preg_match('#^/order/(\d+)/payment$#', $path, $m) && $method === 'POST') {
     
     $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?')
         ->execute(['payment_uploaded', $orderId]);
+
+    // Notify admin via Telegram that receipt was uploaded
+    $orderData = $order;
+    $orderData['id'] = $orderId;
+    $telegramService->notifyPaymentUploaded($orderData);
     
     header('Location: /order/' . $orderId . '/confirmation');
     exit;
@@ -614,9 +720,73 @@ if ($path === '/login' && $method === 'POST') {
     ]);
 }
 
+// GET /forgot-password - Password recovery placeholder
+if ($path === '/forgot-password' && $method === 'GET') {
+    render_template('pages/forgot_password.php', ['title' => 'Password Recovery - Streicher']);
+}
+
 // GET /register - Customer Registration
 if ($path === '/register' && $method === 'GET') {
     render_template('pages/register.php', ['title' => 'Register - Streicher']);
+}
+
+// POST /register - Process registration
+if ($path === '/register' && $method === 'POST') {
+    $firstName = trim($_POST['first_name'] ?? '');
+    $lastName = trim($_POST['last_name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $passwordConfirm = $_POST['password_confirm'] ?? '';
+    $terms = $_POST['terms'] ?? false;
+
+    $errors = [];
+    if (empty($firstName) || empty($lastName)) {
+        $errors[] = 'Full name is required.';
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Valid email is required.';
+    }
+    if (strlen($password) < 8) {
+        $errors[] = 'Password must be at least 8 characters.';
+    }
+    if ($password !== $passwordConfirm) {
+        $errors[] = 'Passwords do not match.';
+    }
+    if (!$terms) {
+        $errors[] = 'You must accept the institutional terms.';
+    }
+
+    if (!empty($errors)) {
+        render_template('pages/register.php', [
+            'title' => 'Register - Streicher',
+            'errors' => $errors,
+        ]);
+        exit;
+    }
+
+    $existing = $userRepo->findByEmail($email);
+    if ($existing) {
+        render_template('pages/register.php', [
+            'title' => 'Register - Streicher',
+            'errors' => ['An account with this email already exists.'],
+        ]);
+        exit;
+    }
+
+    $fullName = $firstName . ' ' . $lastName;
+    $userId = $userRepo->create([
+        'email' => $email,
+        'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+        'full_name' => $fullName,
+        'role' => 'customer',
+        'is_active' => 1,
+    ]);
+
+    $_SESSION['user_id'] = $userId;
+    $_SESSION['user_role'] = 'customer';
+    $_SESSION['user_name'] = $fullName;
+    header('Location: /account');
+    exit;
 }
 
 // GET /account - Customer Account
@@ -634,4 +804,22 @@ if ($path === '/account' && $method === 'GET') {
         'title' => 'My Account - Streicher',
         'orders' => $orders,
     ]);
+}
+
+// GET /account/profile - Profile settings stub
+if ($path === '/account/profile' && $method === 'GET') {
+    if (empty($_SESSION['user_id'])) {
+        header('Location: /login');
+        exit;
+    }
+    render_template('pages/account_profile.php', ['title' => 'Profile - Streicher']);
+}
+
+// GET /account/quotes - Quotes stub
+if ($path === '/account/quotes' && $method === 'GET') {
+    if (empty($_SESSION['user_id'])) {
+        header('Location: /login');
+        exit;
+    }
+    render_template('pages/account_quotes.php', ['title' => 'Quotes - Streicher']);
 }

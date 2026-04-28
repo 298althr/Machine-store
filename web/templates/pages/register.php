@@ -41,6 +41,17 @@
         <p style="color: var(--text-muted); font-size: 1.2rem; font-weight: 500; line-height: 1.6;">Initialize your official interdisciplinary partnership today.</p>
       </div>
 
+      <?php if (!empty($errors)): ?>
+      <div style="background: #fef2f2; border: 2px solid #fee2e2; padding: 24px; border-radius: 8px; color: #991b1b; font-weight: 800; margin-bottom: 32px;">
+        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-weight: 900;">Enrollment Validation Failure</div>
+        <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+          <?php foreach ($errors as $err): ?>
+            <li><?= htmlspecialchars($err) ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php endif; ?>
+
       <form action="/register" method="POST">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
           <div class="form-group-modern">

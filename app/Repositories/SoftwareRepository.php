@@ -27,7 +27,7 @@ class SoftwareRepository
         return $stmt->fetch() ?: null;
     }
 
-    public function getActivations(string $status = null): array
+    public function getActivations(?string $status = null): array
     {
         $sql = "SELECT sa.*, p.name as product_name FROM software_activations sa JOIN products p ON sa.software_product_id = p.id";
         $params = [];
@@ -85,7 +85,7 @@ class SoftwareRepository
         $stmt->execute([$method, $token]);
     }
 
-    public function updateActivationStatus(int $id, string $status, string $licenseKey = null, string $notes = null): void
+    public function updateActivationStatus(int $id, string $status, ?string $licenseKey = null, ?string $notes = null): void
     {
         $sql = "UPDATE software_activations SET status = ?, updated_at = ?";
         $params = [$status, date('Y-m-d H:i:s')];

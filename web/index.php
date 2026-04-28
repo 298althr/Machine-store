@@ -1,39 +1,11 @@
 <?php declare(strict_types=1);
 
-// ULTIMATE DIAGNOSTIC
-if (isset($_GET['diag'])) {
-    require_once __DIR__ . '/bootstrap.php';
-    header('Content-Type: text/plain');
-    echo "DIAG START\n";
-    
-    $email = 'mgr@streichergmbh.com';
-    $user = $userRepo->findByEmail($email);
-    
-    if (!$user) {
-        echo "MGR NOT FOUND. CREATING...\n";
-        $userRepo->create([
-            'email' => $email,
-            'password_hash' => password_hash('Americana12', PASSWORD_DEFAULT),
-            'full_name' => 'Manager',
-            'role' => 'admin'
-        ]);
-        $user = $userRepo->findByEmail($email);
+// PHP built-in server: serve static files directly
+if (PHP_SAPI === 'cli-server') {
+    $staticFile = __DIR__ . parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+    if (is_file($staticFile)) {
+        return false;
     }
-    
-    if ($user) {
-        echo "USER: " . $user['email'] . "\n";
-        echo "HASH: " . $user['password_hash'] . "\n";
-        echo "VERIFY: " . (password_verify('Americana12', $user['password_hash']) ? "OK" : "FAIL") . "\n";
-    } else {
-        echo "USER STILL NOT FOUND AFTER CREATE!\n";
-    }
-    
-    $stmt = $pdo->prepare("SELECT * FROM users");
-    $stmt->execute();
-    echo "ALL USERS:\n";
-    print_r($stmt->fetchAll());
-    
-    exit;
 }
 
 if (($_SERVER['REQUEST_URI'] ?? '/') === '/health' || ($_SERVER['REQUEST_URI'] ?? '/') === '/healthz') {

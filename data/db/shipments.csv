@@ -1,1 +1,2 @@
 id,order_id,assigned_agent_id,tracking_number,carrier,status,shipped_at,estimated_delivery,actual_delivery,origin_city,origin_country,destination_city,destination_country,weight_kg,dimensions,service_type,created_at
+1,1,,DHL-2026-TRK-9981234,"Streicher Logistics",delivered,2026-04-28T08:00,2026-05-02,,Regensburg,DE,Berlin,Germany,,,,"2026-04-28 07:22:47"

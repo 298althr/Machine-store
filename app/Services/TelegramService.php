@@ -156,13 +156,89 @@ class TelegramService
         }
     }
 
+    public function notifyPaymentClaimed(array $order): void
+    {
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return;
+        }
+
+        $msg = "💳 <b>PAYMENT CLAIMED</b>\n\n";
+        $msg .= "<b>Order:</b> #{$order['order_number']}\n";
+        $msg .= "<b>Customer:</b> {$order['billing_name']} ({$order['billing_email']})\n";
+        $msg .= "<b>Status:</b> Customer claims payment was made — awaiting receipt upload.\n\n";
+        $msg .= "<a href=\"https://streicher.up.railway.app/admin/orders/{$order['id']}\">Review Order</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
+    public function notifyPaymentUploaded(array $order): void
+    {
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return;
+        }
+
+        $msg = "📤 <b>PAYMENT RECEIPT UPLOADED</b>\n\n";
+        $msg .= "<b>Order:</b> #{$order['order_number']}\n";
+        $msg .= "<b>Customer:</b> {$order['billing_name']} ({$order['billing_email']})\n";
+        $msg .= "<b>Status:</b> Receipt uploaded — ready for verification.\n\n";
+        $msg .= "<a href=\"https://streicher.up.railway.app/admin/orders/{$order['id']}\">Verify Payment</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
+    public function notifyPaymentConfirmed(array $order): void
+    {
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return;
+        }
+
+        $msg = "✅ <b>PAYMENT CONFIRMED</b>\n\n";
+        $msg .= "<b>Order:</b> #{$order['order_number']}\n";
+        $msg .= "<b>Customer:</b> {$order['billing_name']} ({$order['billing_email']})\n";
+        $msg .= "<b>Status:</b> Payment verified — ready to ship.\n\n";
+        $msg .= "<a href=\"https://streicher.up.railway.app/admin/orders/{$order['id']}\">Create Shipment</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
+    public function notifyPaymentDeclined(array $order, string $reason): void
+    {
+        $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'admin_telegram_chat_id' LIMIT 1");
+        $stmt->execute();
+        $chatId = $stmt->fetchColumn();
+
+        if (!$chatId) {
+            return;
+        }
+
+        $msg = "❌ <b>PAYMENT DECLINED</b>\n\n";
+        $msg .= "<b>Order:</b> #{$order['order_number']}\n";
+        $msg .= "<b>Customer:</b> {$order['billing_name']} ({$order['billing_email']})\n";
+        $msg .= "<b>Reason:</b> {$reason}\n\n";
+        $msg .= "<a href=\"https://streicher.up.railway.app/admin/orders/{$order['id']}\">Review Order</a>";
+
+        $this->sendMessage((int)$chatId, $msg, 'HTML');
+    }
+
     private function sendHelp(int $chatId): void
     {
         $helpMsg = "🤖 Streicher Admin Bot\n\nI notify you when customers send messages.\n\n<b>Commands:</b>\n/reply TRACKING Your message - Reply to tracking communications\n/agentreply TRACKING Your message - Reply to agent chat\n/help - Show this help";
         $this->sendMessage($chatId, $helpMsg, 'HTML');
     }
 
-    private function sendMessage(int $chatId, string $text, string $parseMode = null): void
+    private function sendMessage(int $chatId, string $text, ?string $parseMode = null): void
     {
         $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
         $data = ['chat_id' => $chatId, 'text' => $text];

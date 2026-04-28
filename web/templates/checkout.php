@@ -116,11 +116,11 @@
               <div style="display: grid; gap: 24px; font-size: 1rem; position: relative; z-index: 1;">
                 <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px;">
                   <span style="font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Beneficiary Registry</span>
-                  <span style="font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">MAX STREICHER GmbH</span>
+                  <span style="font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;"><?= htmlspecialchars($settings['account_holder'] ?? 'MAX STREICHER GmbH') ?></span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                   <span style="font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Banking Institution</span>
-                  <span style="font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">Commerzbank AG Frankfurt</span>
+                  <span style="font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;"><?= htmlspecialchars($settings['bank_name'] ?? 'Deutsche Bank AG') ?></span>
                 </div>
               </div>
             </div>

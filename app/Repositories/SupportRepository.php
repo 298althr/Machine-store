@@ -13,7 +13,7 @@ class SupportRepository
         $this->db = $db;
     }
 
-    public function all(string $status = null): array
+    public function all(?string $status = null): array
     {
         $sql = "SELECT * FROM support_tickets";
         if ($status) {
@@ -54,7 +54,7 @@ class SupportRepository
         return (int)$this->db->lastInsertId();
     }
 
-    public function updateStatus(int $id, string $status, string $adminNotes = null): void
+    public function updateStatus(int $id, string $status, ?string $adminNotes = null): void
     {
         $stmt = $this->db->prepare("UPDATE support_tickets SET status = ?, admin_notes = ? WHERE id = ?");
         $stmt->execute([$status, $adminNotes, $id]);

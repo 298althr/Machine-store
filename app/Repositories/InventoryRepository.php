@@ -37,12 +37,10 @@ class InventoryRepository
         $currentStock = (int)$inventory['stock_level'];
         $newStock = max(0, $currentStock - $quantity);
 
-        $success = (bool)$this->db->update('inventory', [
-            'stock_level' => $newStock,
-            'updated_at' => date('Y-m-d H:i:s')
-        ], ['product_id' => $productId]);
+        $stmt = $this->db->prepare("UPDATE inventory SET stock_level = ?, updated_at = ? WHERE product_id = ?");
+        $stmt->execute([$newStock, date('Y-m-d H:i:s'), $productId]);
 
-        return $success ? $newStock : null;
+        return $newStock;
     }
 
     public function isAvailable(int $productId, int $requestedQty): bool

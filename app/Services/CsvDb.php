@@ -158,7 +158,7 @@ class CsvDb
             return [];
         }
 
-        $headers = fgetcsv($handle, 0, $this->separator);
+        $headers = fgetcsv($handle, 0, $this->separator, '"', '');
         if (!$headers) {
             fclose($handle);
             return [];
@@ -172,7 +172,7 @@ class CsvDb
 
         $records = [];
         $rowNum = 1;
-        while (($row = fgetcsv($handle, 0, $this->separator)) !== false) {
+        while (($row = fgetcsv($handle, 0, $this->separator, '"', '')) !== false) {
             $rowNum++;
             if (count($row) === count($headers)) {
                 $records[] = array_combine($headers, $row);
@@ -204,7 +204,7 @@ class CsvDb
         try {
             // Read current data
             rewind($handle);
-            $headers = fgetcsv($handle, 0, $this->separator);
+            $headers = fgetcsv($handle, 0, $this->separator, '"', '');
             if ($headers) {
                 $headers = array_map(function($h) {
                     $h = trim($h);
@@ -213,7 +213,7 @@ class CsvDb
             }
             
             $records = [];
-            while (($row = fgetcsv($handle, 0, $this->separator)) !== false) {
+            while (($row = fgetcsv($handle, 0, $this->separator, '"', '')) !== false) {
                 if (count($row) === count($headers)) {
                     $records[] = array_combine($headers, $row);
                 }
@@ -225,13 +225,13 @@ class CsvDb
             // Write back
             ftruncate($handle, 0);
             rewind($handle);
-            fputcsv($handle, $headers, $this->separator);
+            fputcsv($handle, $headers, $this->separator, '"', '');
             foreach ($records as $record) {
                 $row = [];
                 foreach ($headers as $header) {
                     $row[] = $record[$header] ?? '';
                 }
-                fputcsv($handle, $row, $this->separator);
+                fputcsv($handle, $row, $this->separator, '"', '');
             }
 
             return $result;

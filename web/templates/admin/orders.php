@@ -16,6 +16,7 @@
   <div class="card-body" style="display: flex; gap: 8px; flex-wrap: wrap;">
     <a href="/admin/orders" class="btn <?= !$currentStatus ? 'btn-primary' : 'btn-outline' ?>">All</a>
     <a href="/admin/orders?status=awaiting_payment" class="btn <?= $currentStatus === 'awaiting_payment' ? 'btn-primary' : 'btn-outline' ?>">Awaiting Payment</a>
+    <a href="/admin/orders?status=payment_pending_upload" class="btn <?= $currentStatus === 'payment_pending_upload' ? 'btn-primary' : 'btn-outline' ?>">Payment Pending</a>
     <a href="/admin/orders?status=payment_uploaded" class="btn <?= $currentStatus === 'payment_uploaded' ? 'btn-primary' : 'btn-outline' ?>">Payment Uploaded</a>
     <a href="/admin/orders?status=payment_confirmed" class="btn <?= $currentStatus === 'payment_confirmed' ? 'btn-primary' : 'btn-outline' ?>">Ready to Ship</a>
     <a href="/admin/orders?status=shipped" class="btn <?= $currentStatus === 'shipped' ? 'btn-primary' : 'btn-outline' ?>">Shipped</a>

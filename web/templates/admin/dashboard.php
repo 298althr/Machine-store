@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<!-- Registry Warning Matrix -->
+<!-- Registry Warning Matrix: Uploaded receipts -->
 <?php if (!empty($pendingPayments)): ?>
 <div style="background: #0f172a; border-radius: var(--radius-lg); padding: 40px 60px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-xl); border: 1px solid var(--accent);">
   <div style="display: flex; gap: 32px; align-items: center;">
@@ -51,6 +51,22 @@
     </div>
   </div>
   <a href="/admin/orders?status=payment_uploaded" class="btn-modern btn-accent" style="padding: 20px 40px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;">Initialize Review →</a>
+</div>
+<?php endif; ?>
+
+<!-- Registry Warning Matrix: Payment claimed but no receipt yet -->
+<?php if (!empty($paymentPendingUpload)): ?>
+<div style="background: #fffbeb; border-radius: var(--radius-lg); padding: 40px 60px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-xl); border: 1px solid #f59e0b;">
+  <div style="display: flex; gap: 32px; align-items: center;">
+    <div style="font-size: 3rem;">⏳</div>
+    <div>
+      <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: #78350f; margin: 0 0 8px 0; font-weight: 900; letter-spacing: -0.5px;">Payment Claims Pending Upload</h4>
+      <p style="color: #92400e; font-size: 1.1rem; margin: 0; font-weight: 500;">
+        <span style="color: #b45309; font-weight: 900;"><?= count($paymentPendingUpload) ?> Orders</span> have claimed payment but no receipt has been uploaded yet.
+      </p>
+    </div>
+  </div>
+  <a href="/admin/orders?status=payment_pending_upload" class="btn-modern btn-accent" style="padding: 20px 40px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;">Awaiting Receipts →</a>
 </div>
 <?php endif; ?>
 

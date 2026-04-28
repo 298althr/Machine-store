@@ -112,7 +112,7 @@ function get_display_currency(): string {
     return $_SESSION['display_currency'] ?? $_COOKIE['preferred_currency'] ?? 'EUR';
 }
 
-function get_currency_symbol(string $currency = null): string {
+function get_currency_symbol(?string $currency = null): string {
     $currency = $currency ?? get_display_currency();
     return $currency === 'USD' ? '$' : '€';
 }

@@ -113,7 +113,7 @@ if (isset($update['message'])) {
 http_response_code(200);
 echo 'OK';
 
-function sendTelegramMessage(string $token, int $chatId, string $text, string $parseMode = null): bool {
+function sendTelegramMessage(string $token, int $chatId, string $text, ?string $parseMode = null): bool {
     $url = "https://api.telegram.org/bot$token/sendMessage";
     $data = [
         'chat_id' => $chatId,

@@ -123,7 +123,7 @@ class EmailService
         }
     }
 
-    private function updateEmailStatus(string $to, string $subject, string $status, string $error = null): void
+    private function updateEmailStatus(string $to, string $subject, string $status, ?string $error = null): void
     {
         try {
             $stmt = $this->db->prepare('UPDATE email_logs SET status = ?, error = ?, sent_at = NOW() WHERE to_email = ? AND subject = ? ORDER BY id DESC LIMIT 1');

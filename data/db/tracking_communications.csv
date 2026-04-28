@@ -1,1 +1,12 @@
 id,order_id,tracking_number,sender_type,sender_name,message_type,message,document_name,document_path,document_type,document_content,is_read,created_at
+1,1,DHL-2026-TRK-9981234,admin,"Streicher Logistics",message,"ðŸŽ‰ Great news! Your order has been shipped and is on its way!
+
+Your tracking number: DHL-2026-TRK-9981234
+
+ðŸ“¦ You can track your shipment status on this page at any time.
+
+ðŸ’¬ Have questions? Need assistance? Feel free to send us a message right here! Our logistics team monitors this chat and will respond promptly to any inquiries, feedback, or concerns you may have.
+
+We're here to help make your delivery experience smooth and hassle-free!
+
+â€” Streicher Logistics Team",,,,,,

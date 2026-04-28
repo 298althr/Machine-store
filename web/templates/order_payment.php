@@ -50,19 +50,19 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 48px;">
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Banking Institution</div>
-              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;">Commerzbank AG Frankfurt</div>
+              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;"><?= htmlspecialchars($settings['bank_name'] ?? 'Deutsche Bank AG') ?></div>
             </div>
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Account Beneficiary</div>
-              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;">MAX STREICHER GmbH</div>
+              <div style="font-weight: 800; color: var(--primary); font-size: 1.2rem;"><?= htmlspecialchars($settings['account_holder'] ?? 'MAX STREICHER GmbH') ?></div>
             </div>
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">IBAN Identifier</div>
-              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;">DE91 5004 0000 0123 4567 89</div>
+              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;"><?= htmlspecialchars($settings['iban'] ?? 'DE89 3704 0044 0532 0130 00') ?></div>
             </div>
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">BIC / SWIFT Protocol</div>
-              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;">COBADEFFXXX</div>
+              <div style="font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; font-family: monospace;"><?= htmlspecialchars($settings['bic'] ?? 'COBADEFFXXX') ?></div>
             </div>
           </div>
           

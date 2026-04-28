@@ -64,12 +64,14 @@ if ($path === '/admin' && $method === 'GET') {
     
     $recentOrders = $orderRepo->all(null, 10);
     $pendingPayments = $orderRepo->all('payment_uploaded', 5);
-    
+    $paymentPendingUpload = $orderRepo->all('payment_pending_upload', 5);
+
     render_admin_template('dashboard.php', [
         'title' => 'Admin Dashboard - Streicher',
         'stats' => $stats,
         'recentOrders' => $recentOrders,
         'pendingPayments' => $pendingPayments,
+        'paymentPendingUpload' => $paymentPendingUpload,
     ]);
 }
 
@@ -120,6 +122,125 @@ if (preg_match('#^/admin/orders/(\d+)$#', $path, $m) && $method === 'GET') {
         'paymentUploads' => $paymentUploads,
         'shipments' => $shipments,
     ]);
+}
+
+// POST /admin/orders/{id}/confirm-payment
+if (preg_match('#^/admin/orders/(\d+)/confirm-payment$#', $path, $m) && $method === 'POST') {
+    require_admin();
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        header('Location: /admin/orders');
+        exit;
+    }
+
+    $orderRepo->confirmPayment($orderId, (int)$_SESSION['user_id']);
+    $telegramService->notifyPaymentConfirmed($order);
+
+    $_SESSION['success_message'] = 'Payment confirmed. Order is now ready to ship.';
+    header('Location: /admin/orders/' . $orderId);
+    exit;
+}
+
+// POST /admin/orders/{id}/decline-payment
+if (preg_match('#^/admin/orders/(\d+)/decline-payment$#', $path, $m) && $method === 'POST') {
+    require_admin();
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        header('Location: /admin/orders');
+        exit;
+    }
+
+    $declineReason = $_POST['decline_reason'] ?? 'other';
+    $declineNotes = $_POST['decline_notes'] ?? '';
+
+    $stmt = $pdo->prepare(
+        'UPDATE orders SET status = ?, decline_reason = ?, decline_notes = ?, payment_declined_at = ?, updated_at = ? WHERE id = ?'
+    );
+    $stmt->execute([
+        'payment_declined',
+        $declineReason,
+        $declineNotes,
+        date('Y-m-d H:i:s'),
+        date('Y-m-d H:i:s'),
+        $orderId,
+    ]);
+
+    $telegramService->notifyPaymentDeclined($order, $declineReason);
+
+    $_SESSION['success_message'] = 'Payment declined. Customer has been notified.';
+    header('Location: /admin/orders/' . $orderId);
+    exit;
+}
+
+// POST /admin/orders/{id}/revert-to-awaiting
+if (preg_match('#^/admin/orders/(\d+)/revert-to-awaiting$#', $path, $m) && $method === 'POST') {
+    require_admin();
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare(
+        'UPDATE orders SET status = ?, payment_confirmed_at = NULL, payment_confirmed_by = NULL, decline_reason = NULL, decline_notes = NULL, payment_declined_at = NULL, updated_at = ? WHERE id = ?'
+    );
+    $stmt->execute(['awaiting_payment', date('Y-m-d H:i:s'), $orderId]);
+
+    $_SESSION['success_message'] = 'Order reverted to awaiting payment.';
+    header('Location: /admin/orders/' . $orderId);
+    exit;
+}
+
+// POST /admin/orders/{id}/create-shipment
+if (preg_match('#^/admin/orders/(\d+)/create-shipment$#', $path, $m) && $method === 'POST') {
+    require_admin();
+    $orderId = (int)$m[1];
+
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        header('Location: /admin/orders');
+        exit;
+    }
+
+    $trackingNumber = !empty($_POST['tracking_number']) ? $_POST['tracking_number'] : generate_tracking_number();
+    $carrier = $_POST['carrier'] ?? 'Streicher Logistics';
+    $shippingMethod = $_POST['shipping_method'] ?? 'air_freight';
+    $status = $_POST['status'] ?? 'shipped';
+    $shippedAt = !empty($_POST['shipped_at']) ? $_POST['shipped_at'] : date('Y-m-d H:i:s');
+
+    $stmt = $pdo->prepare(
+        'INSERT INTO shipments (order_id, carrier, tracking_number, status, shipped_at, origin_city, origin_country, destination_city, destination_country, shipping_method, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    $stmt->execute([
+        $orderId,
+        $carrier,
+        $trackingNumber,
+        $status,
+        $shippedAt,
+        'Regensburg',
+        'DE',
+        $order['shipping_city'] ?? '',
+        $order['shipping_country'] ?? 'DE',
+        $shippingMethod,
+        date('Y-m-d H:i:s'),
+    ]);
+
+    $pdo->prepare('UPDATE orders SET status = ?, shipped_at = ? WHERE id = ?')
+        ->execute(['shipped', $shippedAt, $orderId]);
+
+    $_SESSION['success_message'] = 'Shipment created successfully! Tracking: ' . $trackingNumber;
+    header('Location: /admin/orders/' . $orderId);
+    exit;
 }
 
 // GET /admin/products
