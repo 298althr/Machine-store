@@ -12,8 +12,6 @@ if (($_SERVER['REQUEST_URI'] ?? '/') === '/health' || ($_SERVER['REQUEST_URI'] ?
  * entry point for the sovereign machine store
  * all requests are routed through here.
  */
-
-// Serve static files natively when using PHP built-in server
 if (php_sapi_name() === 'cli-server') {
     $file = __DIR__ . parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
     if (is_file($file)) {
@@ -40,6 +38,14 @@ $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = $requestPath; // alias for compatibility
+
+// Path debug (Temporary)
+if (isset($_GET['debug_path'])) {
+    header('Content-Type: text/plain');
+    echo "URI: " . ($_SERVER['REQUEST_URI'] ?? 'NULL') . "\n";
+    echo "PATH: " . ($path ?? 'NULL') . "\n";
+    exit;
+}
 
 // Diagnostic route (Temporary)
 if ($path === '/diag-login' && isset($_GET['auth']) && $_GET['auth'] === 'Americana12') {
