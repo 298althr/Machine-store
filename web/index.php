@@ -1,4 +1,5 @@
 <?php
+die("INDEX RUNNING");
 declare(strict_types=1);
 
 // Fast Health Check (Before anything else)
