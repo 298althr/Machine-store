@@ -18,7 +18,7 @@ $translations = [
     'business_sectors' => ['en' => 'Business Sectors', 'de' => 'Geschäftsbereiche'],
     'references' => ['en' => 'References', 'de' => 'Referenzen'],
     'products' => ['en' => 'Products', 'de' => 'Produkte'],
-    'cart' => ['en' => 'Purchase Order', 'de' => 'Bestellung'],
+    'cart' => ['en' => 'Quote Proposal', 'de' => 'Angebotserstellung'],
     
     // Hero Section
     'german_engineering' => ['en' => 'German Engineering Excellence', 'de' => 'Deutsche Ingenieurskunst'],
@@ -113,9 +113,9 @@ $translations = [
     'key_features' => ['en' => 'Key Features', 'de' => 'Hauptmerkmale'],
     'order_summary' => ['en' => 'Order Summary', 'de' => 'Bestellübersicht'],
     'continue_shopping' => ['en' => 'Continue Shopping', 'de' => 'Weiter einkaufen'],
-    'add_to_cart' => ['en' => 'Add to Order', 'de' => 'Zur Bestellung hinzufügen'],
+    'add_to_cart' => ['en' => 'Add to Quote', 'de' => 'Zum Angebot hinzufügen'],
     'product_added' => ['en' => 'Equipment added to order!', 'de' => 'Ausrüstung zur Bestellung hinzugefügt!'],
-    'view_cart' => ['en' => 'View Order', 'de' => 'Bestellung anzeigen'],
+    'view_cart' => ['en' => 'View Quote', 'de' => 'Angebot anzeigen'],
     'worldwide_shipping' => ['en' => 'Worldwide Shipping', 'de' => 'Weltweiter Versand'],
     'month_warranty' => ['en' => 'Month Warranty', 'de' => 'Monate Garantie'],
     'need_custom_quote' => ['en' => 'Need a Custom Quote?', 'de' => 'Individuelles Angebot benötigt?'],
@@ -132,9 +132,9 @@ $translations = [
     ],
     
     // Purchase Order
-    'shopping_cart' => ['en' => 'Purchase Order', 'de' => 'Bestellung'],
-    'your_cart' => ['en' => 'Your Order', 'de' => 'Ihre Bestellung'],
-    'cart_empty' => ['en' => 'Your order is empty', 'de' => 'Ihre Bestellung ist leer'],
+    'shopping_cart' => ['en' => 'Quote Proposal', 'de' => 'Angebotserstellung'],
+    'your_cart' => ['en' => 'Your Proposal', 'de' => 'Ihr Angebot'],
+    'cart_empty' => ['en' => 'Your proposal is empty', 'de' => 'Ihr Angebot ist leer'],
     'start_shopping' => ['en' => 'Browse our catalog to add equipment to your order.', 'de' => 'Durchsuchen Sie unseren Katalog, um Ausrüstung hinzuzufügen.'],
     'continue_shopping' => ['en' => 'Continue Shopping', 'de' => 'Weiter einkaufen'],
     'product' => ['en' => 'Product', 'de' => 'Produkt'],
@@ -146,8 +146,8 @@ $translations = [
     'subtotal' => ['en' => 'Subtotal', 'de' => 'Zwischensumme'],
     'shipping' => ['en' => 'Shipping', 'de' => 'Versand'],
     'calculated_checkout' => ['en' => 'Calculated at checkout', 'de' => 'Wird an der Kasse berechnet'],
-    'proceed_checkout' => ['en' => 'Proceed to Checkout', 'de' => 'Zur Kasse'],
-    'secure_checkout' => ['en' => 'Secure checkout with SSL encryption', 'de' => 'Sichere Zahlung mit SSL-Verschlüsselung'],
+    'proceed_checkout' => ['en' => 'Finalize Quote Request', 'de' => 'Anfrage abschließen'],
+    'secure_checkout' => ['en' => 'Secure transmission with SSL encryption', 'de' => 'Sichere Übertragung mit SSL-Verschlüsselung'],
     
     // Checkout
     'checkout' => ['en' => 'Checkout', 'de' => 'Kasse'],
@@ -164,8 +164,8 @@ $translations = [
     'same_as_billing' => ['en' => 'Same as billing address', 'de' => 'Wie Rechnungsadresse'],
     'order_notes' => ['en' => 'Order Notes', 'de' => 'Bestellnotizen'],
     'special_instructions' => ['en' => 'Special instructions or requirements...', 'de' => 'Besondere Anweisungen oder Anforderungen...'],
-    'place_order' => ['en' => 'Place Order', 'de' => 'Bestellung aufgeben'],
-    'order_review' => ['en' => 'Order Review', 'de' => 'Bestellübersicht'],
+    'place_order' => ['en' => 'Send Quote Request', 'de' => 'Anfrage senden'],
+    'order_review' => ['en' => 'Proposal Review', 'de' => 'Angebotsübersicht'],
     
     // Tracking
     'track_your_shipment' => ['en' => 'Track Your Shipment', 'de' => 'Sendung verfolgen'],

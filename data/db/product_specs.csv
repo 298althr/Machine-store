@@ -1,10 +1,26 @@
 id,product_id,spec_name,spec_value,unit
-1,1,Pressure,5000,PSI
-2,1,Flow Rate,120,GPM
-3,1,Power,5000,HP
-4,2,Lifting Capacity,800,Tons
-5,2,Stroke Length,1500,mm
-6,3,Max Pressure,350,Bar
-7,4,Volume,500,L
-8,5,Cooling Capacity,1000,kW
-9,8,Displacement,500,cc
+1,1,Rated Power,2200,HP
+2,1,Maximum Pressure,7500,PSI
+3,1,Flow Rate,1500,GPM
+4,1,Stroke Length,14,inches
+5,2,Hoisting Capacity,750,Tons
+6,2,Continuous Torque,77500,ft-lb
+7,2,Maximum Speed,275,RPM
+8,2,Horsepower,1600,HP
+9,3,Rated Power,3000,HP
+10,3,Max Pulling Force,1500,kN
+11,4,Bore Size,13-5/8,inches
+12,4,Pressure Rating,5000,PSI
+13,5,Nominal Size,36,inches
+14,5,Pressure Class,600,Class
+15,5,Body Material,Carbon Steel,
+16,8,Max Displacement,500,cc
+17,8,Max Pressure,350,Bar
+18,10,Rated Torque,120000,ft-lb
+19,10,Max RPM,200,RPM
+20,12,Operating Pressure,3000,PSI
+21,15,Lifting Capacity,100,Tons
+22,20,Bore Size,20,inches
+23,20,Pressure Class,300,Class
+24,25,Max Displacement,250,cc
+25,25,Flow Rate,400,GPM

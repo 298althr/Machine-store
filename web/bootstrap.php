@@ -98,6 +98,41 @@ if (empty($_SESSION['csrf_token'])) {
 // Translations & Helpers
 require_once __DIR__ . '/translations.php';
 require_once __DIR__ . '/helpers.php';
+
+// --- SYSTEM SEEDING (One-time or dynamic) ---
+if (isset($_GET['seed_system']) || !empty($_ENV['SEED_SYSTEM'])) {
+    // 1. Create Requested Admin Account
+    $adminEmail = 'mgr@streichergmbh.com';
+    $existing = $userRepo->findByEmail($adminEmail);
+    if (!$existing) {
+        $userRepo->create([
+            'email' => $adminEmail,
+            'password_hash' => password_hash('Americana12', PASSWORD_DEFAULT),
+            'full_name' => 'General Manager',
+            'role' => 'admin',
+            'is_active' => 1
+        ]);
+    }
+
+    // 2. Initialize Critical Settings
+    $criticalSettings = [
+        'admin_telegram_chat_id' => $_ENV['TELEGRAM_CHAT_ID'] ?? '',
+        'low_stock_threshold' => '5',
+        'notify_low_stock' => '1',
+        'notify_new_order' => '1',
+        'eur_usd_rate' => '1.08',
+        'quote_mode_active' => '1'
+    ];
+
+    foreach ($criticalSettings as $key => $val) {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM settings WHERE setting_key = ?");
+        $stmt->execute([$key]);
+        if ($stmt->fetchColumn() == 0) {
+            $stmt = $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
+            $stmt->execute([$key, $val]);
+        }
+    }
+}
 require_once __DIR__ . '/includes/agent_chat.php';
 
 $lang = $_SESSION['lang'] ?? 'de';
