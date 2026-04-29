@@ -317,6 +317,53 @@ Based on your feedback, here's the hardened approach:
 
 ---
 
+## Implementation Boundaries
+
+**Confirmed - You are correct:**
+
+| Component | Implemented By |
+|-----------|---------------|
+| Webhook sender | Streicher (us) |
+| CSV writer | Streicher (us) |
+| Admin "Send to Gorfos" button | Streicher (us) |
+| Webhook receiver endpoint | Gorfos (you) |
+| Sync script | Gorfos (you) |
+| CSV reader/tracking writer | Gorfos (you) |
+
+**We do NOT need you to implement our side.** We have the webhook service, admin button, and CSV sync fully working.
+
+**We CAN help with your side if needed** - happy to provide:
+- Sample PHP webhook receiver code
+- Bash sync script template
+- Testing support
+
+Just let us know if you want code samples for the Gorfos implementation.
+
+---
+
+## Accepted Suggestion: processed_at Column
+
+**Excellent idea.** We've added `processed_at` and `processed_by` columns to `orders.csv`:
+
+```csv
+id,order_number,status,...,payment_confirmed_at,processed_at,processed_by,created_at,updated_at
+1,ST-20260428-441BAF,payment_confirmed,...,"2026-04-28 07:21:10","2026-04-29 08:15:00","gorfos","2026-04-28 07:00:04","2026-04-28 07:21:10"
+```
+
+**Benefits:**
+- Visible to both parties in shared CSV
+- Easy debugging - see if order was processed
+- No need for local log files
+- Gorfos can filter: `SELECT * WHERE processed_by IS NULL`
+
+When you receive webhook + pull CSV, you can:
+1. Check `processed_at` - if set, order already handled
+2. Create shipment
+3. Push tracking_events.csv
+4. (Optional) You could update `processed_at` locally, but we recommend leaving it as Streicher's timestamp
+
+---
+
 ## Conclusion
 
 Your concerns are valid and addressable. The git-based approach is:
@@ -329,7 +376,11 @@ For 50 customers doing ~2-3 orders/day, this architecture is over-engineered in 
 
 **Ready to proceed with SSH deploy keys and HMAC webhooks?**
 
+**Next step:** Please provide:
+1. Your webhook endpoint URL
+2. Your SSH public key (for deploy key access)
+
 ---
 
-*Document Version: 1.1*
+*Document Version: 1.2*
 *Last Updated: April 29, 2026*

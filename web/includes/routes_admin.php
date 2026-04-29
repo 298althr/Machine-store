@@ -1101,9 +1101,9 @@ if (preg_match('/^\/admin\/orders\/(\d+)\/send-to-gorfos$/', $path, $matches) &&
         // Update order status to ready_to_ship
         $orderRepo->updateStatus($orderId, 'ready_to_ship');
         
-        // Also update shipping info if needed
-        $stmt = $pdo->prepare("UPDATE orders SET sent_to_gorfos_at = NOW() WHERE id = ?");
-        $stmt->execute([$orderId]);
+        // Mark as processed by Gorfos (visible to both parties)
+        $stmt = $pdo->prepare("UPDATE orders SET processed_at = ?, processed_by = ? WHERE id = ?");
+        $stmt->execute([date('Y-m-d H:i:s'), 'gorfos', $orderId]);
         
         // Sync to GitHub immediately so Gorfos sees it in CSV too
         $syncService = new \Streicher\App\Services\GitHubSyncService();
