@@ -1021,3 +1021,47 @@ if ($path === '/quote' && $method === 'POST') {
         'ticketNumber' => $ticketNumber,
     ]);
 }
+
+// POST /admin/sync/github - Manual GitHub sync (push local changes)
+if ($path === '/admin/sync/github' && $method === 'POST') {
+    require_admin();
+    
+    $syncService = new \Streicher\App\Services\GitHubSyncService();
+    $result = $syncService->manualSync($_POST['message'] ?? 'Manual sync from admin');
+    
+    if ($result['success']) {
+        $_SESSION['flash_success'] = 'Data synced to GitHub successfully';
+    } else {
+        $_SESSION['flash_error'] = 'Sync failed: ' . ($result['error'] ?? $result['details'] ?? 'Unknown error');
+    }
+    
+    header('Location: /admin');
+    exit;
+}
+
+// POST /admin/sync/github/pull - Pull latest from GitHub
+if ($path === '/admin/sync/github/pull' && $method === 'POST') {
+    require_admin();
+    
+    $syncService = new \Streicher\App\Services\GitHubSyncService();
+    $result = $syncService->pullLatest();
+    
+    if ($result['success']) {
+        $_SESSION['flash_success'] = 'Latest data pulled from GitHub. Refresh to see updates.';
+    } else {
+        $_SESSION['flash_error'] = 'Pull failed: ' . ($result['error'] ?? $result['details'] ?? 'Unknown error');
+    }
+    
+    header('Location: /admin');
+    exit;
+}
+
+// GET /admin/sync/status - Get sync status (AJAX)
+if ($path === '/admin/sync/status' && $method === 'GET') {
+    require_admin();
+    header('Content-Type: application/json');
+    
+    $syncService = new \Streicher\App\Services\GitHubSyncService();
+    echo json_encode($syncService->getStatus());
+    exit;
+}

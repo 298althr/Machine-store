@@ -4,7 +4,20 @@
     <h1 class="mb-0">Command Center</h1>
     <p class="text-muted mt-12">Authorized Session: <span class="font-bold color-primary"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin') ?></span></p>
   </div>
-  <div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <!-- GitHub Sync Controls -->
+    <form action="/admin/sync/github/pull" method="POST" style="display: inline;">
+      <button type="submit" class="btn btn-outline" title="Pull latest data from GitHub">
+        <i data-lucide="download-cloud" style="width: 16px; height: 16px;"></i>
+        Refresh Data
+      </button>
+    </form>
+    <form action="/admin/sync/github" method="POST" style="display: inline;">
+      <button type="submit" class="btn btn-primary" title="Sync local changes to GitHub">
+        <i data-lucide="upload-cloud" style="width: 16px; height: 16px;"></i>
+        Sync to GitHub
+      </button>
+    </form>
     <?php render_component('button', [
       'href' => '/admin/orders?status=payment_uploaded',
       'variant' => 'accent',

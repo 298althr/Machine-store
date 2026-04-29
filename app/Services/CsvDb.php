@@ -238,6 +238,35 @@ class CsvDb
         } finally {
             flock($handle, LOCK_UN);
             fclose($handle);
+            
+            // Auto-sync to GitHub after writes (fire and forget)
+            $this->triggerGitHubSync($table);
+        }
+    }
+    
+    /**
+     * Trigger GitHub sync asynchronously
+     */
+    private function triggerGitHubSync(string $table): void
+    {
+        // Use a background process to avoid blocking
+        $pat = $_ENV['GITHUB_PAT'] ?? '';
+        if (empty($pat)) {
+            return;
+        }
+        
+        // Create a sync trigger file that a cron job or webhook will pick up
+        $syncFile = $this->basePath . '/.sync_pending_' . $table;
+        file_put_contents($syncFile, time());
+        
+        // Also try immediate sync if not in production (for testing)
+        if (($_ENV['APP_ENV'] ?? 'production') === 'development') {
+            try {
+                $syncService = new \Streicher\App\Services\GitHubSyncService();
+                $syncService->sync([$table]);
+            } catch (\Throwable $e) {
+                error_log('GitHub sync failed: ' . $e->getMessage());
+            }
         }
     }
 }
