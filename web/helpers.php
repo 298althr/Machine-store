@@ -29,8 +29,30 @@ function render_template(string $template, array $params = []): void {
 }
 
 function render_component(string $name, array $params = []): void {
+    $componentFile = __DIR__ . '/templates/components/' . $name . '.php';
+    
+    if (!file_exists($componentFile)) {
+        // Silently fail in production, log error
+        error_log("Component not found: {$name}");
+        return;
+    }
+    
     extract($params);
-    require __DIR__ . '/templates/components/' . $name . '.php';
+    
+    // Buffer output to prevent partial rendering on error
+    ob_start();
+    try {
+        require $componentFile;
+    } catch (Throwable $e) {
+        ob_end_clean();
+        error_log("Component render error ({$name}): " . $e->getMessage());
+        // Output fallback if in development
+        if (($_ENV['APP_ENV'] ?? 'production') === 'development') {
+            echo "<!-- Component error: {$name} -->";
+        }
+        return;
+    }
+    ob_end_flush();
 }
 
 function render_admin_template(string $template, array $params = []): void {
