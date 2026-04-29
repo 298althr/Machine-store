@@ -30,7 +30,7 @@ function render_template(string $template, array $params = []): void {
 
 function render_component(string $name, array $params = []): void {
     $componentFile = __DIR__ . '/templates/components/' . $name . '.php';
-    
+
     if (!file_exists($componentFile)) {
         // Silently fail in production, log error
         error_log("Component not found: {$name}");
