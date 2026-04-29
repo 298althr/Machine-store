@@ -146,9 +146,17 @@ Create shipment records when you fulfill orders.
 | `shipping_cost` | `450.00` | Cost (optional) |
 | `created_at` | `2026-04-29 10:00:00` | Record created |
 
-## Webhook: Order Ready for Pickup
+## REQUIRED: Your Webhook Endpoint URL
 
-When Streicher admin confirms payment, we will send a **real-time webhook** to your endpoint:
+**We need you to provide a webhook endpoint URL** that we can call when orders are ready for pickup.
+
+### Please provide this information:
+```
+Your Webhook URL: ___________________________________
+                    (e.g., https://gorfos.com/api/webhooks/streicher/order-ready)
+```
+
+When Streicher admin confirms payment and clicks "Send to Gorfos", we will send a **real-time webhook** to this endpoint:
 
 ### Webhook Endpoint You Need to Create
 ```
@@ -195,24 +203,37 @@ Return HTTP 200 to acknowledge:
 }
 ```
 
-## Questions for You
+## Questions for You (Please Reply With Answers)
 
-1. **Git**: Is git installed on your production server?
-2. **PAT**: Will you create your own PAT or use one from Streicher?
-3. **Webhook**: What is your webhook endpoint URL?
-4. **Auth**: How should we authenticate webhooks? (shared secret, HMAC, etc.)
+### Critical - We need these to proceed:
+
+1. **Webhook URL** ⚠️ **REQUIRED**
+   - Your endpoint to receive order notifications
+   - Example format: `https://gorfos.com/api/webhooks/streicher/order-ready`
+   - Must accept POST requests with JSON payload
+
+2. **Authentication Preference**
+   - How should we verify webhook authenticity?
+   - Options: Shared secret in payload, HMAC signature, API key header
+
+### Important for setup:
+
+3. **Git**: Is git installed on your production server?
+4. **PAT**: Will you create your own PAT or use one from Streicher?
 5. **Carriers**: Which carriers do you use? (DHL, FedEx, UPS, etc.)
 6. **Volume**: How many orders per day do you expect? (for capacity planning)
 
 ## Next Steps
 
-1. Reply with your webhook endpoint URL
+1. **Reply with your webhook endpoint URL** ← **START HERE**
 2. Confirm git is available on your server
 3. Decide on PAT approach
 4. We'll grant you repository access
 5. You implement the sync script
 6. Test with one order
 7. Go live
+
+**Please reply with your webhook URL as soon as possible so we can complete the integration.**
 
 ## Contact
 
