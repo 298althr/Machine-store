@@ -44,7 +44,7 @@ if ($path === '/api/cart' && $method === 'POST') {
     if (!$sku) json_response(['error' => 'SKU required'], 400);
     $product = $productRepo->findBySku($sku);
     if (!$product) json_response(['error' => 'Product not found'], 404);
-    $cart = $_SESSION['cart'] ?? [];
+    $cart = get_cart();
     $found = false;
     foreach ($cart as &$item) {
         if ($item['sku'] === $sku) {
@@ -63,13 +63,13 @@ if ($path === '/api/cart' && $method === 'POST') {
             'qty' => $qty
         ];
     }
-    $_SESSION['cart'] = $cart;
+    save_cart($cart);
     json_response(['ok' => true, 'cart_count' => get_cart_count(), 'message' => 'Added to cart']);
 }
 
 // GET /api/cart
 if ($path === '/api/cart' && $method === 'GET') {
-    $cart = $_SESSION['cart'] ?? [];
+    $cart = get_cart();
     $total = 0;
     foreach ($cart as $item) { $total += $item['price'] * $item['qty']; }
     json_response(['cart' => $cart, 'count' => get_cart_count(), 'total' => $total]);
@@ -80,16 +80,16 @@ if ($path === '/api/cart' && $method === 'DELETE') {
     $data = json_decode(file_get_contents('php://input'), true) ?: [];
     $sku = $data['sku'] ?? null;
     if ($sku) {
-        $cart = $_SESSION['cart'] ?? [];
+        $cart = get_cart();
         $cart = array_filter($cart, fn($item) => $item['sku'] !== $sku);
-        $_SESSION['cart'] = array_values($cart);
+        save_cart(array_values($cart));
     }
     json_response(['ok' => true, 'cart_count' => get_cart_count()]);
 }
 
 // POST /api/checkout
 if ($path === '/api/checkout' && $method === 'POST') {
-    $cart = $_SESSION['cart'] ?? [];
+    $cart = get_cart();
     if (empty($cart)) json_response(['error' => 'Cart is empty'], 400);
     $data = json_decode(file_get_contents('php://input'), true) ?: $_POST;
     try {
@@ -109,7 +109,7 @@ if ($path === '/api/checkout' && $method === 'POST') {
             'unit_price' => $item['price'],
             'total_price' => $item['price'] * $item['qty']
         ], $cart));
-        $_SESSION['cart'] = [];
+        save_cart([]);
         json_response(['ok' => true, 'order_number' => $orderNumber, 'redirect' => '/order/' . $orderId . '/payment']);
     } catch (Exception $e) {
         json_response(['error' => $e->getMessage()], 500);

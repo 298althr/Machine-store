@@ -55,6 +55,31 @@ function render_component(string $name, array $params = []): void {
     ob_end_flush();
 }
 
+/**
+ * Get cart from session or cookie (for Railway compatibility)
+ */
+function get_cart(): array {
+    // Try session first
+    if (!empty($_SESSION['cart'])) {
+        return $_SESSION['cart'];
+    }
+    // Fall back to cookie for Railway
+    if (!empty($_COOKIE['cart_data'])) {
+        $cart = json_decode(base64_decode($_COOKIE['cart_data']), true);
+        return is_array($cart) ? $cart : [];
+    }
+    return [];
+}
+
+/**
+ * Save cart to session and cookie (for Railway compatibility)
+ */
+function save_cart(array $cart): void {
+    $_SESSION['cart'] = $cart;
+    // Also save to cookie for Railway persistence (7 days)
+    setcookie('cart_data', base64_encode(json_encode($cart)), time() + 604800, '/', '', false, false);
+}
+
 function render_admin_template(string $template, array $params = []): void {
     global $pdo;
     extract($params);

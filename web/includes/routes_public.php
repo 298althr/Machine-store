@@ -90,7 +90,7 @@ if ($path === '/product' && $method === 'GET') {
 
 // GET /cart - Shopping cart
 if ($path === '/cart' && $method === 'GET') {
-    $cart = $_SESSION['cart'] ?? [];
+    $cart = get_cart();
     $total = 0;
     foreach ($cart as $item) {
         $total += $item['price'] * $item['qty'];
@@ -111,7 +111,7 @@ if ($path === '/cart/add' && $method === 'GET') {
     if ($sku) {
         $product = $productRepo->findBySku($sku);
         if ($product) {
-            $cart = $_SESSION['cart'] ?? [];
+            $cart = get_cart();
             $found = false;
             foreach ($cart as &$item) {
                 if ($item['sku'] === $sku) {
@@ -130,7 +130,7 @@ if ($path === '/cart/add' && $method === 'GET') {
                     'qty' => $qty
                 ];
             }
-            $_SESSION['cart'] = $cart;
+            save_cart($cart);
         }
     }
     header('Location: /cart');
@@ -139,7 +139,7 @@ if ($path === '/cart/add' && $method === 'GET') {
 
 // GET /checkout - Checkout page
 if ($path === '/checkout' && $method === 'GET') {
-    $cart = $_SESSION['cart'] ?? [];
+    $cart = get_cart();
     if (empty($cart)) {
         header('Location: /cart');
         exit;
@@ -163,7 +163,7 @@ if ($path === '/checkout' && $method === 'GET') {
 // POST /checkout - Process checkout (form submit)
 if ($path === '/checkout' && $method === 'POST') {
     try {
-        $cart = $_SESSION['cart'] ?? [];
+        $cart = get_cart();
         if (empty($cart)) {
             header('Location: /cart');
             exit;
@@ -273,7 +273,7 @@ if ($path === '/checkout' && $method === 'POST') {
         $orderData['id'] = $orderId;
         $telegramService->notifyNewOrder($orderData);
         
-        $_SESSION['cart'] = [];
+        save_cart([]);
         header('Location: /order/' . $orderId . '/invoice');
         exit;
     } catch (Exception $e) {
