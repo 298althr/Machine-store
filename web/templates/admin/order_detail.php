@@ -104,14 +104,24 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
 <div class="alert alert-info mb-40 flex-between p-32 border-radius-lg">
   <div>
     <div class="alert-title font-black text-xs uppercase tracking-widest mb-4">Authorized for Dispatch</div>
-    <p class="mb-0 font-medium">Settlement fully authenticated. Ready for industrial logistics initialization.</p>
+    <p class="mb-0 font-medium">Settlement fully authenticated. Ready to send to Gorfos for shipping.</p>
+    <?php if (!empty($order['sent_to_gorfos_at'])): ?>
+    <p class="mb-0 text-xs text-success mt-4"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Sent to Gorfos on <?= date('F j, Y g:i A', strtotime($order['sent_to_gorfos_at'])) ?></p>
+    <?php endif; ?>
   </div>
-  <?php render_component('button', [
-    'href' => '#ship',
-    'variant' => 'accent',
-    'label' => 'Initialize Dispatch',
-    'icon' => 'truck'
-  ]); ?>
+  <div class="flex gap-12">
+    <?php if (empty($order['sent_to_gorfos_at'])): ?>
+    <form action="/admin/orders/<?= $order['id'] ?>/send-to-gorfos" method="POST" onsubmit="return confirm('Send this order to Gorfos.com for shipping? They will be notified immediately via webhook.');">
+      <?php render_component('button', [
+        'type' => 'submit',
+        'variant' => 'accent',
+        'label' => 'Send to Gorfos',
+        'icon' => 'truck'
+      ]); ?>
+    </form>
+    <?php endif; ?>
+    <a href="#ship" class="btn btn-outline">Manual Ship</a>
+  </div>
 </div>
 <?php elseif ($order['status'] === 'payment_declined'): ?>
 <div class="alert alert-error mb-40 flex-between p-32 border-radius-lg">

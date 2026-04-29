@@ -1065,3 +1065,78 @@ if ($path === '/admin/sync/status' && $method === 'GET') {
     echo json_encode($syncService->getStatus());
     exit;
 }
+
+// POST /admin/orders/{id}/send-to-gorfos - Send order to Gorfos for shipping
+if (preg_match('/^\/admin\/orders\/(\d+)\/send-to-gorfos$/', $path, $matches) && $method === 'POST') {
+    require_admin();
+    $orderId = (int)$matches[1];
+    
+    $orderRepo = new OrderRepository($pdo);
+    $order = $orderRepo->find($orderId);
+    
+    if (!$order) {
+        $_SESSION['flash_error'] = 'Order not found';
+        header('Location: /admin/orders');
+        exit;
+    }
+    
+    // Only allow sending orders with confirmed payment
+    $allowedStatuses = ['payment_confirmed', 'payment_uploaded', 'awaiting_payment'];
+    if (!in_array($order['status'], $allowedStatuses)) {
+        $_SESSION['flash_error'] = 'Order must have confirmed payment before sending to Gorfos (current: ' . $order['status'] . ')';
+        header("Location: /admin/orders/{$orderId}");
+        exit;
+    }
+    
+    // Get order items
+    $stmt = $pdo->prepare('SELECT * FROM order_items WHERE order_id = ?');
+    $stmt->execute([$orderId]);
+    $items = $stmt->fetchAll();
+    
+    // Send webhook to Gorfos
+    $webhookService = new \Streicher\App\Services\GorfosWebhookService();
+    $result = $webhookService->sendOrderReady($order, $items);
+    
+    if ($result['success']) {
+        // Update order status to ready_to_ship
+        $orderRepo->updateStatus($orderId, 'ready_to_ship');
+        
+        // Also update shipping info if needed
+        $stmt = $pdo->prepare("UPDATE orders SET sent_to_gorfos_at = NOW() WHERE id = ?");
+        $stmt->execute([$orderId]);
+        
+        // Sync to GitHub immediately so Gorfos sees it in CSV too
+        $syncService = new \Streicher\App\Services\GitHubSyncService();
+        $syncService->sync(['orders']);
+        
+        $_SESSION['flash_success'] = 'Order sent to Gorfos successfully. They have been notified via webhook and will see it in the shared repository.';
+    } else {
+        $_SESSION['flash_error'] = 'Failed to notify Gorfos: ' . ($result['error'] ?? $result['response'] ?? 'Unknown error');
+    }
+    
+    header("Location: /admin/orders/{$orderId}");
+    exit;
+}
+
+// POST /admin/gorfos/test - Test Gorfos webhook connection
+if ($path === '/admin/gorfos/test' && $method === 'POST') {
+    require_admin();
+    
+    $webhookService = new \Streicher\App\Services\GorfosWebhookService();
+    $result = $webhookService->testConnection();
+    
+    header('Content-Type: application/json');
+    echo json_encode($result);
+    exit;
+}
+
+// GET /admin/gorfos/status - Get Gorfos webhook status
+if ($path === '/admin/gorfos/status' && $method === 'GET') {
+    require_admin();
+    
+    $webhookService = new \Streicher\App\Services\GorfosWebhookService();
+    
+    header('Content-Type: application/json');
+    echo json_encode($webhookService->getStatus());
+    exit;
+}
