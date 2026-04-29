@@ -103,6 +103,40 @@ if ($path === '/cart' && $method === 'GET') {
     ]);
 }
 
+// GET /cart/add - Add to cart (non-JS fallback for browser automation)
+if ($path === '/cart/add' && $method === 'GET') {
+    $sku = $_GET['sku'] ?? '';
+    $qty = max(1, (int)($_GET['qty'] ?? 1));
+    
+    if ($sku) {
+        $product = $productRepo->findBySku($sku);
+        if ($product) {
+            $cart = $_SESSION['cart'] ?? [];
+            $found = false;
+            foreach ($cart as &$item) {
+                if ($item['sku'] === $sku) {
+                    $item['qty'] += $qty;
+                    $found = true;
+                    break;
+                }
+            }
+            unset($item);
+            if (!$found) {
+                $cart[] = [
+                    'sku' => $sku,
+                    'name' => $product['name'],
+                    'slug' => $product['slug'] ?? '',
+                    'price' => (float)$product['unit_price'],
+                    'qty' => $qty
+                ];
+            }
+            $_SESSION['cart'] = $cart;
+        }
+    }
+    header('Location: /cart');
+    exit;
+}
+
 // GET /checkout - Checkout page
 if ($path === '/checkout' && $method === 'GET') {
     $cart = $_SESSION['cart'] ?? [];
