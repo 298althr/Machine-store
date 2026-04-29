@@ -82,82 +82,16 @@ $emailService = new \Streicher\App\Services\EmailService($pdo);
 $pdfService = new \Streicher\App\Services\PdfService();
 $telegramService = new \Streicher\App\Services\TelegramService($_ENV['TELEGRAM_BOT_TOKEN'] ?? '', $pdo);
 
-// Custom session handler for Railway (uses CSV database)
-class CsvSessionHandler implements SessionHandlerInterface {
-    private $pdo;
-    private $table = 'sessions';
-    private $csvPath;
-    
-    public function __construct($pdo, $csvPath = __DIR__ . '/../data/db') {
-        $this->pdo = $pdo;
-        $this->csvPath = $csvPath;
-        $this->ensureTable();
-    }
-    
-    private function ensureTable(): void {
-        // CSV database auto-creates tables on first insert
-        // Just make sure the directory exists
-        if (!is_dir($this->csvPath)) {
-            mkdir($this->csvPath, 0755, true);
-        }
-    }
-    
-    public function open(string $savePath, string $sessionName): bool {
-        return true;
-    }
-    
-    public function close(): bool {
-        return true;
-    }
-    
-    public function read(string $sessionId): string {
-        $stmt = $this->pdo->prepare("SELECT session_data FROM {$this->table} WHERE session_id = ? LIMIT 1");
-        $stmt->execute([$sessionId]);
-        $data = $stmt->fetchColumn();
-        return $data !== false ? $data : '';
-    }
-    
-    public function write(string $sessionId, string $data): bool {
-        // Check if session exists
-        $stmt = $this->pdo->prepare("SELECT session_id FROM {$this->table} WHERE session_id = ? LIMIT 1");
-        $stmt->execute([$sessionId]);
-        $exists = $stmt->fetchColumn();
-        
-        if ($exists) {
-            // UPDATE existing
-            $stmt = $this->pdo->prepare("UPDATE {$this->table} SET session_data = ?, last_access = ? WHERE session_id = ?");
-            return $stmt->execute([$data, time(), $sessionId]);
-        } else {
-            // INSERT new
-            $stmt = $this->pdo->prepare("INSERT INTO {$this->table} (session_id, session_data, last_access) VALUES (?, ?, ?)");
-            return $stmt->execute([$sessionId, $data, time()]);
-        }
-    }
-    
-    public function destroy(string $sessionId): bool {
-        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE session_id = ?");
-        return $stmt->execute([$sessionId]);
-    }
-    
-    public function gc(int $lifetime): int {
-        $cutoff = time() - $lifetime;
-        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE last_access < ?");
-        $stmt->execute([$cutoff]);
-        return $stmt->rowCount();
-    }
-}
-
-// Initialize session with custom handler for Railway
+// Initialize session with Railway-compatible settings
 ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_samesite', 'Strict');
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
     ini_set('session.cookie_secure', '1');
 }
 
-// Use database sessions if on Railway (ephemeral filesystem)
-if (getenv('RAILWAY_ENVIRONMENT') || $_ENV['DB_TYPE'] === 'csv') {
-    $handler = new CsvSessionHandler($pdo);
-    session_set_save_handler($handler, true);
+// Use /tmp for sessions on Railway (ephemeral filesystem, but /tmp is writable)
+if (getenv('RAILWAY_ENVIRONMENT')) {
+    ini_set('session.save_path', '/tmp');
 }
 
 session_start();
