@@ -28,6 +28,11 @@ function render_template(string $template, array $params = []): void {
     exit;
 }
 
+function render_component(string $name, array $params = []): void {
+    extract($params);
+    require __DIR__ . '/templates/components/' . $name . '.php';
+}
+
 function render_admin_template(string $template, array $params = []): void {
     global $pdo;
     extract($params);

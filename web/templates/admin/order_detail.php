@@ -3,139 +3,169 @@ $billing = json_decode($order['billing_address'] ?? '{}', true) ?: [];
 $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
 ?>
 
-<div class="admin-header">
+<header class="admin-header">
   <div>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <a href="/admin/orders" style="color: #64748b; text-decoration: none;">← Back to Orders</a>
+    <div class="flex items-center gap-16 mb-8">
+      <a href="/admin/orders" class="text-muted text-sm font-bold uppercase tracking-wider hover-text-accent">← Back to Registry</a>
     </div>
-    <h1 style="margin: 8px 0 0 0;">Order <?= htmlspecialchars($order['order_number']) ?></h1>
+    <h1 class="mb-0">Registry ID: <?= htmlspecialchars($order['order_number']) ?></h1>
   </div>
   <div>
-    <span class="order-status-badge status-<?= str_replace('_', '-', $order['status']) ?>" style="font-size: 1rem; padding: 8px 16px;">
-      <?= get_status_label($order['status']) ?>
-    </span>
+    <?php 
+      $variant = 'info';
+      if ($order['status'] === 'delivered') $variant = 'success';
+      if ($order['status'] === 'payment_uploaded') $variant = 'warning';
+      if ($order['status'] === 'payment_declined') $variant = 'error';
+      render_component('badge', [
+        'label' => get_status_label($order['status']),
+        'variant' => $variant,
+        'class' => 'text-lg px-24 py-8'
+      ]); 
+    ?>
   </div>
-</div>
+</header>
 
-<!-- Action Buttons Based on Status -->
+<!-- Action Banners Based on Status -->
 <?php if ($order['status'] === 'payment_uploaded'): ?>
-<div class="alert alert-warning mb-4">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <div class="alert-title">Payment Receipt Uploaded</div>
-      <p style="margin: 4px 0 0 0;">Review the payment receipt below and confirm if payment has been received.</p>
-    </div>
-    <div style="display: flex; gap: 12px;">
-      <button type="button" class="btn btn-danger" onclick="document.getElementById('decline-modal').style.display='flex'">✗ Decline Payment</button>
-      <form action="/admin/orders/<?= $order['id'] ?>/confirm-payment" method="POST">
-        <button type="submit" class="btn btn-success">✓ Confirm Payment Received</button>
-      </form>
-    </div>
+<div class="alert alert-warning mb-40 flex-between p-32 border-radius-lg">
+  <div>
+    <div class="alert-title font-black text-xs uppercase tracking-widest mb-4">Action Required: Payment Verification</div>
+    <p class="mb-0 font-medium">An institutional settlement protocol has been uploaded. Authoritative validation is pending.</p>
+  </div>
+  <div class="flex gap-12">
+    <?php render_component('button', [
+      'variant' => 'outline',
+      'label' => 'Decline Protocol',
+      'icon' => 'x-circle',
+      'attr' => 'onclick="document.getElementById(\'decline-modal\').classList.add(\'active\')"'
+    ]); ?>
+    <form action="/admin/orders/<?= $order['id'] ?>/confirm-payment" method="POST">
+      <?php render_component('button', [
+        'type' => 'submit',
+        'variant' => 'accent',
+        'label' => 'Confirm Settlement',
+        'icon' => 'check-circle'
+      ]); ?>
+    </form>
   </div>
 </div>
 
 <!-- Decline Payment Modal -->
-<div id="decline-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-  <div style="background: white; padding: 24px; border-radius: 12px; max-width: 500px; width: 90%;">
-    <h3 style="margin: 0 0 16px 0;">❌ Decline Payment</h3>
-    <p style="color: #64748b; margin-bottom: 16px;">Please provide a reason for declining this payment. The customer will be notified.</p>
-    <form action="/admin/orders/<?= $order['id'] ?>/decline-payment" method="POST">
-      <div class="form-group">
-        <label class="form-label">Reason for Decline *</label>
-        <select name="decline_reason" class="form-control" required>
-          <option value="">Select a reason...</option>
-          <option value="invalid_receipt">Invalid or unreadable receipt</option>
-          <option value="amount_mismatch">Payment amount doesn't match order total</option>
-          <option value="payment_not_received">Payment not received in bank account</option>
-          <option value="duplicate_submission">Duplicate submission</option>
-          <option value="fraudulent">Suspected fraudulent transaction</option>
-          <option value="other">Other (specify below)</option>
+<div id="decline-modal" class="modal-overlay-modern">
+  <div class="card-modern max-w-500 w-full p-40">
+    <div class="flex-between mb-24">
+      <h3 class="mb-0">Decline Settlement</h3>
+      <button type="button" class="close-modal" onclick="document.getElementById('decline-modal').classList.remove('active')">&times;</button>
+    </div>
+    <p class="text-muted mb-32">Provide the technical justification for declining this transaction protocol.</p>
+    <form action="/admin/orders/<?= $order['id'] ?>/decline-payment" method="POST" class="grid gap-24">
+      <div class="form-group-modern">
+        <label class="label-modern mb-8">Justification Code *</label>
+        <select name="decline_reason" class="input-modern w-full" required>
+          <option value="">Select justification...</option>
+          <option value="invalid_receipt">Invalid or unreadable receipt specification</option>
+          <option value="amount_mismatch">Settlement value mismatch</option>
+          <option value="payment_not_received">Registry sync failure (Funds not received)</option>
+          <option value="duplicate_submission">Duplicate protocol submission</option>
+          <option value="fraudulent">Authentication failure (Suspected fraud)</option>
+          <option value="other">Other (Specify in remarks)</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Additional Notes</label>
-        <textarea name="decline_notes" class="form-control" rows="3" placeholder="Provide additional details for the customer..."></textarea>
+      <div class="form-group-modern">
+        <label class="label-modern mb-8">Technical Remarks</label>
+        <textarea name="decline_notes" class="input-modern w-full h-100 py-12" placeholder="Detailed audit trail notes..."></textarea>
       </div>
-      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-        <button type="button" class="btn btn-outline" onclick="document.getElementById('decline-modal').style.display='none'">Cancel</button>
-        <button type="submit" class="btn btn-danger">Decline Payment</button>
+      <div class="flex flex-end gap-12 pt-12">
+        <?php render_component('button', [
+          'variant' => 'outline',
+          'label' => 'Cancel',
+          'attr' => 'onclick="document.getElementById(\'decline-modal\').classList.remove(\'active\')"'
+        ]); ?>
+        <?php render_component('button', [
+          'type' => 'submit',
+          'variant' => 'accent',
+          'label' => 'Decline Protocol'
+        ]); ?>
       </div>
     </form>
   </div>
 </div>
 <?php elseif ($order['status'] === 'payment_pending_upload'): ?>
-<div class="alert alert-warning mb-4">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="alert alert-warning mb-40 p-32 border-radius-lg">
+  <div class="flex items-center gap-16">
+    <i data-lucide="clock" class="text-warning" size="24"></i>
     <div>
-      <div class="alert-title">⏳ Payment Claimed</div>
-      <p style="margin: 4px 0 0 0;">Customer claims they have made payment. Awaiting receipt upload.</p>
+      <div class="alert-title font-black text-xs uppercase tracking-widest mb-4">Awaiting Verification Matrix</div>
+      <p class="mb-0 font-medium">Customer has claimed settlement. Interdisciplinary registry is awaiting protocol upload.</p>
     </div>
   </div>
 </div>
 <?php elseif ($order['status'] === 'payment_confirmed'): ?>
-<div class="alert alert-info mb-4">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <div class="alert-title">Ready to Ship</div>
-      <p style="margin: 4px 0 0 0;">Payment has been confirmed. This order is ready to be shipped.</p>
-    </div>
-    <a href="#ship" class="btn btn-primary">📦 Create Shipment</a>
+<div class="alert alert-info mb-40 flex-between p-32 border-radius-lg">
+  <div>
+    <div class="alert-title font-black text-xs uppercase tracking-widest mb-4">Authorized for Dispatch</div>
+    <p class="mb-0 font-medium">Settlement fully authenticated. Ready for industrial logistics initialization.</p>
   </div>
+  <?php render_component('button', [
+    'href' => '#ship',
+    'variant' => 'accent',
+    'label' => 'Initialize Dispatch',
+    'icon' => 'truck'
+  ]); ?>
 </div>
 <?php elseif ($order['status'] === 'payment_declined'): ?>
-<div class="alert alert-danger mb-4">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <div class="alert-title">❌ Payment Declined</div>
-      <p style="margin: 4px 0 0 0;">
-        <strong>Reason:</strong> <?= htmlspecialchars($order['decline_reason'] ?? 'No reason provided') ?>
-      </p>
-      <?php if (!empty($order['payment_declined_at'])): ?>
-      <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #64748b;">
-        Declined on <?= date('F j, Y g:i A', strtotime($order['payment_declined_at'])) ?>
-      </p>
-      <?php endif; ?>
-    </div>
-    <form action="/admin/orders/<?= $order['id'] ?>/revert-to-awaiting" method="POST">
-      <button type="submit" class="btn btn-outline">↩ Revert to Awaiting Payment</button>
-    </form>
+<div class="alert alert-error mb-40 flex-between p-32 border-radius-lg">
+  <div>
+    <div class="alert-title font-black text-xs uppercase tracking-widest mb-4">Settlement Declined</div>
+    <p class="mb-4 font-bold text-accent">Reason: <?= htmlspecialchars($order['decline_reason'] ?? 'No justification provided') ?></p>
+    <?php if (!empty($order['payment_declined_at'])): ?>
+    <p class="mb-0 text-xs opacity-70">Audit Timestamp: <?= date('F j, Y g:i A', strtotime($order['payment_declined_at'])) ?></p>
+    <?php endif; ?>
   </div>
+  <form action="/admin/orders/<?= $order['id'] ?>/revert-to-awaiting" method="POST">
+    <?php render_component('button', [
+      'type' => 'submit',
+      'variant' => 'outline',
+      'label' => 'Revert to Awaiting',
+      'icon' => 'rotate-ccw'
+    ]); ?>
+  </form>
 </div>
 <?php endif; ?>
 
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
-  <div>
+<div class="grid grid-sidebar items-start">
+  <div class="grid gap-32">
     <!-- Order Items -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Order Items</h3>
+    <div class="card-modern no-padding overflow-hidden">
+      <div class="px-32 py-24 bg-light border-bottom">
+        <h3 class="mb-0 text-lg">Registry Item Assets</h3>
       </div>
-      <div style="overflow-x: auto;">
-        <table class="data-table">
+      <div class="overflow-x-auto">
+        <table class="admin-table">
           <thead>
             <tr>
-              <th>Product</th>
-              <th>SKU</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Total</th>
+              <th>Asset Specification</th>
+              <th>Registry SKU</th>
+              <th>Unit Value</th>
+              <th>Quantity</th>
+              <th class="text-right">Total Settlement</th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($items as $item): ?>
             <tr>
-              <td style="font-weight: 500;"><?= htmlspecialchars($item['product_name'] ?? $item['sku']) ?></td>
-              <td style="color: #64748b;"><?= htmlspecialchars($item['sku']) ?></td>
+              <td class="font-bold color-primary"><?= htmlspecialchars($item['product_name'] ?? $item['sku']) ?></td>
+              <td class="text-xs font-bold text-muted tracking-wider uppercase"><?= htmlspecialchars($item['sku']) ?></td>
               <td><?= format_price((float)$item['unit_price']) ?></td>
-              <td><?= (int)($item['quantity'] ?? $item['qty'] ?? 0) ?></td>
-              <td style="font-weight: 600;"><?= format_price((float)($item['total_price'] ?? $item['total'] ?? 0)) ?></td>
+              <td class="font-bold"><?= (int)($item['quantity'] ?? $item['qty'] ?? 0) ?></td>
+              <td class="text-right font-black color-primary"><?= format_price((float)($item['total_price'] ?? $item['total'] ?? 0)) ?></td>
             </tr>
             <?php endforeach; ?>
           </tbody>
           <tfoot>
-            <tr>
-              <td colspan="4" style="text-align: right; font-weight: 600;">Order Total:</td>
-              <td style="font-weight: 700; font-size: 1.1rem;"><?= format_price((float)$order['total']) ?></td>
+            <tr class="bg-light">
+              <td colspan="4" class="text-right font-bold text-muted uppercase tracking-widest p-24">Final Operational Settlement:</td>
+              <td class="text-right font-black text-2xl color-primary p-24"><?= format_price((float)$order['total']) ?></td>
             </tr>
           </tfoot>
         </table>
@@ -144,34 +174,42 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
     
     <!-- Payment Uploads -->
     <?php if (!empty($paymentUploads)): ?>
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Payment Receipts</h3>
+    <div class="card-modern no-padding overflow-hidden">
+      <div class="px-32 py-24 bg-light border-bottom">
+        <h3 class="mb-0 text-lg">Settlement Protocols</h3>
       </div>
-      <div class="card-body">
+      <div class="p-32 grid gap-16">
         <?php foreach ($paymentUploads as $upload): ?>
-        <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 12px;">
-          <div style="font-size: 2.5rem;">
-            <?= strpos($upload['mime_type'], 'pdf') !== false ? '📄' : '🖼️' ?>
+        <div class="flex items-center gap-24 p-24 card-modern bg-light border-subtle">
+          <div class="protocol-icon bg-white p-12 border-radius-md border-subtle shadow-sm">
+            <i data-lucide="<?= strpos($upload['mime_type'], 'pdf') !== false ? 'file-text' : 'image' ?>" class="text-accent" size="32"></i>
           </div>
-          <div style="flex: 1;">
-            <div style="font-weight: 500;"><?= htmlspecialchars($upload['original_filename']) ?></div>
-            <div style="font-size: 0.85rem; color: #64748b;">
-              Uploaded <?= date('M j, Y g:i A', strtotime($upload['created_at'])) ?>
-              • <?= number_format($upload['file_size'] / 1024, 1) ?> KB
+          <div class="flex-1">
+            <div class="font-bold color-primary mb-4"><?= htmlspecialchars($upload['original_filename']) ?></div>
+            <div class="text-xs text-muted font-bold tracking-wider uppercase">
+              <?= date('M j, Y g:i A', strtotime($upload['created_at'])) ?>
+              <span class="opacity-30 mx-8">•</span>
+              <?= number_format($upload['file_size'] / 1024, 1) ?> KB
             </div>
             <?php if (!empty($upload['notes'])): ?>
-            <div style="font-size: 0.9rem; margin-top: 8px; color: #475569;">
-              Note: <?= htmlspecialchars($upload['notes']) ?>
+            <div class="mt-12 p-12 bg-white border-radius-sm border-subtle text-sm text-muted italic">
+              "<?= htmlspecialchars($upload['notes']) ?>"
             </div>
             <?php endif; ?>
           </div>
-          <div>
-            <span class="order-status-badge status-<?= $upload['status'] ?>">
-              <?= ucfirst($upload['status']) ?>
-            </span>
+          <div class="flex items-center gap-20">
+            <?php render_component('badge', [
+              'label' => ucfirst($upload['status']),
+              'variant' => $upload['status'] === 'verified' ? 'success' : 'warning'
+            ]); ?>
+            <?php render_component('button', [
+              'href' => '/' . htmlspecialchars($upload['file_path']),
+              'variant' => 'outline',
+              'size' => 'sm',
+              'label' => 'Audit File',
+              'attr' => 'target="_blank"'
+            ]); ?>
           </div>
-          <a href="/<?= htmlspecialchars($upload['file_path']) ?>" target="_blank" class="btn btn-sm btn-outline">View</a>
         </div>
         <?php endforeach; ?>
       </div>
@@ -180,85 +218,99 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
     
     <!-- Shipments -->
     <?php if (!empty($shipments)): ?>
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Shipments</h3>
+    <div class="card-modern no-padding overflow-hidden mb-32">
+      <div class="px-32 py-24 bg-light border-bottom">
+        <h3 class="mb-0 text-lg">Industrial Logistics Registry</h3>
       </div>
-      <div class="card-body">
+      <div class="p-32 grid gap-32">
         <?php foreach ($shipments as $shipment): 
           $events = json_decode($shipment['events'] ?? '[]', true) ?: [];
         ?>
-        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+        <div class="shipment-record card-modern bg-light border-subtle p-24">
+          <div class="flex-between mb-24">
             <div>
-              <div style="font-weight: 600; font-size: 1.1rem;"><?= htmlspecialchars($shipment['tracking_number']) ?></div>
-              <div style="color: #64748b;"><?= htmlspecialchars($shipment['carrier']) ?></div>
+              <div class="font-black color-primary text-xl"><?= htmlspecialchars($shipment['tracking_number']) ?></div>
+              <div class="text-sm font-bold text-muted uppercase tracking-wider"><?= htmlspecialchars($shipment['carrier']) ?></div>
             </div>
-            <span class="order-status-badge status-<?= str_replace('_', '-', $shipment['status']) ?>">
-              <?= get_status_label($shipment['status']) ?>
-            </span>
+            <?php render_component('badge', [
+              'label' => get_status_label($shipment['status']),
+              'variant' => $shipment['status'] === 'delivered' ? 'success' : 'info'
+            ]); ?>
           </div>
           
           <!-- Add Tracking Update -->
-          <form action="/admin/shipments/<?= $shipment['id'] ?>/update-tracking" method="POST" style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-            <h4 style="margin: 0 0 12px 0; font-size: 0.9rem;">Add Tracking Update</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div>
-                <select name="status" class="form-control" style="padding: 8px;">
-                  <option value="picked_up">Picked Up from Warehouse</option>
-                  <option value="in_transit">In Transit</option>
-                  <option value="arrived_hub">Arrived at Hub</option>
-                  <option value="departed_hub">Departed Hub</option>
-                  <option value="customs_hold">Customs Hold</option>
-                  <option value="customs_cleared">Customs Cleared</option>
-                  <option value="arrived_destination">Arrived at Destination Country</option>
-                  <option value="out_for_delivery">Out for Delivery</option>
-                  <option value="delivery_attempted">Delivery Attempted</option>
-                  <option value="delivered">Delivered</option>
-                </select>
-              </div>
-              <div>
-                <input type="text" name="location" class="form-control" placeholder="Location (e.g., Munich, DE)" style="padding: 8px;">
-              </div>
+          <form action="/admin/shipments/<?= $shipment['id'] ?>/update-tracking" method="POST" class="grid gap-16 bg-white p-24 border-radius-md border-subtle mb-24">
+            <h4 class="text-sm font-black uppercase tracking-widest mb-8">Add Tracking Milestone</h4>
+            <div class="grid grid-2">
+              <select name="status" class="input-modern">
+                <option value="picked_up">Picked Up from Warehouse</option>
+                <option value="in_transit">In Transit</option>
+                <option value="arrived_hub">Arrived at Hub</option>
+                <option value="departed_hub">Departed Hub</option>
+                <option value="customs_hold">Customs Hold</option>
+                <option value="customs_cleared">Customs Cleared</option>
+                <option value="arrived_destination">Arrived at Destination Country</option>
+                <option value="out_for_delivery">Out for Delivery</option>
+                <option value="delivery_attempted">Delivery Attempted</option>
+                <option value="delivered">Delivered</option>
+              </select>
+              <input type="text" name="location" class="input-modern" placeholder="Location (e.g., Munich, DE)">
             </div>
-            <div style="margin-top: 12px;">
-              <input type="text" name="description" class="form-control" placeholder="Status description" style="padding: 8px;">
-            </div>
-            <button type="submit" class="btn btn-sm btn-primary mt-2">Add Update</button>
+            <input type="text" name="description" class="input-modern" placeholder="Status description">
+            <?php render_component('button', [
+              'type' => 'submit',
+              'variant' => 'outline',
+              'size' => 'sm',
+              'label' => 'Append Milestone',
+              'icon' => 'plus'
+            ]); ?>
           </form>
           
           <!-- Customs Hold Controls -->
           <?php if ($shipment['status'] !== 'delivered'): ?>
-          <div style="background: #fef3c7; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #f59e0b;">
-            <h4 style="margin: 0 0 12px 0; font-size: 0.9rem; color: #92400e;">⚠️ Customs Control</h4>
+          <div class="customs-control-card p-24 border-radius-md mb-24 <?= $shipment['status'] === 'customs_hold' ? 'bg-error-light border-error' : 'bg-warning-light border-warning' ?>" style="border: 2px dashed;">
+            <h4 class="text-sm font-black uppercase tracking-widest mb-16 flex items-center gap-8">
+              <i data-lucide="shield-alert"></i> Customs Protocol
+            </h4>
             <?php if ($shipment['status'] === 'customs_hold'): ?>
-            <div style="margin-bottom: 12px; padding: 12px; background: white; border-radius: 6px;">
-              <strong>Currently on Customs Hold</strong>
+            <div class="bg-white p-16 border-radius-sm mb-16 border-subtle shadow-sm">
+              <div class="font-black text-error uppercase text-xs mb-8">Currently on Customs Hold</div>
               <?php if (!empty($shipment['customs_memo'])): ?>
-              <p style="margin: 8px 0 0 0; color: #64748b;"><?= htmlspecialchars($shipment['customs_memo']) ?></p>
+              <p class="text-sm text-muted mb-8 italic">"<?= htmlspecialchars($shipment['customs_memo']) ?>"</p>
               <?php endif; ?>
               <?php if (!empty($shipment['customs_duty_amount'])): ?>
-              <p style="margin: 8px 0 0 0;"><strong>Duty:</strong> <?= number_format($shipment['customs_duty_amount'], 2) ?> <?= htmlspecialchars($shipment['customs_duty_currency'] ?? 'EUR') ?></p>
+              <div class="font-bold text-primary">Duty Value: <?= number_format((float)$shipment['customs_duty_amount'], 2) ?> <?= htmlspecialchars($shipment['customs_duty_currency'] ?? 'EUR') ?></div>
               <?php endif; ?>
             </div>
-            <form action="/admin/shipments/<?= $shipment['id'] ?>/clear-customs" method="POST" style="display: inline;">
+            <form action="/admin/shipments/<?= $shipment['id'] ?>/clear-customs" method="POST">
               <input type="hidden" name="location" value="Customs Facility">
-              <button type="submit" class="btn btn-sm btn-success">✓ Clear Customs Hold</button>
+              <?php render_component('button', [
+                'type' => 'submit',
+                'variant' => 'accent',
+                'size' => 'sm',
+                'label' => 'Authorize Customs Release',
+                'icon' => 'unlock'
+              ]); ?>
             </form>
             <?php else: ?>
-            <form action="/admin/shipments/<?= $shipment['id'] ?>/customs-hold" method="POST">
-              <div class="form-group" style="margin-bottom: 12px;">
-                <input type="text" name="customs_memo" class="form-control" placeholder="Customs memo (reason for hold)" style="padding: 8px;">
-              </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                <input type="number" name="duty_amount" class="form-control" placeholder="Duty amount" step="0.01" style="padding: 8px;">
-                <select name="duty_currency" class="form-control" style="padding: 8px;">
+            <form action="/admin/shipments/<?= $shipment['id'] ?>/customs-hold" method="POST" class="grid gap-12">
+              <input type="text" name="customs_memo" class="input-modern" placeholder="Justification for hold...">
+              <div class="grid grid-2">
+                <input type="number" name="duty_amount" class="input-modern" placeholder="Duty value" step="0.01">
+                <select name="duty_currency" class="input-modern">
                   <option value="EUR">EUR</option>
                   <option value="USD">USD</option>
                   <option value="GBP">GBP</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-sm btn-warning">⚠️ Set Customs Hold</button>
+              <?php render_component('button', [
+                'type' => 'submit',
+                'variant' => 'outline',
+                'size' => 'sm',
+                'label' => 'Initialize Customs Hold',
+                'icon' => 'lock',
+                'class' => 'text-warning'
+              ]); ?>
             </form>
             <?php endif; ?>
           </div>
@@ -266,19 +318,21 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
           
           <!-- Recent Events -->
           <?php if (!empty($events)): ?>
-          <div style="border-top: 1px solid #e2e8f0; padding-top: 16px;">
-            <h4 style="margin: 0 0 12px 0; font-size: 0.9rem;">Tracking History</h4>
-            <?php foreach (array_slice($events, 0, 5) as $event): ?>
-            <div style="display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f1f5f9;">
-              <div style="width: 100px; font-size: 0.85rem; color: #64748b;">
-                <?= date('M j, g:i A', strtotime($event['timestamp'] ?? $event['ts'] ?? 'now')) ?>
+          <div class="tracking-history-mini pt-24 border-top">
+            <h4 class="text-xs font-black uppercase tracking-widest mb-16 text-muted">Latest Milestones</h4>
+            <div class="grid gap-16">
+              <?php foreach (array_slice($events, 0, 5) as $event): ?>
+              <div class="flex gap-16 text-sm">
+                <div class="text-muted font-bold whitespace-nowrap w-100">
+                  <?= date('M j, g:i A', strtotime($event['timestamp'] ?? $event['ts'] ?? 'now')) ?>
+                </div>
+                <div>
+                  <div class="font-bold color-primary"><?= htmlspecialchars($event['description'] ?? $event['status'] ?? '') ?></div>
+                  <div class="text-xs text-muted font-medium"><?= htmlspecialchars($event['location'] ?? '') ?></div>
+                </div>
               </div>
-              <div style="flex: 1;">
-                <div style="font-weight: 500;"><?= htmlspecialchars($event['description'] ?? $event['status'] ?? '') ?></div>
-                <div style="font-size: 0.85rem; color: #64748b;"><?= htmlspecialchars($event['location'] ?? '') ?></div>
-              </div>
+              <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
           </div>
           <?php endif; ?>
         </div>
@@ -291,110 +345,119 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
     <?php if (!empty($shipments)): ?>
     <?php foreach ($shipments as $shipment): 
       $trackingNumber = $shipment['tracking_number'];
-      // Fetch communications for this order
       $commStmt = $pdo->prepare("SELECT * FROM tracking_communications WHERE order_id = ? ORDER BY created_at ASC");
       $commStmt->execute([$order['id']]);
       $communications = $commStmt->fetchAll();
     ?>
-    <div class="card mb-4" id="communications-<?= $shipment['id'] ?>">
-      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="card-title">💬 Customer Communications - <?= htmlspecialchars($trackingNumber) ?></h3>
-        <span style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem;">
-          <?= count($communications) ?> messages
-        </span>
+    <div class="card-modern no-padding overflow-hidden mb-32" id="communications-<?= $shipment['id'] ?>">
+      <div class="px-32 py-24 bg-light border-bottom flex-between items-center">
+        <h3 class="mb-0 text-lg flex items-center gap-12">
+          <i data-lucide="message-square" class="text-accent"></i>
+          Communication Matrix - <?= htmlspecialchars($trackingNumber) ?>
+        </h3>
+        <span class="badge badge-info"><?= count($communications) ?> Messages</span>
       </div>
-      <div class="card-body">
-        <!-- Messages List -->
-        <div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px; padding: 16px; background: #f8fafc; border-radius: 8px;">
+      <div class="p-32">
+        <div class="chat-registry-container bg-light border-radius-md p-24 mb-24 max-h-500 overflow-y-auto">
           <?php if (empty($communications)): ?>
-          <p style="color: #64748b; text-align: center; padding: 20px;">No messages yet</p>
+          <div class="text-center py-40 opacity-30">
+            <i data-lucide="message-circle-x" size="48" class="mb-16"></i>
+            <p class="font-bold">No technical exchange recorded.</p>
+          </div>
           <?php else: ?>
-          <?php foreach ($communications as $comm): ?>
-          <div style="margin-bottom: 16px; padding: 12px; border-radius: 8px; position: relative; <?= $comm['sender_type'] === 'admin' ? 'background: #dbeafe; margin-left: 20%;' : ($comm['sender_type'] === 'system' ? 'background: #fef3c7; border-left: 4px solid #f59e0b;' : 'background: white; margin-right: 20%; border: 1px solid #e2e8f0;') ?>">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-weight: 600; color: <?= $comm['sender_type'] === 'admin' ? '#1d4ed8' : ($comm['sender_type'] === 'system' ? '#92400e' : '#374151') ?>;">
-                <?= $comm['sender_type'] === 'admin' ? '👨‍💼 Admin' : ($comm['sender_type'] === 'system' ? '🤖 System' : '👤 Customer') ?>
-                <?php if (!empty($comm['sender_name'])): ?>
-                  (<?= htmlspecialchars($comm['sender_name']) ?>)
-                <?php endif; ?>
-              </span>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 0.8rem; color: #64748b;">
-                  <?= date('M j, Y g:i A', strtotime($comm['created_at'])) ?>
-                </span>
-                <div style="display: flex; gap: 4px;">
-                  <button onclick="editMessage(<?= $comm['id'] ?>)" 
-                          style="padding: 4px 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">
-                    ✏️ Edit
-                  </button>
-                  <form action="/admin/communications/<?= $comm['id'] ?>/delete" method="POST" style="display: inline;" 
-                        onsubmit="return confirm('Are you sure you want to delete this message?');">
-                    <button type="submit" style="padding: 4px 8px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">
-                      🗑️ Delete
-                    </button>
-                  </form>
+          <?php foreach ($communications as $comm): 
+            $isSystem = $comm['sender_type'] === 'system';
+            $isAdmin = $comm['sender_type'] === 'admin';
+          ?>
+          <div class="mb-24 flex flex-col <?= $isAdmin ? 'items-end' : 'items-start' ?>">
+            <div class="flex items-center gap-8 mb-4 text-xs font-black uppercase tracking-widest text-muted">
+              <span><?= $isAdmin ? '👨‍💼 Admin Protocol' : ($isSystem ? '🤖 System Automated' : '👤 External Partner') ?></span>
+              <span class="opacity-30">•</span>
+              <span><?= date('M j, g:i A', strtotime($comm['created_at'])) ?></span>
+            </div>
+            
+            <div class="message-block p-16 border-radius-md max-w-80 shadow-sm border <?= $isAdmin ? 'bg-primary text-white border-primary' : ($isSystem ? 'bg-warning-light border-warning text-warning-dark' : 'bg-white border-subtle text-primary') ?>">
+              <?php if (!empty($comm['document_path'])): ?>
+              <div class="mb-12 flex items-center gap-12 p-8 border-radius-sm <?= $isAdmin ? 'bg-white/10 border-white/20' : 'bg-light border-subtle' ?>" style="border: 1px solid;">
+                <i data-lucide="file-text" size="20"></i>
+                <div class="flex-1 overflow-hidden">
+                  <div class="text-xs font-bold truncate"><?= htmlspecialchars($comm['document_name']) ?></div>
+                  <a href="/<?= htmlspecialchars(ltrim($comm['document_path'], '/')) ?>" target="_blank" class="text-xs font-black uppercase underline tracking-tighter opacity-80">Audit Spec</a>
                 </div>
               </div>
-            </div>
-            <div id="message-content-<?= $comm['id'] ?>">
-              <?php if (!empty($comm['message'])): ?>
-              <p style="margin: 0; white-space: pre-wrap;"><?= htmlspecialchars($comm['message']) ?></p>
               <?php endif; ?>
+              
+              <div class="text-sm font-medium leading-relaxed">
+                <?= nl2br(htmlspecialchars($comm['message'] ?? '')) ?>
+              </div>
+              
+              <div class="flex flex-end gap-8 mt-12 opacity-50 hover-opacity-100 transition">
+                <button onclick="editMessage(<?= $comm['id'] ?>)" class="text-xs font-black uppercase tracking-widest hover-text-accent">Edit</button>
+                <form action="/admin/communications/<?= $comm['id'] ?>/delete" method="POST" onsubmit="return confirm('Authorize deletion of registry entry?');">
+                  <button type="submit" class="text-xs font-black uppercase tracking-widest hover-text-error">Wipe</button>
+                </form>
+              </div>
             </div>
-            <div id="message-edit-<?= $comm['id'] ?>" style="display: none;">
-              <form action="/admin/communications/<?= $comm['id'] ?>/update" method="POST">
-                <textarea name="message" class="form-control" rows="3" style="margin-bottom: 8px;"><?= htmlspecialchars($comm['message'] ?? '') ?></textarea>
-                <div style="margin-bottom: 8px;">
-                  <label style="margin-right: 16px;">
-                    <input type="radio" name="sender_type" value="admin" <?= $comm['sender_type'] === 'admin' ? 'checked' : '' ?>> 👨‍💼 Admin
-                  </label>
-                  <label style="margin-right: 16px;">
-                    <input type="radio" name="sender_type" value="customer" <?= $comm['sender_type'] === 'customer' ? 'checked' : '' ?>> 👤 Customer
-                  </label>
-                  <label>
-                    <input type="radio" name="sender_type" value="system" <?= $comm['sender_type'] === 'system' ? 'checked' : '' ?>> 🤖 System
-                  </label>
+
+            <div id="message-edit-<?= $comm['id'] ?>" class="hidden mt-16 w-full max-w-80 bg-white p-24 border-radius-md border-subtle shadow-lg">
+              <form action="/admin/communications/<?= $comm['id'] ?>/update" method="POST" class="grid gap-16">
+                <textarea name="message" class="input-modern h-100 py-12"><?= htmlspecialchars($comm['message'] ?? '') ?></textarea>
+                <div class="flex flex-between items-center">
+                  <div class="flex gap-12">
+                    <label class="flex items-center gap-4 text-xs font-bold">
+                      <input type="radio" name="sender_type" value="admin" <?= $isAdmin ? 'checked' : '' ?>> Admin
+                    </label>
+                    <label class="flex items-center gap-4 text-xs font-bold">
+                      <input type="radio" name="sender_type" value="customer" <?= $comm['sender_type'] === 'customer' ? 'checked' : '' ?>> Customer
+                    </label>
+                    <label class="flex items-center gap-4 text-xs font-bold">
+                      <input type="radio" name="sender_type" value="system" <?= $isSystem ? 'checked' : '' ?>> System
+                    </label>
+                  </div>
+                  <input type="datetime-local" name="created_at" class="input-modern h-32 px-8 text-xs" value="<?= date('Y-m-d\TH:i', strtotime($comm['created_at'])) ?>">
                 </div>
-                <div style="margin-bottom: 8px;">
-                  <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: #64748b;">
-                    ⏰ Message Timestamp
-                  </label>
-                  <input type="datetime-local" name="created_at" class="form-control" value="<?= date('Y-m-d\TH:i', strtotime($comm['created_at'])) ?>" style="max-width: 250px;">
-                </div>
-                <div style="display: flex; gap: 8px;">
-                  <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                  <button type="button" onclick="cancelEdit(<?= $comm['id'] ?>)" class="btn btn-secondary btn-sm">Cancel</button>
+                <div class="flex flex-end gap-8">
+                  <?php render_component('button', [
+                    'variant' => 'outline',
+                    'size' => 'sm',
+                    'label' => 'Abort',
+                    'attr' => 'onclick="cancelEdit('.$comm['id'].')"'
+                  ]); ?>
+                  <?php render_component('button', [
+                    'type' => 'submit',
+                    'variant' => 'accent',
+                    'size' => 'sm',
+                    'label' => 'Overwrite'
+                  ]); ?>
                 </div>
               </form>
             </div>
-            <?php if (!empty($comm['document_path'])): ?>
-            <div style="margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px;">
-              <a href="/<?= htmlspecialchars(ltrim($comm['document_path'], '/')) ?>" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #2563eb; text-decoration: none;">
-                📎 <?= htmlspecialchars($comm['document_name'] ?? 'Document') ?>
-                <span style="font-size: 0.8rem; color: #64748b;">(<?= htmlspecialchars($comm['document_type'] ?? 'file') ?>)</span>
-              </a>
-            </div>
-            <?php endif; ?>
           </div>
           <?php endforeach; ?>
           <?php endif; ?>
         </div>
         
         <!-- Admin Reply Form -->
-        <form action="/admin/shipments/<?= $shipment['id'] ?>/send-message" method="POST" enctype="multipart/form-data" style="background: #f1f5f9; padding: 16px; border-radius: 8px;">
-          <h4 style="margin: 0 0 12px 0; font-size: 0.9rem;">📝 Send Reply to Customer</h4>
-          <div class="form-group" style="margin-bottom: 12px;">
-            <textarea name="message" class="form-control" rows="3" placeholder="Type your message to the customer..." style="padding: 12px;"></textarea>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 16px; background: white; border: 1px solid #e2e8f0; border-radius: 6px;">
-                <input type="file" name="document" style="display: none;" accept=".pdf,.png,.jpg,.jpeg" onchange="this.nextElementSibling.nextElementSibling.textContent = this.files[0] ? '📄 ' + this.files[0].name : ''">
-                📎 Attach Document
+        <form action="/admin/shipments/<?= $shipment['id'] ?>/send-message" method="POST" enctype="multipart/form-data" class="bg-light border-radius-md p-24 border-subtle shadow-inner">
+          <h4 class="text-sm font-black uppercase tracking-widest mb-16 flex items-center gap-8">
+            <i data-lucide="reply"></i> Dispatch Reply to Partner
+          </h4>
+          <textarea name="message" class="input-modern w-full h-100 py-12 mb-16" placeholder="Technical communication narrative..."></textarea>
+          <div class="flex-between">
+            <div class="flex items-center gap-12">
+              <label class="attachment-trigger card-modern bg-white px-16 py-8 border-radius-sm border-subtle shadow-sm flex items-center gap-8 cursor-pointer hover-bg-subtle transition">
+                <i data-lucide="paperclip" size="16"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Attach Spec</span>
+                <input type="file" name="document" class="hidden" accept=".pdf,.png,.jpg,.jpeg" onchange="this.nextElementSibling.textContent = this.files[0] ? '✓ ' + this.files[0].name : ''">
+                <span class="text-xs font-black text-accent ml-4 truncate max-w-150"></span>
               </label>
-              <span class="file-name" style="font-size: 0.85rem; color: #64748b; margin-left: 8px;"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
+            <?php render_component('button', [
+              'type' => 'submit',
+              'variant' => 'accent',
+              'label' => 'Initialize Dispatch',
+              'icon' => 'send'
+            ]); ?>
           </div>
         </form>
       </div>
@@ -404,37 +467,41 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
     
     <!-- Create Shipment Form -->
     <?php if ($order['status'] === 'payment_confirmed' && empty($shipments)): ?>
-    <div class="card mb-4" id="ship">
-      <div class="card-header">
-        <h3 class="card-title">🚛 Create Shipment - Streicher Logistics</h3>
+    <div class="card-modern no-padding overflow-hidden mb-32" id="ship">
+      <div class="px-32 py-24 bg-primary color-white flex-between items-center">
+        <h3 class="mb-0 text-lg color-white flex items-center gap-12">
+          <i data-lucide="truck"></i> Initialize Logistics Protocol
+        </h3>
+        <span class="text-xs font-black text-accent uppercase tracking-widest">Authorized Operations</span>
       </div>
-      <div class="card-body">
-        <form action="/admin/orders/<?= $order['id'] ?>/create-shipment" method="POST">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label class="form-label">Carrier</label>
-              <select name="carrier" class="form-control">
+      <div class="p-40">
+        <form action="/admin/orders/<?= $order['id'] ?>/create-shipment" method="POST" class="grid gap-32">
+          <div class="grid grid-2">
+            <div class="form-group-modern">
+              <label class="label-modern mb-8">Authorized Carrier</label>
+              <select name="carrier" class="input-modern">
                 <option value="Streicher Logistics" selected>🚛 Streicher Logistics</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Tracking Number (optional)</label>
-              <input type="text" name="tracking_number" class="form-control" placeholder="Leave blank to auto-generate">
-            </div>
+            <?php render_component('form_field', [
+              'label' => 'Registry ID (Tracking)',
+              'name' => 'tracking_number',
+              'placeholder' => 'Leave blank for auto-generation'
+            ]); ?>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label class="form-label">Shipping Method</label>
-              <select name="shipping_method" class="form-control">
+          <div class="grid grid-2">
+            <div class="form-group-modern">
+              <label class="label-modern mb-8">Transit Specification</label>
+              <select name="shipping_method" class="input-modern">
                 <option value="air_freight">✈️ Air Freight (International)</option>
                 <option value="sea_freight">🚢 Sea Freight (Heavy Cargo)</option>
                 <option value="local_van">🚐 Local Van Delivery (Germany)</option>
                 <option value="motorcycle">🏍️ Motorcycle Courier (Express Local)</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Package Type</label>
-              <select name="package_type" class="form-control">
+            <div class="form-group-modern">
+              <label class="label-modern mb-8">Containment Protocol</label>
+              <select name="package_type" class="input-modern">
                 <option value="crate">📦 Industrial Crate</option>
                 <option value="carton">📦 Carton Box</option>
                 <option value="pallet">🏗️ Pallet</option>
@@ -442,11 +509,18 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Destination</label>
-            <input type="text" name="destination" class="form-control" value="<?= htmlspecialchars(($shipping['city'] ?? '') . ', ' . ($shipping['country'] ?? '')) ?>">
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg">📦 Create Shipment & Mark as Shipped</button>
+          <?php render_component('form_field', [
+            'label' => 'Destination Registry',
+            'name' => 'destination',
+            'value' => ($shipping['city'] ?? '') . ', ' . ($shipping['country'] ?? '')
+          ]); ?>
+          <?php render_component('button', [
+            'type' => 'submit',
+            'variant' => 'accent',
+            'label' => 'Initialize Logistics & Set Shipped Status',
+            'class' => 'h-72 text-lg uppercase tracking-wider',
+            'icon' => 'package'
+          ]); ?>
         </form>
       </div>
     </div>
@@ -454,87 +528,86 @@ $shipping = json_decode($order['shipping_address'] ?? '{}', true) ?: [];
   </div>
   
   <!-- Sidebar -->
-  <div>
+  <aside class="grid gap-32">
     <!-- Order Info -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Order Details</h3>
+    <div class="card-modern no-padding overflow-hidden">
+      <div class="px-24 py-16 bg-light border-bottom">
+        <h4 class="mb-0 text-sm uppercase tracking-widest font-black">Registry Data</h4>
       </div>
-      <div class="card-body">
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Order Number</div>
-          <div style="font-weight: 600;"><?= htmlspecialchars($order['order_number']) ?></div>
+      <div class="p-24 grid gap-20">
+        <div>
+          <div class="text-xs font-black text-muted uppercase tracking-widest mb-4">Registry ID</div>
+          <div class="font-bold color-primary text-lg"><?= htmlspecialchars($order['order_number']) ?></div>
         </div>
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Order Date</div>
-          <div style="font-weight: 600;"><?= date('F j, Y g:i A', strtotime($order['created_at'])) ?></div>
+        <div>
+          <div class="text-xs font-black text-muted uppercase tracking-widest mb-4">Enrollment Date</div>
+          <div class="font-bold color-primary"><?= date('F j, Y g:i A', strtotime($order['created_at'])) ?></div>
         </div>
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Payment Method</div>
-          <div style="font-weight: 600;">Bank Transfer</div>
+        <div>
+          <div class="text-xs font-black text-muted uppercase tracking-widest mb-4">Settlement Method</div>
+          <div class="font-bold color-primary">Bank Wire Transfer</div>
         </div>
         <?php if (!empty($order['payment_confirmed_at'])): ?>
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Payment Confirmed</div>
-          <div style="font-weight: 600;"><?= date('F j, Y g:i A', strtotime($order['payment_confirmed_at'])) ?></div>
+        <div class="pt-16 border-top">
+          <div class="text-xs font-black text-success uppercase tracking-widest mb-4">Settlement Validated</div>
+          <div class="font-bold color-primary"><?= date('F j, Y g:i A', strtotime($order['payment_confirmed_at'])) ?></div>
         </div>
         <?php endif; ?>
         <?php if (!empty($order['shipped_at'])): ?>
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Shipped</div>
-          <div style="font-weight: 600;"><?= date('F j, Y g:i A', strtotime($order['shipped_at'])) ?></div>
+        <div class="pt-16 border-top">
+          <div class="text-xs font-black text-info uppercase tracking-widest mb-4">Logistics Initialized</div>
+          <div class="font-bold color-primary"><?= date('F j, Y g:i A', strtotime($order['shipped_at'])) ?></div>
         </div>
         <?php endif; ?>
       </div>
     </div>
     
-    <!-- Customer Info -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Customer</h3>
+    <!-- Partner Info -->
+    <div class="card-modern no-padding overflow-hidden">
+      <div class="px-24 py-16 bg-light border-bottom">
+        <h4 class="mb-0 text-sm uppercase tracking-widest font-black">Partner Protocol</h4>
       </div>
-      <div class="card-body">
-        <div style="margin-bottom: 16px;">
-          <div style="font-weight: 600;"><?= htmlspecialchars($billing['company'] ?? 'N/A') ?></div>
-          <div><?= htmlspecialchars($billing['name'] ?? '') ?></div>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <div style="color: #64748b; font-size: 0.85rem;">Email</div>
-          <div><a href="mailto:<?= htmlspecialchars($billing['email'] ?? '') ?>"><?= htmlspecialchars($billing['email'] ?? 'N/A') ?></a></div>
-        </div>
+      <div class="p-24 grid gap-20">
         <div>
-          <div style="color: #64748b; font-size: 0.85rem;">Phone</div>
-          <div><?= htmlspecialchars($billing['phone'] ?? 'N/A') ?></div>
+          <div class="font-black color-primary text-lg mb-2 truncate"><?= htmlspecialchars($billing['company'] ?? 'N/A') ?></div>
+          <div class="text-sm font-medium text-muted"><?= htmlspecialchars($billing['name'] ?? '') ?></div>
+        </div>
+        <div class="pt-16 border-top">
+          <div class="text-xs font-black text-muted uppercase tracking-widest mb-4">Communication Line</div>
+          <a href="mailto:<?= htmlspecialchars($billing['email'] ?? '') ?>" class="font-bold text-accent underline truncate block"><?= htmlspecialchars($billing['email'] ?? 'N/A') ?></a>
+          <div class="mt-4 font-bold color-primary text-sm"><?= htmlspecialchars($billing['phone'] ?? 'N/A') ?></div>
         </div>
       </div>
     </div>
     
-    <!-- Shipping Address -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Shipping Address</h3>
+    <!-- Dispatch Address -->
+    <div class="card-modern no-padding overflow-hidden">
+      <div class="px-24 py-16 bg-light border-bottom">
+        <h4 class="mb-0 text-sm uppercase tracking-widest font-black">Logistics Destination</h4>
       </div>
-      <div class="card-body">
-        <div>
-          <?= htmlspecialchars($shipping['company'] ?? $billing['company'] ?? '') ?><br>
+      <div class="p-24">
+        <div class="text-sm font-bold color-primary leading-loose">
+          <div class="font-black uppercase tracking-wider mb-8"><?= htmlspecialchars($shipping['company'] ?? $billing['company'] ?? '') ?></div>
           <?= htmlspecialchars($shipping['name'] ?? $billing['name'] ?? '') ?><br>
           <?= htmlspecialchars($shipping['address'] ?? $billing['address'] ?? '') ?><br>
-          <?= htmlspecialchars(($shipping['zip'] ?? $billing['zip'] ?? '') . ' ' . ($shipping['city'] ?? $billing['city'] ?? '')) ?><br>
-          <?= htmlspecialchars($shipping['country'] ?? $billing['country'] ?? '') ?>
+          <span class="bg-light px-8 py-2 border-radius-sm"><?= htmlspecialchars(($shipping['zip'] ?? $billing['zip'] ?? '') . ' ' . ($shipping['city'] ?? $billing['city'] ?? '')) ?></span><br>
+          <div class="flex items-center gap-8 mt-8">
+            <i data-lucide="globe" size="14"></i>
+            <?= htmlspecialchars($shipping['country'] ?? $billing['country'] ?? '') ?>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </aside>
 </div>
 
 <script>
-function editMessage(id, message, senderType) {
-  document.getElementById('message-content-' + id).style.display = 'none';
-  document.getElementById('message-edit-' + id).style.display = 'block';
+function editMessage(id) {
+  const el = document.getElementById('message-edit-' + id);
+  el.classList.toggle('hidden');
 }
 
 function cancelEdit(id) {
-  document.getElementById('message-content-' + id).style.display = 'block';
-  document.getElementById('message-edit-' + id).style.display = 'none';
+  document.getElementById('message-edit-' + id).classList.add('hidden');
 }
 </script>

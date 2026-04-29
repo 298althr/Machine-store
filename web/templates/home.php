@@ -18,12 +18,16 @@
     </p>
     
     <div class="hero-actions">
-      <a href="/catalog" class="btn-modern btn-accent">
-        <?= $lang === 'de' ? 'Katalog durchsuchen' : 'Browse Catalog' ?>
-      </a>
-      <a href="/contact" class="btn-modern btn-white">
-        <?= $lang === 'de' ? 'Angebot anfordern' : 'Request Quote' ?>
-      </a>
+      <?php render_component('button', [
+        'href' => '/catalog',
+        'variant' => 'accent',
+        'label' => $lang === 'de' ? 'Katalog durchsuchen' : 'Browse Catalog'
+      ]); ?>
+      <?php render_component('button', [
+        'href' => '/contact',
+        'variant' => 'white',
+        'label' => $lang === 'de' ? 'Angebot anfordern' : 'Request Quote'
+      ]); ?>
     </div>
 
     <div class="hero-stats">
@@ -77,11 +81,11 @@
 
     <div class="category-grid-modern">
       <?php foreach ($categories as $cat): ?>
-      <a href="/catalog?category=<?= htmlspecialchars($cat['slug']) ?>" class="category-card-modern">
-        <div class="category-icon">⚙️</div>
+      <a href="/catalog?category=<?= htmlspecialchars($cat['slug']) ?>" class="category-card-modern card-modern">
+        <div class="category-icon"><i data-lucide="settings"></i></div>
         <h3 class="category-title"><?= htmlspecialchars($cat['name']) ?></h3>
         <p class="category-desc"><?= htmlspecialchars($cat['description'] ?? '') ?></p>
-        <div class="category-link"><?= __('view') ?> →</div>
+        <div class="category-link"><?= __('view') ?> <i data-lucide="arrow-right"></i></div>
       </a>
       <?php endforeach; ?>
     </div>
@@ -96,7 +100,11 @@
         <h2 class="section-title"><?= $lang === 'de' ? 'Ausgewählte Produkte' : 'Featured Products' ?></h2>
         <p class="section-subtitle"><?= $lang === 'de' ? 'Hochleistungsausrüstung für anspruchsvolle Anwendungen' : 'High-performance equipment for demanding applications' ?></p>
       </div>
-      <a href="/catalog" class="btn-modern btn-accent"><?= $lang === 'de' ? 'Alle Produkte anzeigen' : 'View All Products' ?></a>
+      <?php render_component('button', [
+        'href' => '/catalog',
+        'variant' => 'accent',
+        'label' => $lang === 'de' ? 'Alle Produkte anzeigen' : 'View All Products'
+      ]); ?>
     </div>
 
     <div class="product-grid-modern">
@@ -129,26 +137,28 @@
 </section>
 
 <!-- Software Activation -->
-<section class="section-padding software-activation-section">
+<section class="section-padding software-activation-section bg-light">
   <div class="container-modern text-center">
     <div class="software-badge">
-      <span class="icon">🔑</span>
+      <i data-lucide="key" class="icon"></i>
       <span class="label">Software Activation</span>
     </div>
     <h2 class="section-title"><?= $lang === 'de' ? 'Software-Lizenz aktivieren' : 'Activate Your Software License' ?></h2>
-    <p class="section-subtitle max-w-600">
+    <p class="section-subtitle">
       <?= $lang === 'de' 
         ? 'Kaufen und aktivieren Sie Ihre Software-Lizenzen sicher und einfach online.'
         : 'Purchase and activate your software licenses securely and easily online.' ?>
     </p>
     
-    <div class="software-actions-grid">
-      <div class="software-card">
+    <div class="software-actions-grid grid grid-2">
+      <div class="software-card card-modern">
+        <i data-lucide="plus-circle" class="card-icon"></i>
         <h3><?= $lang === 'de' ? 'Neue Lizenz' : 'New License' ?></h3>
         <p><?= $lang === 'de' ? 'Kaufen und aktivieren Sie Ihre Software sofort.' : 'Purchase and activate your software instantly.' ?></p>
         <a href="/software-activation" class="btn-modern btn-accent w-full"><?= $lang === 'de' ? 'Software aktivieren' : 'Activate Software' ?></a>
       </div>
-      <div class="software-card">
+      <div class="software-card card-modern">
+        <i data-lucide="search" class="card-icon"></i>
         <h3><?= $lang === 'de' ? 'Status prüfen' : 'Check Status' ?></h3>
         <p><?= $lang === 'de' ? 'Verfolgen Sie Ihre Aktivierung mit Ihrem Token.' : 'Track your activation with your token.' ?></p>
         <a href="/software-activation" class="btn-modern btn-outline w-full"><?= $lang === 'de' ? 'Status prüfen' : 'Check Status' ?></a>
@@ -167,14 +177,18 @@
         : 'Our engineering team can help you find the perfect solution for your project requirements.' ?>
     </p>
     <div class="cta-actions">
-      <a href="/quote" class="btn-modern btn-accent lg"><?= $lang === 'de' ? 'Angebot anfordern' : 'Request a Quote' ?></a>
-      <a href="/contact" class="btn-modern btn-white lg"><?= $lang === 'de' ? 'Vertrieb kontaktieren' : 'Contact Sales' ?></a>
-    </div>
-  </div>
-</section>
- </div>
-  </div>
-</section>ieren' : 'Contact Sales' ?></a>
+      <?php render_component('button', [
+        'href' => '/quote',
+        'variant' => 'accent',
+        'size' => 'lg',
+        'label' => $lang === 'de' ? 'Angebot anfordern' : 'Request a Quote'
+      ]); ?>
+      <?php render_component('button', [
+        'href' => '/contact',
+        'variant' => 'white',
+        'size' => 'lg',
+        'label' => $lang === 'de' ? 'Vertrieb kontaktieren' : 'Contact Sales'
+      ]); ?>
     </div>
   </div>
 </section>

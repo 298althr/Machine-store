@@ -19,8 +19,10 @@ $exchangeRate = get_exchange_rate();
           <?php if ($currentCategory): ?>
           <input type="hidden" name="category" value="<?= htmlspecialchars($currentCategory['slug']) ?>">
           <?php endif; ?>
-          <input type="text" name="search" class="search-input" placeholder="<?= __('search_products') ?>" value="<?= htmlspecialchars($search ?? '') ?>">
-          <button type="submit" class="search-submit">🔍</button>
+          <div class="search-input-group">
+            <input type="text" name="search" class="search-input" placeholder="<?= __('search_products') ?>" value="<?= htmlspecialchars($search ?? '') ?>">
+            <button type="submit" class="search-submit"><i data-lucide="search"></i></button>
+          </div>
         </form>
       </div>
       
@@ -66,7 +68,7 @@ $exchangeRate = get_exchange_rate();
                 $filterUrl = '/catalog?' . http_build_query($query);
               ?>
               <a href="<?= htmlspecialchars($filterUrl) ?>" class="filter-option <?= $isChecked ? 'active' : '' ?>">
-                <span class="checkbox"><?= $isChecked ? '✅' : '⬜' ?></span>
+                <span class="checkbox"><i data-lucide="<?= $isChecked ? 'check-square' : 'square' ?>"></i></span>
                 <span class="label"><?= htmlspecialchars($val) ?> <?= htmlspecialchars($opt['unit']) ?></span>
               </a>
               <?php endforeach; ?>
@@ -107,11 +109,15 @@ $exchangeRate = get_exchange_rate();
       <?php endif; ?>
       
       <?php if (empty($products)): ?>
-      <div class="no-results-card">
-        <div class="no-results-icon">🔍</div>
+      <div class="no-results-card card-modern text-center">
+        <div class="no-results-icon"><i data-lucide="search-x"></i></div>
         <h3><?= __('no_products_found') ?></h3>
         <p><?= __('try_adjusting') ?></p>
-        <a href="/catalog" class="btn-modern btn-accent"><?= __('view_all') ?></a>
+        <?php render_component('button', [
+          'href' => '/catalog',
+          'variant' => 'accent',
+          'label' => __('view_all')
+        ]); ?>
       </div>
       <?php else: ?>
       <div class="product-grid-modern">
@@ -140,9 +146,11 @@ $exchangeRate = get_exchange_rate();
                 <div class="product-price-modern"><?= format_price($displayPrice, $displayCurrency) ?></div>
               </div>
               <div class="card-actions">
-                <a href="/product?sku=<?= htmlspecialchars($product['sku']) ?>" class="btn-modern <?= $product['in_stock'] ? 'btn-view' : 'btn-quote' ?>">
-                  <?= $product['in_stock'] ? __('view') : 'Get Quote' ?>
-                </a>
+                <?php render_component('button', [
+                  'href' => '/product?sku=' . htmlspecialchars($product['sku']),
+                  'variant' => $product['in_stock'] ? 'outline' : 'accent',
+                  'label' => $product['in_stock'] ? __('view') : 'Get Quote'
+                ]); ?>
               </div>
             </div>
           </div>

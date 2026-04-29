@@ -1,18 +1,18 @@
-<div class="container-modern section-padding" style="padding-top: 40px;">
-  <div class="breadcrumb" style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
-    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
-    <span style="margin: 0 8px;">/</span> 
-    <span style="color: var(--text-main); font-weight: 600;"><?= $lang === 'de' ? 'Technischer Support' : 'Institutional Support' ?></span>
+<div class="container-modern section-padding support-page">
+  <div class="breadcrumb">
+    <a href="/"><?= __('home') ?></a> 
+    <span class="separator">/</span> 
+    <span class="current"><?= $lang === 'de' ? 'Technischer Support' : 'Institutional Support' ?></span>
   </div>
 
-  <section style="position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 80px; min-height: 350px; display: flex; align-items: center; padding: 60px; background: #0f172a;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1600') center/cover; opacity: 0.8;"></div>
-    <div style="position: relative; z-index: 1; color: white;">
-      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); border-radius: 30px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+  <section class="page-hero-modern bg-primary color-white mb-80">
+    <div class="hero-bg-overlay support"></div>
+    <div class="hero-content-modern relative z-1 p-60">
+      <div class="badge badge-accent mb-24 tracking-widest">
         Engineering Support
       </div>
-      <h1 style="font-size: 3.5rem; font-family: 'Outfit', sans-serif; line-height: 1.1; margin-bottom: 16px;"><?= $lang === 'de' ? 'Technischer Support' : 'Interdisciplinary Support' ?></h1>
-      <p style="font-size: 1.25rem; opacity: 0.9; max-width: 600px;">
+      <h1 class="text-4xl font-black mb-16"><?= $lang === 'de' ? 'Technischer Support' : 'Interdisciplinary Support' ?></h1>
+      <p class="text-xl opacity-90 font-medium max-w-600">
         <?= $lang === 'de' 
             ? 'Weltweite Experten-Unterstützung für Ihre interdisziplinären Anlagen – rund um die Uhr.' 
             : 'Subject matter expertise for your interdisciplinary systems – accessible globally, 24/7.' ?>
@@ -21,92 +21,126 @@
   </section>
 
   <!-- Support Protocols -->
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 100px;">
-    <div class="hover-lift" style="background: white; padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); text-align: center; border: 1px solid rgba(0,0,0,0.05);">
-      <div style="font-size: 4rem; margin-bottom: 32px;">💬</div>
-      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 16px; font-weight: 800;">Engineering Chat</h3>
-      <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">Direct synchronous access to our senior engineering desk for immediate technical resolution.</p>
-      <a href="/contact" class="btn-modern btn-accent" style="width: 100%; justify-content: center; font-weight: 800;">Initialize Tech Chat</a>
+  <div class="grid grid-3 gap-40 mb-100">
+    <div class="card-modern p-60 px-40 text-center hover-lift">
+      <div class="p-24 bg-light border-radius-full inline-block mb-32">
+        <i data-lucide="messages-square" size="48" class="text-accent"></i>
+      </div>
+      <h3 class="text-xl font-black color-primary mb-16">Engineering Chat</h3>
+      <p class="text-muted font-medium leading-relaxed mb-32">Direct synchronous access to our senior engineering desk for immediate technical resolution.</p>
+      <?php render_component('button', [
+        'href' => '/contact',
+        'variant' => 'accent',
+        'label' => 'Initialize Tech Chat',
+        'class' => 'w-full font-black uppercase tracking-widest'
+      ]); ?>
     </div>
 
-    <div class="hover-lift" style="background: white; padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); text-align: center; border: 1px solid rgba(0,0,0,0.05);">
-      <div style="font-size: 4rem; margin-bottom: 32px;">✉️</div>
-      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 16px; font-weight: 800;">Technical Inquiry</h3>
-      <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">Formal submission for complex interdisciplinary specifications and documentation requests.</p>
-      <div style="font-weight: 900; color: var(--accent); font-size: 1.1rem; letter-spacing: 0.5px;">tech.support@streicher-group.com</div>
+    <div class="card-modern p-60 px-40 text-center hover-lift">
+      <div class="p-24 bg-light border-radius-full inline-block mb-32">
+        <i data-lucide="mail" size="48" class="text-accent"></i>
+      </div>
+      <h3 class="text-xl font-black color-primary mb-16">Technical Inquiry</h3>
+      <p class="text-muted font-medium leading-relaxed mb-32">Formal submission for complex interdisciplinary specifications and documentation requests.</p>
+      <div class="font-black text-accent text-lg tracking-wide">tech.support@streicher-group.com</div>
     </div>
 
-    <div class="hover-lift" style="background: var(--primary); padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); text-align: center; color: white; border: 1px solid var(--accent);">
-      <div style="font-size: 4rem; margin-bottom: 32px;">🚨</div>
-      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: white; margin-bottom: 16px; font-weight: 800;">Emergency Hotline</h3>
-      <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; margin-bottom: 32px;">24/7 Rapid response protocol for critical industrial equipment failures and site safety.</p>
-      <div style="font-weight: 900; color: var(--accent); font-size: 1.4rem;">+49 941 123 456-99</div>
+    <div class="card-modern bg-primary color-white p-60 px-40 text-center hover-lift-accent border border-accent shadow-lg">
+      <div class="p-24 bg-white/10 border-radius-full inline-block mb-32">
+        <i data-lucide="phone-call" size="48" class="text-accent"></i>
+      </div>
+      <h3 class="text-xl font-black color-white mb-16">Emergency Hotline</h3>
+      <p class="text-white/70 font-medium leading-relaxed mb-32">24/7 Rapid response protocol for critical industrial equipment failures and site safety.</p>
+      <div class="font-black text-accent text-2xl tracking-wide">+49 941 123 456-99</div>
     </div>
   </div>
 
   <!-- Technical Ticket Infrastructure -->
-  <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 120px;">
-    <div style="padding: 48px; background: #f8fafc; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
-      <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; color: var(--primary); margin: 0; font-weight: 800;">System Support Ticket</h2>
-      <span style="background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; letter-spacing: 1px;">ENCRYPTION ACTIVE</span>
+  <div class="card-modern no-padding overflow-hidden shadow-lg mb-120">
+    <div class="px-48 py-32 bg-light border-bottom flex-between items-center">
+      <h2 class="text-2xl font-black color-primary mb-0">System Support Ticket</h2>
+      <?php render_component('badge', [
+        'label' => 'ENCRYPTION ACTIVE',
+        'variant' => 'accent'
+      ]); ?>
     </div>
-    <div style="padding: 80px;">
-      <form action="/support" method="POST">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 40px;">
+    <div class="p-80">
+      <form action="/support" method="POST" class="grid gap-32">
+        <div class="grid grid-3 gap-32">
+          <?php render_component('form_field', [
+            'label' => 'Authorized Representative',
+            'name' => 'name',
+            'required' => true,
+            'placeholder' => 'John Doe'
+          ]); ?>
+          <?php render_component('form_field', [
+            'label' => 'Legal Entity / Company',
+            'name' => 'company',
+            'required' => true,
+            'placeholder' => 'Global Industrial AG'
+          ]); ?>
+          <?php render_component('form_field', [
+            'label' => 'Corporate Email',
+            'name' => 'email',
+            'type' => 'email',
+            'required' => true,
+            'placeholder' => 'representative@company.com'
+          ]); ?>
+        </div>
+        
+        <div class="grid grid-2 gap-32">
+          <?php render_component('form_field', [
+            'label' => 'Equipment Asset ID / SKU',
+            'name' => 'equipment',
+            'placeholder' => 'e.g. STR-SYS-5000-X'
+          ]); ?>
           <div class="form-group-modern">
-            <label>Authorized Representative *</label>
-            <input type="text" name="name" required placeholder="John Doe">
-          </div>
-          <div class="form-group-modern">
-            <label>Legal Entity / Company *</label>
-            <input type="text" name="company" required placeholder="Global Industrial AG">
-          </div>
-          <div class="form-group-modern">
-            <label>Corporate Email *</label>
-            <input type="email" name="email" required placeholder="representative@company.com">
+            <label class="label-modern mb-16">Operational Priority Level</label>
+            <div class="relative">
+              <select name="priority" class="input-modern w-full appearance-none font-bold">
+                <option value="low">Institutional Inquiry (Non-Critical)</option>
+                <option value="medium">Standard Issue (Ops Affected)</option>
+                <option value="high">Critical Failure (Equipment Down)</option>
+                <option value="critical">Severe Risk (Safety Protocol Active)</option>
+              </select>
+              <i data-lucide="chevron-down" class="absolute right-16 top-50 translate-y-n50 opacity-40" size="18"></i>
+            </div>
           </div>
         </div>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px;">
-          <div class="form-group-modern">
-            <label>Equipment Asset ID / SKU</label>
-            <input type="text" name="equipment" placeholder="e.g. STR-SYS-5000-X">
-          </div>
-          <div class="form-group-modern">
-            <label>Operational Priority Level</label>
-            <select name="priority" style="font-weight: 600;">
-              <option value="low">Institutional Inquiry (Non-Critical)</option>
-              <option value="medium">Standard Issue (Ops Affected)</option>
-              <option value="high">Critical Failure (Equipment Down)</option>
-              <option value="critical">Severe Risk (Safety Protocol Active)</option>
-            </select>
-          </div>
+        <div class="form-group-modern">
+          <label class="label-modern mb-16">Detailed Technical Description</label>
+          <textarea name="issue" rows="6" required class="input-modern w-full h-auto py-24 resize-none" placeholder="Outline the technical specifications, interdisciplinary symptoms, and site conditions..."></textarea>
         </div>
         
-        <div class="form-group-modern" style="margin-bottom: 60px;">
-          <label>Detailed Technical Description *</label>
-          <textarea name="issue" rows="6" required placeholder="Outline the technical specifications, interdisciplinary symptoms, and site conditions..."></textarea>
+        <div class="mt-24">
+          <?php render_component('button', [
+            'type' => 'submit',
+            'variant' => 'accent',
+            'label' => 'Transmit Support Request',
+            'class' => 'px-60 py-24 text-lg font-black uppercase tracking-widest'
+          ]); ?>
         </div>
-        
-        <button type="submit" class="btn-modern btn-accent" style="padding: 24px 60px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Transmit Support Request</button>
       </form>
     </div>
   </div>
 
   <!-- Interdisciplinary Resource Library -->
-  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-bottom: 100px;">
+  <div class="grid grid-4 gap-32 mb-100">
     <?php 
     $resources = [
-      ['icon' => '📚', 'title' => 'Technical Manuals'],
-      ['icon' => '⚙️', 'title' => 'System Components'],
-      ['icon' => '🎥', 'title' => 'Integration Guides'],
-      ['icon' => '❓', 'title' => 'Knowledge Base'],
+      ['icon' => 'book-open', 'title' => 'Technical Manuals'],
+      ['icon' => 'settings', 'title' => 'System Components'],
+      ['icon' => 'video', 'title' => 'Integration Guides'],
+      ['icon' => 'help-circle', 'title' => 'Knowledge Base'],
     ];
     foreach ($resources as $res):
     ?>
-    <div class="hover-lift" style="background: white; padding: 40px; border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.05); text-align: center; box-shadow: var(--shadow-sm);">
-      <div style="font-size: 3rem; margin-bottom: 24px;"><?= $res['icon'] ?></div>
-      <div style="font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--primary); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;"><?= $res['title'] ?></div>
+    <div class="card-modern p-40 text-center hover-lift shadow-sm">
+      <div class="p-20 bg-light border-radius-full inline-block mb-24">
+        <i data-lucide="<?= $res['icon'] ?>" size="40" class="text-accent"></i>
+      </div>
+      <div class="font-black color-primary text-base uppercase tracking-wider"><?= $res['title'] ?></div>
     </div>
     <?php endforeach; ?>
   </div>

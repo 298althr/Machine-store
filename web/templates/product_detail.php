@@ -12,36 +12,37 @@ $basePrice = (float)$product['unit_price'];
 $displayPrice = $displayCurrency === 'USD' ? $basePrice * $exchangeRate : $basePrice;
 ?>
 
-<div class="container-modern section-padding" style="padding-top: 40px;">
-  <div class="breadcrumb" style="margin-bottom: 32px; font-size: 0.9rem; color: var(--text-muted);">
-    <a href="/" style="text-decoration: none; color: var(--accent);"><?= __('home') ?></a> 
-    <span style="margin: 0 8px;">/</span> 
-    <a href="/catalog" style="text-decoration: none; color: var(--accent);"><?= __('products') ?></a>
+<div class="container-modern section-padding product-detail-page">
+  <div class="breadcrumb">
+    <a href="/"><?= __('home') ?></a> 
+    <span class="separator">/</span> 
+    <a href="/catalog"><?= __('products') ?></a>
     <?php if (!empty($product['category_slug'])): ?>
-    <span style="margin: 0 8px;">/</span> 
-    <a href="/catalog?category=<?= htmlspecialchars($product['category_slug']) ?>" style="text-decoration: none; color: var(--accent);"><?= htmlspecialchars($product['category_name']) ?></a>
+    <span class="separator">/</span> 
+    <a href="/catalog?category=<?= htmlspecialchars($product['category_slug']) ?>"><?= htmlspecialchars($product['category_name']) ?></a>
     <?php endif; ?>
-    <span style="margin: 0 8px;">/</span> 
-    <span style="color: var(--text-main); font-weight: 900;"><?= htmlspecialchars($product['name']) ?></span>
+    <span class="separator">/</span> 
+    <span class="current"><?= htmlspecialchars($product['name']) ?></span>
   </div>
 
-  <div class="product-detail-layout grid-2">
+  <div class="product-detail-layout grid grid-2">
     <!-- Left: Product Images -->
     <div class="product-gallery-modern">
-      <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-xl); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 32px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+      <div class="main-image-container card-modern no-padding">
         <?php if (!empty($galleryImages[0])): ?>
-        <img src="<?= htmlspecialchars($galleryImages[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>" id="mainImage" style="max-width: 100%; max-height: 100%; object-fit: contain; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+        <img src="<?= htmlspecialchars($galleryImages[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>" id="mainImage" class="main-image-img">
         <?php else: ?>
-        <div style="font-size: 8rem; color: #f1f5f9;">⚙️</div>
+        <div class="no-image-placeholder">
+          <i data-lucide="settings"></i>
+        </div>
         <?php endif; ?>
       </div>
       
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+      <div class="gallery-thumbs-grid grid grid-4">
         <?php foreach ($galleryImages as $index => $imgUrl): ?>
         <div onclick="changeMainImage(this, '<?= htmlspecialchars($imgUrl) ?>')" 
-             style="aspect-ratio: 1; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid <?= $index === 0 ? 'var(--accent)' : '#f1f5f9' ?>; transition: all 0.3s; background: white; padding: 8px;"
-             class="thumb-container">
-          <img src="<?= htmlspecialchars($imgUrl) ?>" alt="Gallery Image <?= $index + 1 ?>" style="width: 100%; height: 100%; object-fit: contain;">
+             class="thumb-container card-modern no-padding <?= $index === 0 ? 'active' : '' ?>">
+          <img src="<?= htmlspecialchars($imgUrl) ?>" alt="Gallery Image <?= $index + 1 ?>" class="thumb-img">
         </div>
         <?php endforeach; ?>
       </div>
@@ -49,31 +50,32 @@ $displayPrice = $displayCurrency === 'USD' ? $basePrice * $exchangeRate : $baseP
     
     <!-- Right: Product Information -->
     <div class="product-info-modern">
-      <div style="display: inline-block; padding: 6px 16px; background: var(--accent); color: white; border-radius: 4px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 24px; letter-spacing: 2px;">
+      <div class="product-category-tag">
         <?= htmlspecialchars($product['category_name'] ?? 'Industrial Equipment') ?>
       </div>
-      <h1 style="margin: 0 0 16px 0; color: var(--primary); line-height: 1.1;"><?= htmlspecialchars($product['name']) ?></h1>
-      <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 32px; letter-spacing: 2px; text-transform: uppercase; background: #f8fafc; display: inline-block; padding: 8px 16px; border-radius: 4px; border: 1px solid #f1f5f9;">SKU: <?= htmlspecialchars($product['sku']) ?></div>
+      <h1 class="product-title"><?= htmlspecialchars($product['name']) ?></h1>
+      <div class="product-sku">SKU: <?= htmlspecialchars($product['sku']) ?></div>
       
-      <div style="margin-bottom: 40px; padding: 30px; background: #f8fafc; border-radius: var(--radius-lg); border: 2px solid #f1f5f9;">
-        <div style="display: flex; align-items: baseline; gap: 16px;">
-          <span style="font-size: 3rem; font-weight: 900; color: var(--primary); font-family: 'Outfit', sans-serif;"><?= format_price($displayPrice, $displayCurrency) ?></span>
-          <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><?= __('price_excludes') ?></span>
+      <div class="price-container-modern card-modern bg-light">
+        <div class="price-flex">
+          <span class="price-value"><?= format_price($displayPrice, $displayCurrency) ?></span>
+          <span class="price-meta"><?= __('price_excludes') ?></span>
         </div>
       </div>
       
-      <div style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 48px;">
+      <div class="product-description-text">
         <?= nl2br(htmlspecialchars($product['description'] ?? $product['short_desc'] ?? '')) ?>
       </div>
       
       <!-- Key Advantages -->
       <?php if (!empty($features)): ?>
-      <div style="margin-bottom: 48px;">
-        <h3 style="font-size: 1.1rem; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;"><?= __('key_features') ?></h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+      <div class="product-features-section">
+        <h3 class="features-title"><?= __('key_features') ?></h3>
+        <div class="features-grid grid">
           <?php foreach ($features as $feature): ?>
-          <div style="display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: var(--text-main); font-weight: 600; background: white; padding: 12px 20px; border-radius: 8px; border: 1px solid #f1f5f9;">
-            <span style="color: var(--accent);">✓</span> <?= htmlspecialchars($feature) ?>
+          <div class="feature-item card-modern py-12 px-20">
+            <i data-lucide="check" class="text-accent"></i>
+            <span><?= htmlspecialchars($feature) ?></span>
           </div>
           <?php endforeach; ?>
         </div>
@@ -81,88 +83,103 @@ $displayPrice = $displayCurrency === 'USD' ? $basePrice * $exchangeRate : $baseP
       <?php endif; ?>
       
       <!-- Purchase Options -->
-      <div style="background: white; padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 40px;">
-        <form id="addToCartForm" style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <div class="purchase-card card-modern">
+        <form id="addToCartForm" class="flex gap-20 flex-wrap">
           <input type="hidden" name="sku" value="<?= htmlspecialchars($product['sku']) ?>">
-          <div style="width: 120px;">
-            <input type="number" name="qty" value="1" min="1" style="width: 100%; height: 60px; border: 2px solid #f1f5f9; border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.25rem; outline: none; background: #f8fafc;">
+          <div class="qty-input-wrapper">
+            <input type="number" name="qty" value="1" min="1" class="qty-input">
           </div>
-          <button type="submit" class="btn-modern btn-accent" style="flex: 1; height: 60px;">
-            <?= __('add_to_cart') ?>
-          </button>
+          <?php render_component('button', [
+            'type' => 'submit',
+            'variant' => 'accent',
+            'label' => __('add_to_cart'),
+            'class' => 'flex-1 h-60',
+            'icon' => 'shopping-cart'
+          ]); ?>
         </form>
-        <div id="cartMessage" style="display: none; margin-top: 20px; padding: 15px; background: #f0fdf4; color: #166534; border-radius: 8px; font-weight: 700; text-align: center; border: 1px solid #bbf7d0;">
-          ✓ <?= __('product_added') ?> <a href="/cart" style="color: var(--accent); text-decoration: underline; margin-left: 10px;"><?= __('view_cart') ?></a>
+        <div id="cartMessage" class="alert alert-success mt-20" style="display: none;">
+          <i data-lucide="check-circle"></i>
+          <span><?= __('product_added') ?> <a href="/cart" class="text-accent font-bold underline ml-8"><?= __('view_cart') ?></a></span>
         </div>
       </div>
       
       <!-- Support & Trust -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center;">
-        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #f1f5f9;">
-          <div style="font-size: 1.5rem; margin-bottom: 4px;">🚚</div>
-          <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"><?= __('worldwide_shipping') ?></div>
+      <div class="trust-indicators grid grid-3">
+        <div class="trust-item card-modern bg-light">
+          <i data-lucide="truck"></i>
+          <div class="trust-label"><?= __('worldwide_shipping') ?></div>
         </div>
-        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #f1f5f9;">
-          <div style="font-size: 1.5rem; margin-bottom: 4px;">🛡️</div>
-          <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"><?= (int)($product['warranty_months'] ?? 24) ?> <?= __('month_warranty') ?></div>
+        <div class="trust-item card-modern bg-light">
+          <i data-lucide="shield-check"></i>
+          <div class="trust-label"><?= (int)($product['warranty_months'] ?? 24) ?> <?= __('month_warranty') ?></div>
         </div>
-        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #f1f5f9;">
-          <div style="font-size: 1.5rem; margin-bottom: 4px;">📞</div>
-          <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"><?= __('support_24_7') ?></div>
+        <div class="trust-item card-modern bg-light">
+          <i data-lucide="headphones"></i>
+          <div class="trust-label"><?= __('support_24_7') ?></div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Technical Specifications -->
-  <div style="margin-bottom: 100px;">
-    <div style="border-bottom: 2px solid #f1f5f9; margin-bottom: 48px;">
-      <h2 style="padding-bottom: 16px; border-bottom: 4px solid var(--accent); display: inline-block; margin-bottom: -3px;"><?= __('technical_specs') ?></h2>
+  <div class="specs-section-modern">
+    <div class="section-header-line">
+      <h2 class="section-title-modern-inline"><?= __('technical_specs') ?></h2>
     </div>
     
-    <div class="grid-2">
+    <div class="grid grid-2">
       <?php if (!empty($specs)): ?>
-      <div style="background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid rgba(0,0,0,0.05); overflow: hidden;">
+      <div class="specs-table-card card-modern no-padding overflow-hidden">
         <?php foreach ($specs as $label => $value): ?>
-        <div style="display: flex; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid #f1f5f9;">
-          <span style="font-weight: 700; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;"><?= htmlspecialchars($label) ?></span>
-          <span style="color: var(--text-main); font-weight: 600;"><?= htmlspecialchars($value) ?></span>
+        <div class="spec-row">
+          <span class="spec-label"><?= htmlspecialchars($label) ?></span>
+          <span class="spec-value"><?= htmlspecialchars($value) ?></span>
         </div>
         <?php endforeach; ?>
       </div>
       <?php endif; ?>
       
-      <div style="background: #f8fafc; border-radius: var(--radius-lg); padding: 48px; border: 2px dashed rgba(15, 23, 42, 0.1); display: flex; flex-direction: column; justify-content: center;">
-        <h3 style="margin: 0 0 16px 0;"><?= __('need_custom_quote') ?></h3>
-        <p style="color: var(--text-muted); margin-bottom: 32px; line-height: 1.6;"><?= __('bulk_orders_text') ?></p>
-        <a href="/quote?product=<?= htmlspecialchars($product['sku']) ?>" class="btn-modern btn-accent" style="align-self: flex-start;"><?= __('request_quote') ?></a>
+      <div class="quote-cta-card card-modern bg-light border-dashed">
+        <h3 class="mb-16"><?= __('need_custom_quote') ?></h3>
+        <p class="text-muted mb-32"><?= __('bulk_orders_text') ?></p>
+        <?php render_component('button', [
+          'href' => '/quote?product=' . htmlspecialchars($product['sku']),
+          'variant' => 'accent',
+          'label' => __('request_quote'),
+          'class' => 'self-start'
+        ]); ?>
       </div>
     </div>
   </div>
 
   <!-- Related Products -->
   <?php if (!empty($related)): ?>
-  <section>
-    <div style="margin-bottom: 48px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px;">
-      <h2 style="margin: 0;"><?= __('related_products') ?></h2>
+  <section class="related-products-section">
+    <div class="section-header-line">
+      <h2 class="mb-0"><?= __('related_products') ?></h2>
     </div>
-    <div class="grid-3">
+    <div class="grid grid-3">
       <?php foreach ($related as $rel): ?>
-      <div class="product-card-modern">
+      <div class="product-card-modern card-modern no-padding overflow-hidden">
         <div class="product-image-container">
           <img src="<?= get_product_image($rel) ?>" alt="<?= htmlspecialchars($rel['name']) ?>">
         </div>
-        <div class="product-info-modern">
+        <div class="product-info-modern p-24">
           <div class="product-cat-modern"><?= htmlspecialchars($rel['category_name'] ?? 'Equipment') ?></div>
           <h3 class="product-title-modern">
-            <a href="/product?sku=<?= htmlspecialchars($rel['sku']) ?>" style="text-decoration: none; color: inherit;"><?= htmlspecialchars($rel['name']) ?></a>
+            <a href="/product?sku=<?= htmlspecialchars($rel['sku']) ?>"><?= htmlspecialchars($rel['name']) ?></a>
           </h3>
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto;">
+          <div class="flex-between flex-end mt-auto">
             <div>
-              <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">From</div>
-              <span class="product-price-modern" style="font-size: 1.25rem;"><?= format_price((float)$rel['unit_price']) ?></span>
+              <div class="text-muted text-xs font-bold uppercase">From</div>
+              <span class="price-sm"><?= format_price((float)$rel['unit_price']) ?></span>
             </div>
-            <a href="/product?sku=<?= htmlspecialchars($rel['sku']) ?>" class="btn-modern btn-accent" style="padding: 8px 16px; font-size: 0.75rem;">View</a>
+            <?php render_component('button', [
+              'href' => '/product?sku=' . htmlspecialchars($rel['sku']),
+              'variant' => 'accent',
+              'size' => 'sm',
+              'label' => 'View'
+            ]); ?>
           </div>
         </div>
       </div>

@@ -1,54 +1,70 @@
-<div class="admin-header">
+<header class="admin-header">
   <div>
-    <h1 style="margin: 0;">Orders</h1>
-    <p style="margin: 4px 0 0 0; color: #64748b;">
+    <div class="admin-tag">Asset Registry</div>
+    <h1 class="mb-0">Orders Management</h1>
+    <p class="text-muted mt-12">
       <?php if ($currentStatus): ?>
-        Showing: <?= get_status_label($currentStatus) ?>
+        Showing Protocol: <span class="font-bold color-primary"><?= get_status_label($currentStatus) ?></span>
       <?php else: ?>
-        All orders
+        Full Operational Registry
       <?php endif; ?>
     </p>
   </div>
-</div>
+</header>
 
 <!-- Status Filter -->
-<div class="card mb-4">
-  <div class="card-body" style="display: flex; gap: 8px; flex-wrap: wrap;">
-    <a href="/admin/orders" class="btn <?= !$currentStatus ? 'btn-primary' : 'btn-outline' ?>">All</a>
-    <a href="/admin/orders?status=awaiting_payment" class="btn <?= $currentStatus === 'awaiting_payment' ? 'btn-primary' : 'btn-outline' ?>">Awaiting Payment</a>
-    <a href="/admin/orders?status=payment_pending_upload" class="btn <?= $currentStatus === 'payment_pending_upload' ? 'btn-primary' : 'btn-outline' ?>">Payment Pending</a>
-    <a href="/admin/orders?status=payment_uploaded" class="btn <?= $currentStatus === 'payment_uploaded' ? 'btn-primary' : 'btn-outline' ?>">Payment Uploaded</a>
-    <a href="/admin/orders?status=payment_confirmed" class="btn <?= $currentStatus === 'payment_confirmed' ? 'btn-primary' : 'btn-outline' ?>">Ready to Ship</a>
-    <a href="/admin/orders?status=shipped" class="btn <?= $currentStatus === 'shipped' ? 'btn-primary' : 'btn-outline' ?>">Shipped</a>
-    <a href="/admin/orders?status=delivered" class="btn <?= $currentStatus === 'delivered' ? 'btn-primary' : 'btn-outline' ?>">Delivered</a>
+<div class="card-modern mb-48">
+  <div class="flex flex-wrap gap-12">
+    <?php
+    $statuses = [
+      null => 'All',
+      'awaiting_payment' => 'Awaiting Payment',
+      'payment_pending_upload' => 'Payment Pending',
+      'payment_uploaded' => 'Payment Uploaded',
+      'payment_confirmed' => 'Ready to Ship',
+      'shipped' => 'Shipped',
+      'delivered' => 'Delivered'
+    ];
+    foreach ($statuses as $val => $label):
+      $isActive = ($currentStatus === $val);
+      render_component('button', [
+        'href' => '/admin/orders' . ($val ? "?status={$val}" : ""),
+        'variant' => $isActive ? 'accent' : 'outline',
+        'size' => 'sm',
+        'label' => $label
+      ]);
+    endforeach;
+    ?>
   </div>
 </div>
 
 <!-- Orders Table -->
-<div class="card">
+<div class="card-modern no-padding overflow-hidden">
   <?php if (empty($orders)): ?>
-  <div class="card-body text-center" style="padding: 64px;">
-    <div style="font-size: 3rem; margin-bottom: 16px;">📦</div>
-    <h3>No orders found</h3>
-    <p style="color: #64748b;">
+  <div class="text-center py-80">
+    <div class="empty-icon mb-24 opacity-20">
+      <i data-lucide="package-search" size="64"></i>
+    </div>
+    <h3>No Registry Entries</h3>
+    <p class="text-muted">
       <?php if ($currentStatus): ?>
         No orders with status "<?= get_status_label($currentStatus) ?>".
       <?php else: ?>
-        No orders have been placed yet.
+        The operational registry is currently empty.
       <?php endif; ?>
     </p>
   </div>
   <?php else: ?>
-  <div style="overflow-x: auto;">
-    <table class="data-table">
+  <div class="overflow-x-auto">
+    <table class="admin-table">
       <thead>
         <tr>
-          <th>Order</th>
-          <th>Date</th>
-          <th>Customer</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th>Registry ID</th>
+          <th>Timestamp</th>
+          <th>Institutional Entity</th>
+          <th>Settlement</th>
+          <th>Protocol Status</th>
+          <th class="text-right">Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -56,34 +72,54 @@
           $billing = json_decode($order['billing_address'] ?? '{}', true) ?: [];
         ?>
         <tr>
-          <td>
-            <a href="/admin/orders/<?= $order['id'] ?>" style="font-weight: 600; color: #0284c7; text-decoration: none;">
-              <?= htmlspecialchars($order['order_number']) ?>
-            </a>
+          <td class="font-bold color-primary"><?= htmlspecialchars($order['order_number']) ?></td>
+          <td class="text-muted">
+            <div class="font-bold"><?= date('M j, Y', strtotime($order['created_at'])) ?></div>
+            <div class="text-xs"><?= date('g:i A', strtotime($order['created_at'])) ?></div>
           </td>
           <td>
-            <div><?= date('M j, Y', strtotime($order['created_at'])) ?></div>
-            <div style="font-size: 0.85rem; color: #64748b;"><?= date('g:i A', strtotime($order['created_at'])) ?></div>
+            <div class="font-bold color-primary"><?= htmlspecialchars($billing['company'] ?? $billing['name'] ?? 'N/A') ?></div>
+            <div class="text-xs text-muted font-bold"><?= htmlspecialchars($billing['email'] ?? '') ?></div>
           </td>
+          <td class="font-bold"><?= format_price((float)$order['total']) ?></td>
           <td>
-            <div style="font-weight: 500;"><?= htmlspecialchars($billing['company'] ?? $billing['name'] ?? 'N/A') ?></div>
-            <div style="font-size: 0.85rem; color: #64748b;"><?= htmlspecialchars($billing['email'] ?? '') ?></div>
+            <?php 
+              $variant = 'info';
+              if ($order['status'] === 'delivered') $variant = 'success';
+              if ($order['status'] === 'payment_uploaded') $variant = 'warning';
+              if ($order['status'] === 'payment_declined') $variant = 'error';
+              render_component('badge', [
+                'label' => get_status_label($order['status']),
+                'variant' => $variant
+              ]); 
+            ?>
           </td>
-          <td style="font-weight: 600;"><?= format_price((float)$order['total']) ?></td>
-          <td>
-            <span class="order-status-badge status-<?= str_replace('_', '-', $order['status']) ?>">
-              <?= get_status_label($order['status']) ?>
-            </span>
-          </td>
-          <td>
-            <div style="display: flex; gap: 8px;">
-              <a href="/admin/orders/<?= $order['id'] ?>" class="btn btn-sm btn-outline">View</a>
+          <td class="text-right">
+            <div class="flex flex-end gap-8">
+              <?php render_component('button', [
+                'href' => '/admin/orders/' . $order['id'],
+                'variant' => 'outline',
+                'size' => 'sm',
+                'label' => 'Analyze'
+              ]); ?>
+              
               <?php if ($order['status'] === 'payment_uploaded'): ?>
-              <form action="/admin/orders/<?= $order['id'] ?>/confirm-payment" method="POST" style="display: inline;">
-                <button type="submit" class="btn btn-sm btn-success">Confirm Payment</button>
+              <form action="/admin/orders/<?= $order['id'] ?>/confirm-payment" method="POST" class="inline">
+                <?php render_component('button', [
+                  'type' => 'submit',
+                  'variant' => 'accent',
+                  'size' => 'sm',
+                  'label' => 'Confirm'
+                ]); ?>
               </form>
               <?php elseif ($order['status'] === 'payment_confirmed'): ?>
-              <a href="/admin/orders/<?= $order['id'] ?>#ship" class="btn btn-sm btn-primary">Ship</a>
+                <?php render_component('button', [
+                  'href' => '/admin/orders/' . $order['id'] . '#ship',
+                  'variant' => 'accent',
+                  'size' => 'sm',
+                  'label' => 'Dispatch',
+                  'icon' => 'truck'
+                ]); ?>
               <?php endif; ?>
             </div>
           </td>

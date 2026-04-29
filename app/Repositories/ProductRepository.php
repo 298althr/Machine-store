@@ -48,7 +48,7 @@ class ProductRepository
         $products = $stmt->fetchAll();
         
         // Always filter by image presence for the frontend as requested
-        $products = array_filter($products, function($p) {
+        $products = array_filter($products, function($p) use ($activeOnly) {
             $hasImage = !empty($p['image_url']) && $p['image_url'] !== '';
             $isActive = (string)($p['is_active'] ?? '0') === '1';
             return $hasImage && (!$activeOnly || $isActive);
