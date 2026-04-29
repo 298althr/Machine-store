@@ -86,22 +86,19 @@ $telegramService = new \Streicher\App\Services\TelegramService($_ENV['TELEGRAM_B
 class CsvSessionHandler implements SessionHandlerInterface {
     private $pdo;
     private $table = 'sessions';
+    private $csvPath;
     
-    public function __construct($pdo) {
+    public function __construct($pdo, $csvPath = __DIR__ . '/../data/db') {
         $this->pdo = $pdo;
+        $this->csvPath = $csvPath;
         $this->ensureTable();
     }
     
     private function ensureTable(): void {
-        try {
-            $this->pdo->prepare("SELECT 1 FROM {$this->table} LIMIT 1")->execute();
-        } catch (Exception $e) {
-            // Table doesn't exist, create it
-            $this->pdo->exec("CREATE TABLE {$this->table} (
-                session_id VARCHAR(128) PRIMARY KEY,
-                session_data TEXT NOT NULL,
-                last_access INTEGER NOT NULL
-            )");
+        // CSV database auto-creates tables on first insert
+        // Just make sure the directory exists
+        if (!is_dir($this->csvPath)) {
+            mkdir($this->csvPath, 0755, true);
         }
     }
     
@@ -121,8 +118,20 @@ class CsvSessionHandler implements SessionHandlerInterface {
     }
     
     public function write(string $sessionId, string $data): bool {
-        $stmt = $this->pdo->prepare("REPLACE INTO {$this->table} (session_id, session_data, last_access) VALUES (?, ?, ?)");
-        return $stmt->execute([$sessionId, $data, time()]);
+        // Check if session exists
+        $stmt = $this->pdo->prepare("SELECT session_id FROM {$this->table} WHERE session_id = ? LIMIT 1");
+        $stmt->execute([$sessionId]);
+        $exists = $stmt->fetchColumn();
+        
+        if ($exists) {
+            // UPDATE existing
+            $stmt = $this->pdo->prepare("UPDATE {$this->table} SET session_data = ?, last_access = ? WHERE session_id = ?");
+            return $stmt->execute([$data, time(), $sessionId]);
+        } else {
+            // INSERT new
+            $stmt = $this->pdo->prepare("INSERT INTO {$this->table} (session_id, session_data, last_access) VALUES (?, ?, ?)");
+            return $stmt->execute([$sessionId, $data, time()]);
+        }
     }
     
     public function destroy(string $sessionId): bool {
