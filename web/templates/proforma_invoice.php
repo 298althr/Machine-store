@@ -590,10 +590,10 @@ $total = $subtotal + $deliveryCost + $vatAmount;
   </div>
 
   <div class="no-print">
-    <a href="/order/<?= $order['id'] ?>/payment-confirm" class="btn-action btn-primary">
+    <a href="/order/<?= $order['id'] ?>/payment-confirm" class="btn-action btn-primary" style="background: var(--primary);">
       📤 Upload Payment Protocol
     </a>
-    <a href="/order/<?= $order['id'] ?>/invoice/pdf" class="btn-action btn-secondary">
+    <a href="/order/<?= $order['id'] ?>/invoice/pdf" class="btn-action btn-secondary" target="_blank" rel="noopener">
       📄 Download Official PDF
     </a>
     <button onclick="window.print()" class="btn-action btn-secondary">
